@@ -37,8 +37,6 @@ const App = () => {
   return (
     <div>
       <Login />
-      <Register />
-      <Home />
     </div>
   )
 
