@@ -12,13 +12,13 @@ const App = () => {
     { path: "/home", element: <Home /> },
     { path: "/register", element: <Register /> },
   ]);
+
   return (
-    <div className="d-flex flex-column align-items-center">
+    <div>
+      <Login />
       {<RouterProvider router={router} />}
-    </div>
+    <div/>
   );
 } 
-
-
 
 export default App;
