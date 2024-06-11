@@ -14,9 +14,10 @@ const App = () => {
   ]);
 
   return (
-    <div className="d-flex flex-column align-items-center">
+    <div>
+      <Login />
       {<RouterProvider router={router} />}
-    </div>
+    <div/>
   );
 } 
 
