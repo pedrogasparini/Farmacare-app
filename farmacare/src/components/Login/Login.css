@@ -1,3 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap");
+
+html {
+    font-family: "Noto Sans JP", sans-serif;
+}
+
 :root {
     /* donde esta el logo: */
     --header-color: #40ABA8;
@@ -8,9 +14,11 @@
 
 }
 
-
-
 body {
+    background-color: var(--background);
+}
+
+.login-container {
     
     margin-top: 100px;
     display: flex;
@@ -18,9 +26,12 @@ body {
     justify-content: center;
     text-align: center;
     font-size: large;
-    background-color: var(--background);
 }
 
-h5 {
-    margin-bottom: 30px;
+svg {
+    margin-bottom: 20px;
 }
+
+
+
+

@@ -5,6 +5,10 @@ import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import { AuthenticationContext } from "../../services/authentication/authentication";
 
+const users = [
+    { username: "pedro123", password: "password" },
+];
+
 const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -28,8 +32,10 @@ const Login = () => {
         setPassword(inputPassword);
     };
 
+
     const submitHandler = (event) => {
         event.preventDefault();
+
 
         if (usernameRef.current.value.length === 0) {
             usernameRef.current.focus();
@@ -51,6 +57,21 @@ const Login = () => {
             return;
         }
 
+
+        const userEntered = users.find(userEntered => userEntered.username === username);
+
+        if (!userEntered) {
+            setMessage("Usuario no encontrado");
+            return;
+        }
+
+        // Verificar si la contraseña coincide
+        if (userEntered.password !== password) {
+            setMessage("Contraseña incorrecta");
+            return;
+        }
+
+
         handleLogin(username);
         navigate("/home");
     };
@@ -59,9 +80,16 @@ const Login = () => {
         <div className="login-container">
             <Card>
                 <Card.Body>
-                    <Row>
-                        <h5>Login</h5>
-                    </Row>
+                    <div className="icon-container">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="48px"
+                            viewBox="0 -960 960 960"
+                            width="48px"
+                            fill="#000000">
+                            <path d="M480-481q-66 0-108-42t-42-108q0-66 42-108t108-42q66 0 108 42t42 108q0 66-42 108t-108 42ZM160-160v-94q0-38 19-65t49-41q67-30 128.5-45T480-420q62 0 123 15.5t127.92 44.69q31.3 14.13 50.19 40.97Q800-292 800-254v94H160Zm60-60h520v-34q0-16-9.5-30.5T707-306q-64-31-117-42.5T480-360q-57 0-111 11.5T252-306q-14 7-23 21.5t-9 30.5v34Zm260-321q39 0 64.5-25.5T570-631q0-39-25.5-64.5T480-721q-39 0-64.5 25.5T390-631q0 39 25.5 64.5T480-541Zm0-90Zm0 411Z" /></svg>
+                    </div>
+
                     <Form onSubmit={submitHandler}>
                         <Form.Group className="mb-5">
                             <Form.Control
@@ -92,6 +120,8 @@ const Login = () => {
                         </Row>
                     </Form>
                 </Card.Body>
+
+                <p>{message}</p>
             </Card>
         </div>
     );
