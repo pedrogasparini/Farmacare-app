@@ -15,11 +15,11 @@ const App = () => {
 
   return (
     <div>
-      <Login />
       {<RouterProvider router={router} />}
-    <div/>
+    </div>
+
   );
-} 
+}
 
 
 
