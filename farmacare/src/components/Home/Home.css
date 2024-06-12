@@ -1,12 +1,17 @@
+
 /* trata de manejar el css con clases, porque al poner div estas generalizando todos los divs de la app */
 
 .home-container {
     background-color: #40ABA8;
     padding: 10px;
     width: 100%;
-    
-  }
+}
   
+.header {
+    background-color: #40ABA8; 
+    height: 120px;   
+    padding: 10px;
+}
 
 nav button {
     float: right;
@@ -16,4 +21,12 @@ nav button {
 }
 nav button.Logo {
     float: left;
+}
+
+.menu {
+    float: left;
+    background-color: #AFF4C6;
+    width: 15%;
+    height: 609px;
+    text-align: start;
 }
