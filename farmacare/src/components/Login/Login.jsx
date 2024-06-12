@@ -3,6 +3,7 @@ import { Form, Card, Row, Col, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
 import "./Login.css";
+import Header from "../Header/Header";
 import { AuthenticationContext } from "../../services/authentication/authentication";
 
 const Login = () => {
