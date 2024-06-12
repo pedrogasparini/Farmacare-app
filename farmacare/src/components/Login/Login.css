@@ -1,16 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap");
 
-* {
-    box-sizing: border-box;
-}
-
 html {
     font-family: "Noto Sans JP", sans-serif;
-    font-size: large;
-}
-
-body {
-    margin: 0;
 }
 
 :root {
@@ -22,6 +13,25 @@ body {
     --background: #BDE3FF;
 
 }
+
+body {
+    background-color: var(--background);
+}
+
+.login-container {
+    
+    margin-top: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: large;
+}
+
+svg {
+    margin-bottom: 20px;
+}
+
 
 
 
