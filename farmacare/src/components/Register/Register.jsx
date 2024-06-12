@@ -1,24 +1,37 @@
-// Register.jsx
-import React, { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import { Form, Card, Row, Col, Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import "./Register.css";
+import { useNavigate,useHistory } from "react-router-dom";
+import Swal from 'sweetalert2';
+import "./Register.css"
+import { AuthenticationContext } from "../../services/authentication/authentication";
 
-const Register = () => {
+const Register = ({  }) => {
+    const [name, setName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({
+        name: false,
+        lastName: false,
         username: false,
         password: false,
     });
-    const [message, setMessage] = useState("");
     const navigate = useNavigate();
+    const nameRef = useRef(null);
+    const lastNameRef = useRef(null);
     const usernameRef = useRef(null);
     const passwordRef = useRef(null);
+    const { handleLogin } = useContext(AuthenticationContext);
 
-    const users = [
-        { username: "pedro123", password: "password" },
-    ];
+    const nameHandler = (event) => {
+        const inputName = event.target.value;
+        setName(inputName);
+    };
+
+    const lastNameHandler = (event) => {
+        const inputLastName = event.target.value;
+        setLastName(inputLastName);
+    };
 
     const usernameHandler = (event) => {
         const inputUsername = event.target.value;
@@ -33,74 +46,126 @@ const Register = () => {
     const submitHandler = (event) => {
         event.preventDefault();
 
+        if (nameRef.current.value.length === 0) {
+            nameRef.current.focus();
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                name: true,
+            }));
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Por favor, ingrese su nombre.',
+            });
+            return;
+        }
+
+        if (lastNameRef.current.value.length === 0) {
+            lastNameRef.current.focus();
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                lastName: true,
+            }));
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Por favor, ingrese su apellido.',
+            });
+            return;
+        }
+
         if (usernameRef.current.value.length === 0) {
             usernameRef.current.focus();
             setErrors((prevErrors) => ({
                 ...prevErrors,
                 username: true,
-                password: false,
             }));
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Por favor, ingrese su nombre de usuario.',
+            });
             return;
         }
 
-        if (password.length === 0) {
+        if (passwordRef.current.value.length === 0) {
             passwordRef.current.focus();
             setErrors((prevErrors) => ({
                 ...prevErrors,
                 password: true,
-                username: false,
             }));
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Por favor, ingrese su contraseña.',
+            });
             return;
         }
 
-        const userExists = users.some(user => user.username === username);
-        if (userExists) {
-            setMessage("El nombre de usuario ya está en uso.");
-            return;
-        }
+        // Aquí puedes realizar más validaciones, como verificar la fortaleza de la contraseña,
+        // si el nombre de usuario ya existe, etc.
 
+        // Lógica para registrar al usuario
+        const newUser = {
+            name: name,
+            lastName: lastName,
+            username: username,
+            password: password
+        };
+        // Agregar la lógica para registrar al usuario en la base de datos o en el contexto de autenticación
 
-        setUsers(prevUsers => [...prevUsers, { username, password }]);
+        // Redireccionar al usuario después del registro
         navigate("/login");
     };
 
     return (
-        <div className="registro-container">
-            <Card>
+        <div className="sign-up-container">
+            <h1>Sign Up</h1>
+            <h6>Complete el siguiente formulario para la creación de su cuenta.</h6>
+            <Card className="sign-up-card">
                 <Card.Body>
-                    <div className="icon-container">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            height="48px"
-                            viewBox="0 -960 960 960"
-                            width="48px"
-                            fill="#000000">
-                            <path d="M480-481q-66 0-108-42t-42-108q0-66 42-108t108-42q66 0 108 42t42 108q0 66-42 108t-108 42ZM160-160v-94q0-38 19-65t49-41q67-30 128.5-45T480-420q62 0 123 15.5t127.92 44.69q31.3 14.13 50.19 40.97Q800-292 800-254v94H160Zm60-60h520v-34q0-16-9.5-30.5T707-306q-64-31-117-42.5T480-360q-57 0-111 11.5T252-306q-14 7-23 21.5t-9 30.5v34Zm260-321q39 0 64.5-25.5T570-631q0-39-25.5-64.5T480-721q-39 0-64.5 25.5T390-631q0 39 25.5 64.5T480-541Zm0-90Zm0 411Z" /></svg>
-                    </div>
-
-                    <Form onSubmit={submitHandler}>
-                        <Form.Group className="mb-5">
+                    <Form className="sign-up-form" onSubmit={submitHandler}>
+                        <Form.Group className="mb-4">
+                            <Form.Control
+                                placeholder="Ingrese su nombre..."
+                                type="text"
+                                value={name}
+                                className={`custom-input ${errors.name ? "border border-danger" : ""}`}
+                                ref={nameRef}
+                                onChange={nameHandler}
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-4">
+                            <Form.Control
+                                placeholder="Ingrese su apellido..."
+                                type="text"
+                                value={lastName}
+                                className={`custom-input ${errors.lastName ? "border border-danger" : ""}`}
+                                ref={lastNameRef}
+                                onChange={lastNameHandler}
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-4">
                             <Form.Control
                                 placeholder="Ingrese su nombre de usuario..."
                                 type="text"
-                                className={errors.username ? "border border-danger" : ""}
+                                className={`custom-input ${errors.username ? "border border-danger" : ""}`}
                                 ref={usernameRef}
                                 onChange={usernameHandler}
                             />
                         </Form.Group>
-                        <Form.Group className="mb-5">
+                        <Form.Group className="mb-4">
                             <Form.Control
                                 placeholder="Ingrese su contraseña..."
                                 type="password"
                                 value={password}
-                                className={errors.password ? "border border-danger" : ""}
+                                className={`custom-input ${errors.password ? "border border-danger" : ""}`}
                                 ref={passwordRef}
                                 onChange={passwordHandler}
                             />
                         </Form.Group>
                         <Row>
                             <Col>
-                                <Col className="d-flex justify-content-end" />
                                 <Button variant="secondary" type="submit">
                                     Registrarse
                                 </Button>
@@ -108,11 +173,9 @@ const Register = () => {
                         </Row>
                     </Form>
                 </Card.Body>
-
-                <p>{message}</p>
             </Card>
         </div>
     );
-}
+};
 
 export default Register;
