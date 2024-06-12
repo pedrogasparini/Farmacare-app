@@ -1,11 +1,11 @@
 import { useState, useRef, useContext } from "react";
 import { Form, Card, Row, Col, Button } from "react-bootstrap";
-import { useNavigate,useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
-import "./Register.css"
+import "./Register.css";
 import { AuthenticationContext } from "../../services/authentication/authentication";
 
-const Register = ({  }) => {
+const Register = () => {
     const [name, setName] = useState("");
     const [lastName, setLastName] = useState("");
     const [username, setUsername] = useState("");
@@ -21,26 +21,22 @@ const Register = ({  }) => {
     const lastNameRef = useRef(null);
     const usernameRef = useRef(null);
     const passwordRef = useRef(null);
-    const { handleLogin } = useContext(AuthenticationContext);
+    const { handleRegister } = useContext(AuthenticationContext);
 
     const nameHandler = (event) => {
-        const inputName = event.target.value;
-        setName(inputName);
+        setName(event.target.value);
     };
 
     const lastNameHandler = (event) => {
-        const inputLastName = event.target.value;
-        setLastName(inputLastName);
+        setLastName(event.target.value);
     };
 
     const usernameHandler = (event) => {
-        const inputUsername = event.target.value;
-        setUsername(inputUsername);
+        setUsername(event.target.value);
     };
 
     const passwordHandler = (event) => {
-        const inputPassword = event.target.value;
-        setPassword(inputPassword);
+        setPassword(event.target.value);
     };
 
     const submitHandler = (event) => {
@@ -48,74 +44,46 @@ const Register = ({  }) => {
 
         if (nameRef.current.value.length === 0) {
             nameRef.current.focus();
-            setErrors((prevErrors) => ({
-                ...prevErrors,
-                name: true,
-            }));
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Por favor, ingrese su nombre.',
-            });
+            setErrors((prevErrors) => ({ ...prevErrors, name: true }));
+            Swal.fire({ icon: 'error', title: 'Oops...', text: 'Por favor, ingrese su nombre.' });
             return;
         }
 
         if (lastNameRef.current.value.length === 0) {
             lastNameRef.current.focus();
-            setErrors((prevErrors) => ({
-                ...prevErrors,
-                lastName: true,
-            }));
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Por favor, ingrese su apellido.',
-            });
+            setErrors((prevErrors) => ({ ...prevErrors, lastName: true }));
+            Swal.fire({ icon: 'error', title: 'Oops...', text: 'Por favor, ingrese su apellido.' });
             return;
         }
 
         if (usernameRef.current.value.length === 0) {
             usernameRef.current.focus();
-            setErrors((prevErrors) => ({
-                ...prevErrors,
-                username: true,
-            }));
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Por favor, ingrese su nombre de usuario.',
-            });
+            setErrors((prevErrors) => ({ ...prevErrors, username: true }));
+            Swal.fire({ icon: 'error', title: 'Oops...', text: 'Por favor, ingrese su nombre de usuario.' });
             return;
         }
 
         if (passwordRef.current.value.length === 0) {
             passwordRef.current.focus();
-            setErrors((prevErrors) => ({
-                ...prevErrors,
-                password: true,
-            }));
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Por favor, ingrese su contraseña.',
-            });
+            setErrors((prevErrors) => ({ ...prevErrors, password: true }));
+            Swal.fire({ icon: 'error', title: 'Oops...', text: 'Por favor, ingrese su contraseña.' });
             return;
         }
 
-        // Aquí puedes realizar más validaciones, como verificar la fortaleza de la contraseña,
-        // si el nombre de usuario ya existe, etc.
-
-        // Lógica para registrar al usuario
         const newUser = {
             name: name,
             lastName: lastName,
             username: username,
             password: password
         };
-        // Agregar la lógica para registrar al usuario en la base de datos o en el contexto de autenticación
 
-        // Redireccionar al usuario después del registro
-        navigate("/login");
+        try {
+            handleRegister(newUser);
+            Swal.fire({ icon: 'success', title: 'Registro exitoso', text: 'Usuario registrado correctamente.' });
+            navigate("/login");
+        } catch (error) {
+            Swal.fire({ icon: 'error', title: 'Oops...', text: error.message });
+        }
     };
 
     return (
