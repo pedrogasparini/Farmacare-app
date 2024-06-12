@@ -2,8 +2,8 @@
 /* trata de manejar el css con clases, porque al poner div estas generalizando todos los divs de la app */
 
 .home-container {
-    background-color: #40ABA8;
-    padding: 10px;
+    background-color: #9eaab3;
+    padding: 7px;
     width: 100%;
 }
   
@@ -11,6 +11,7 @@
     background-color: #40ABA8; 
     height: 120px;   
     padding: 10px;
+    width: 100%;
 }
 
 nav button {
@@ -27,6 +28,39 @@ nav button.Logo {
     float: left;
     background-color: #AFF4C6;
     width: 15%;
-    height: 609px;
+    height: 595px;
     text-align: start;
 }
+
+.productos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .productos > div {
+    width: calc(25% - 20px);
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .productos img {
+    width: 50%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+  
+  .productos p {
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: center;
+  }
+  .productos button {
+    float: right;
+    background-color: transparent;
+    border: none;
+
+  }
