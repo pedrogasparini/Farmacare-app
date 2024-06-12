@@ -18,8 +18,20 @@ export const AuthenticationContextProvider = ({ children }) => {
         setUser({ username });
     };
 
+
+    const handleRegister = (newUser) => {
+        const registeredUsers = JSON.parse(localStorage.getItem('users')) || [];
+        
+        if (registeredUsers.some(user => user.username === newUser.username)) {
+            throw new Error('El nombre de usuario ya existe.');
+        }
+
+        registeredUsers.push(newUser);
+        localStorage.setItem('users', JSON.stringify(registeredUsers));
+    };
+
     return (
-        <AuthenticationContext.Provider value={{ user, handleLogin, handleLogout }}>
+        <AuthenticationContext.Provider value={{ user, handleLogin, handleLogout,handleRegister }}>
             {children}
         </AuthenticationContext.Provider>
     );
