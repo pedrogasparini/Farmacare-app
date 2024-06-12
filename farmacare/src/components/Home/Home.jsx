@@ -46,7 +46,7 @@ const Home = () => {
                 <div class="menu">
                     <ul>
                         {categories.map((category) => (
-                            <li key={category.id}>{category.name}</li>
+                            <button><li key={category.id}>{category.name}</li></button>
                         ))}
                     </ul>
                 </div>

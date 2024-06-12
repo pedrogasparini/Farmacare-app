@@ -29,7 +29,7 @@ nav button.Logo {
     background-color: #AFF4C6;
     width: 15%;
     height: 595px;
-    text-align: start;
+    
 }
 
 .productos {
@@ -63,4 +63,10 @@ nav button.Logo {
     background-color: transparent;
     border: none;
 
+  }
+  .menu button {
+    background-color: transparent;
+    border: none;
+    text-align: start;
+    
   }
