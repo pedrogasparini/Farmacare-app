@@ -1,4 +1,6 @@
-div {
+/* trata de manejar el css con clases, porque al poner div estas generalizando todos los divs de la app */
+
+.home-container {
     background-color: #40ABA8;
     padding: 10px;
     width: 100%;
