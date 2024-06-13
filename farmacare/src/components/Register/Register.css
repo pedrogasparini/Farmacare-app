@@ -1,0 +1,79 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap");
+
+@import url('https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap');
+
+html {
+    font-family: "Noto Sans JP", sans-serif;
+}
+
+:root {
+    /* donde esta el logo: */
+    --header-color: #40ABA8;
+    /* donde se encuentran las categorias */
+    --nav-bar-color: #AFF4C6;
+    /* fondo */
+    --background: #BDE3FF;
+
+}
+
+.sign-up-container {
+    
+    background-image: url(https://i.pinimg.com/originals/9f/f7/d1/9ff7d1a690e7bf508eda106f9bc13dab.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh;
+    min-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: large;
+}
+
+svg {
+    margin-bottom: 20px;
+}
+
+.sign-up-container h1 {
+    font-family: "Zen Dots", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    margin-bottom: 50px;
+    color: #1d1e1df4; /* Usa un color que resalte, como naranja oscuro */
+    text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5); /* Añade más sombra al texto */
+}
+
+.sign-up-container h6 {
+    font-family: "Zen Dots", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    margin-bottom: 50px;
+    color: #1d1e1df4; /* Usa un color que resalte, como naranja oscuro */
+    text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5); /* Añade más sombra al texto */
+}
+
+
+.custom-input {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    width: 300px;
+    border: 1px solid #ced4da;
+    
+}
+
+
+
+.sign-up-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.sign-up-card {
+    background-color: rgba(255, 255, 255, 0.4);
+    border: none;
+}
