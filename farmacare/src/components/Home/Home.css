@@ -32,6 +32,10 @@ nav button.Logo {
     text-align: start;
 }
 
+.menu li:hover {
+  color: #40ABA8;
+}
+
 .productos {
     display: flex;
     flex-wrap: wrap;
@@ -44,6 +48,7 @@ nav button.Logo {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
+    background-color: #ddd;
   }
   
   .productos img {
@@ -64,3 +69,5 @@ nav button.Logo {
     border: none;
 
   }
+
+  

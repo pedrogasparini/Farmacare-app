@@ -1,4 +1,4 @@
-import React from "react";
+import { useState}  from "react";
 import "./Home.css";
 import CategoriesService from "./../../services/products/categories";
 import ProductsService from "../../services/products/products";
@@ -6,6 +6,7 @@ import ProductsService from "../../services/products/products";
 const Home = () => {
 
 
+    const [selectedCategory, setSelectedCategory] = useState("Todos");
     const categoriesService = new CategoriesService();
     const productList = new ProductsService();
 
@@ -14,10 +15,15 @@ const Home = () => {
     categories.sort((x, y) => x.id - y.id);
 
     const products = productList.getProducts();
+    const filteredProducts = selectedCategory === "Todos" ? products : products.filter(product => product.idCategory === selectedCategory.id);
+
+    const handleCategoryChange = (category) => {
+        setSelectedCategory(category);
+    };
 
     return (
-        <div class="home-container">
-            <div class="header">
+        <div className="home-container">
+            <div className="header">
                 <nav >
                     <button className="Logo">
                         <img src="src/img/logo.png" alt="logo" />
@@ -30,6 +36,7 @@ const Home = () => {
                     <button className="carrito">
                         <img src="src/img/carrito.png" alt="carrito" />
                     </button>
+
                     <button className="find">
                         <img src="src/img/lupa.png" alt="lupa" />
                     </button>
@@ -42,21 +49,20 @@ const Home = () => {
                 </nav>
 
             </div>
-            <div class="body">
-                <div class="menu">
+            <div className="body">
+                <div className="menu">
                     <ul>
-                        {categories.map((category) => (
-                            <li key={category.id}>{category.name}</li>
-                        ))}
+                    {categories.map((category) => (
+                        <li key={category.id} onClick={() => handleCategoryChange(category)}>{category.name}</li>))}
                     </ul>
                 </div>
-                <div class="productos">
-                    {products.map((producto) => (
+                <div className="productos">
+                    {filteredProducts.map((producto) => (
                         <div key={producto.id}>
                             <img src={producto.pathImg} alt={producto.name} />
                             <p>{producto.name}</p>
                             <p>{producto.price}</p>
-                            <button class="add">
+                            <button className="add">
                                 <img src="src/img/add40.png" alt="add" />
                             </button>
                         </div>
