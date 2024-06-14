@@ -1,70 +1,138 @@
-import React from "react";
 import "./Home.css";
-import CategoriesService from "./../../services/products/categories";
-import ProductsService from "../../services/products/products";
+import Header from "../Header/Header";
+import { useState, useEffect, useContext } from "react";
+import { Navbar, Nav, Form, FormControl, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { AuthenticationContext } from "../../services/authentication/authentication";
+import Products from "../Product/Product";
+
+const products = [
+    {
+        id: 1,
+        productName: "Producto 1",
+        description: "Descripción del producto 1",
+        price: 10.99,
+        category: "Cuidado personal",
+    },
+    {
+        id: 2,
+        productName: "Producto 2",
+        description: "Descripción del producto 2",
+        price: 20.99,
+        category: "Medicamentos",
+    },
+    // Añade más productos según sea necesario
+];
 
 const Home = () => {
 
+    const [productsFiltered, setProductsFiltered] = useState([]);
+    const navigate = useNavigate();
 
-    const categoriesService = new CategoriesService();
-    const productList = new ProductsService();
+    const { handleLogout } = useContext(AuthenticationContext)
 
-    const categories = categoriesService.getCategories();
-    categories.push({ id: 0, name: "Todos" });
-    categories.sort((x, y) => x.id - y.id);
+    const searchHandler = (searchInput) => {
+        if (searchInput === "") setProductsFiltered(products);
 
-    const products = productList.getProducts();
+        const searchInputUpperCase = searchInput.toUpperCase();
+        const productsSearched = products.filter((product) =>
+            product.bookTitle.toUpperCase().includes(searchInputUpperCase)
+        );
+        setProductsFiltered(productsSearched);
+    };
 
+    const handleLogOut = () => {
+        handleLogout();
+        navigate("/login");
+    };
+
+useEffect(() => {
+    fetch("http://localhost:8000/products", {
+        headers: {
+            accept: "aplication/json",
+        },
+    })
+
+        .then((response) => response.json())
+        .then((productData) => {
+            const productsMapped = productData.map((product) => ({
+                ...product,
+            }))
+                .sort((a, b) => b.id - a.id);
+            setProductsFiltered(productsMapped)
+        })
+        .catch((error) => console.log(error));
+}, []);
+
+const addProductHandler = (newProduct) => {
+    const productData = { ...newProduct, productId: Math.random() };
+
+    fetch("http://localhost:8000/products", {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify(productData),
+    })
+        .then((response) => {
+            if (response.ok) return response.json();
+            else {
+                throw new Error("The response has some errors")
+            }
+        })
+        .then(() => {
+            const newProductsArray = [productData, ...productsFiltered];
+            setProductsFiltered(newProductsArray)
+        })
+        .catch((error) => console.log(error))
+};
+
+const deleteProductHandler = (id) => {
+    fetch(`http://localhost:8000/products/${id}`, {
+        method: "DELETE",
+    })
+        .then(() => {
+            setProductsFiltered((prevProducts) => prevProducts.filter((product) => product.id !== id));
+        })
+        .catch((error) => console.log(error));
+    };
     return (
-        <div class="home-container">
-            <div class="header">
-                <nav >
-                    <button className="Logo">
-                        <img src="src/img/logo.png" alt="logo" />
-                    </button>
-
-                    <button className="user">
-                        <img src="src/img/user60x60.png" alt="Icono" />
-                    </button>
-
-                    <button className="carrito">
-                        <img src="src/img/carrito.png" alt="carrito" />
-                    </button>
-                    <button className="find">
-                        <img src="src/img/lupa.png" alt="lupa" />
-                    </button>
-                    <button className="turnos">
-                        <img src="src/img/buscar.png" alt="buscar" />
-                    </button>
-                    {/* <button className="addUser">
-                        <img src="src/img/addUser.png" alt="adduser" />
-                    </button> */}
-                </nav>
-
-            </div>
-            <div class="body">
-                <div class="menu">
-                    <ul>
-                        {categories.map((category) => (
-                            <li key={category.id}>{category.name}</li>
-                        ))}
-                    </ul>
+        <>
+            <Header />
+            <Button onClick={handleLogOut}></Button>
+            <div className="home-container">
+                <div className="nav-container">
+                    <Navbar expand="lg" className="custom-navbar flex-column">
+                        <Nav className="flex-column custom-nav">
+                            <Nav.Link href="#all-products" className="nav-link">Todos los productos</Nav.Link>
+                            <Nav.Link href="#personal-care" className="nav-link">Cuidado personal</Nav.Link>
+                            <Nav.Link href="#medicines" className="nav-link">Medicamentos</Nav.Link>
+                            <Nav.Link href="#skin-care" className="nav-link">Productos para el cuidado de la piel</Nav.Link>
+                            <Nav.Link href="#first-aid" className="nav-link">Materiales de primeros auxilios</Nav.Link>
+                            <Form className="search-form">
+                                <FormControl type="text" placeholder="Buscar productos" className="search-input" />
+                                <Button className="search-button">Buscar</Button>
+                            </Form>
+                        </Nav>
+                    </Navbar>
+    
                 </div>
-                <div class="productos">
-                    {products.map((producto) => (
-                        <div key={producto.id}>
-                            <img src={producto.pathImg} alt={producto.name} />
-                            <p>{producto.name}</p>
-                            <p>{producto.price}</p>
-                            <button class="add">
-                                <img src="src/img/add40.png" alt="add" />
-                            </button>
-                        </div>
-                    ))}
+                <div className="productos-container">
+                    <Products
+                        onDelete={deleteProductHandler}
+                        products={productsFiltered}
+                        onSearch={searchHandler}
+                        onAdd={addProductHandler}
+                    />
                 </div>
             </div>
-        </div>
+        </>
     );
 };
+    
+
+
+
+
 
 export default Home;

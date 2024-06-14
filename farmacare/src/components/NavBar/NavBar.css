@@ -1,0 +1,8 @@
+.custom-navbar{
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-container {
+    background-color: cadetblue;
+}

@@ -1,66 +1,69 @@
-
-/* trata de manejar el css con clases, porque al poner div estas generalizando todos los divs de la app */
+:root {
+  --header-color: #40ABA8; /* Color del header */
+  --nav-bar-color: #AFF4C6; /* Color de la barra de navegación */
+  --background: #BDE3FF; /* Color de fondo */
+}
 
 .home-container {
-    background-color: #9eaab3;
-    padding: 7px;
-    width: 100%;
-}
-  
-.header {
-    background-color: #40ABA8; 
-    height: 120px;   
-    padding: 10px;
-    width: 100%;
+  background-color: var(--background);
+  height: 100vh;
+  width: 100%;
+  display: flex;
 }
 
-nav button {
-    float: right;
-    margin-right: 40px;
-    background-color: transparent;
-    border: none;
-}
-nav button.Logo {
-    float: left;
-}
-
-.menu {
-    float: left;
-    background-color: #AFF4C6;
-    width: 15%;
-    height: 595px;
-    text-align: start;
+.nav-container {
+  background-color: var(--nav-bar-color);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 15%;
 }
 
-.productos {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-  
-  .productos > div {
-    width: calc(25% - 20px);
-    margin-bottom: 20px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
-  
-  .productos img {
-    width: 50%;
-    height: auto;
-    display: block;
-    margin: 0 auto;
-  }
-  
-  .productos p {
-    margin-top: 10px;
-    font-size: 14px;
-    text-align: center;
-  }
-  .productos button {
-    float: right;
-    background-color: transparent;
-    border: none;
+/* Estilo para los enlaces de navegación */
+.custom-nav .nav-link {
+  color: rgb(59, 59, 59); /* Color de texto */
+  margin-bottom: 15px; /* Espaciado entre los enlaces */
+  transition: color 0.3s ease; /* Transición suave para el color */
+}
 
+.custom-nav .nav-link:hover {
+  color: #0000003b; /* Color más claro al pasar el mouse */
+}
+
+.search-form {
+  display: flex;
+  flex-direction: column;
+  align-items: start; 
+  margin-top: 20px;
+}
+
+.search-input {
+  margin-bottom: 15px;
+  background-color: #e9ecef; /* Fondo claro */
+  color: #495057; /* Texto oscuro */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave para el fondo y el color */
+}
+
+.search-input:focus {
+  background-color: #ffffff; /* Fondo blanco al enfocar */
+  color: #495057; /* Texto oscuro */
+}
+
+.search-button {
+  color: #ffffff; 
+  background-color: #343a40; 
+  border: 1px solid #343a40; 
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.search-button:hover {
+  background-color: #495057; /* Fondo más claro al pasar el mouse */
+  color: #ffffff; /* Color del texto */
+}
+@media (max-width: 1200px) {
+  .nav-container {
+      width: 30%;
   }
+}
+
