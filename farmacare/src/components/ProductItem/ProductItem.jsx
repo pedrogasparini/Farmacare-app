@@ -3,7 +3,6 @@ import { Button,Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 
-// eslint-disable-next-line react/prop-types
 const ProductItem = ({id, productName, price, description, category, stock, image, onShowModal}) => {
     const navigate = useNavigate();
 

@@ -8,12 +8,6 @@ import Register from "./components/Register/Register";
 
 const App = () => {
 
-  const products = [
-    { id: 1, name: 'Producto 1', price: 10.99, stock: 20, description: 'Descripción del producto 1', image: 'https://via.placeholder.com/150' },
-    { id: 2, name: 'Producto 2', price: 19.99, stock: 15, description: 'Descripción del producto 2', image: 'https://via.placeholder.com/150' },
-    // más productos
-];
-
   const router = createBrowserRouter([
     { path: "/", element: <Login /> },
     { path: "/login", element: <Login /> },
@@ -24,7 +18,6 @@ const App = () => {
   return (
     <div className="d-flex flex-column align-items-center">
       {<RouterProvider router={router} />}
-      <Home products={products} />
     </div>
   );
 }

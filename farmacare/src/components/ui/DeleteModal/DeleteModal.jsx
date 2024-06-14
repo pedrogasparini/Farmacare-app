@@ -1,7 +1,6 @@
 import { Button } from 'react-bootstrap';
-import { Modal } from 'react-bootstrap/Modal';
+import { Modal } from 'react-bootstrap';
 
-// eslint-disable-next-line react/prop-types
 const DeleteModal = ({ showDeleteModal, onHide, onDelete }) => {
     const deleteProductHandler = () => {
         onDelete();

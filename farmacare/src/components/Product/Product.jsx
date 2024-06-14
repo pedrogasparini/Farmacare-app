@@ -3,7 +3,6 @@ import { useState } from "react";
 import ProductSearch from "../filters/ProductSearch/ProductSearch";
 import DeleteModal from "../ui/DeleteModal/DeleteModal";
 
-// eslint-disable-next-line react/prop-types
 const Products = ({ products, onSearch, onDelete }) => {
 
     const [showDeleteModal, setShowDeleteModal] = useState(false);
