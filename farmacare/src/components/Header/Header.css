@@ -1,0 +1,39 @@
+:root {
+    --header-color: #40ABA8;
+    /* Color del header */
+    --nav-bar-color: #AFF4C6;
+    /* Color de la barra de navegación */
+    --background: #BDE3FF;
+    /* Color de fondo */
+}
+
+.header-container {
+    background-color: #40aba8; /* Color de fondo deseado */
+    padding: 10px; /* Ajusta el relleno según tus necesidades */
+    width: 100%;
+}
+
+.logo-nav {
+    padding-left: 10px;
+}
+
+.nav-links-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: end;
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px; /* Ancho del contenedor */
+    height: 60px; /* Altura del contenedor */
+    background-color: #ffffff; /* Fondo blanco */
+    border-radius: 50%; /* Borde redondeado para crear un círculo */
+    margin-left: 10px; /* Espacio entre los íconos */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 13px;
+    
+}
