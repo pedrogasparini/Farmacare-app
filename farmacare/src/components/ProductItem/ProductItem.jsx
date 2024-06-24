@@ -47,6 +47,7 @@ const ProductItem = ({id, productName, price, description, category, stock, imag
 export default ProductItem;
 
 ProductItem.propTypes = {
+    id: propTypes.number,
     productName: propTypes.string,
     price: propTypes.number,
     description: propTypes.string,

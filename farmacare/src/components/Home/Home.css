@@ -5,7 +5,6 @@
 }
 
 
-
 .home-container {
   background-color: var(--background);
   height: 100vh;
@@ -110,6 +109,22 @@
   text-align: center;
   margin-bottom: 100px;
 }
+
+.products-card {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  /* Ajuste de tamaño máximo para la tarjeta */
+  max-width: 200px; /* Por ejemplo, ajusta según tus necesidades */
+  margin-bottom: 20px; /* Espacio inferior reducido */
+}
+
+.products-card img {
+  width: 100%; /* La imagen ocupa todo el ancho disponible */
+  height: auto; /* Altura automática para mantener la proporción */
+}
+
+
 
 
 

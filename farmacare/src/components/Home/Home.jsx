@@ -4,19 +4,23 @@ import { BsCart4, BsTrash } from 'react-icons/bs';
 import ProductsService from '../../services/products/products';
 import CategoriesService from '../../services/products/categories';
 import Header from '../Header/Header';
-import "./Home.css"
+import "./Home.css";
 
 const productsList = new ProductsService();
 const categoriesService = new CategoriesService();
 const productsData = productsList.getProducts();
 const categoriesData = categoriesService.getCategories();
 
-const Home = () => {
+const Home = ({ addProductToCart }) => {
     const [productsFiltered, setProductsFiltered] = useState(productsData);
     const [selectedCategory, setSelectedCategory] = useState('all');
 
+    useEffect(() => {
+        setProductsFiltered(productsData);
+    }, []);
+
     const filterProductsByCategory = (categoryId) => {
-        setSelectedCategory(categoryId); 
+        setSelectedCategory(categoryId);
 
         if (categoryId === 'all') {
             setProductsFiltered(productsData);
@@ -25,10 +29,6 @@ const Home = () => {
             setProductsFiltered(filteredProducts);
         }
     };
-
-    useEffect(() => {
-        setProductsFiltered(productsData);
-    }, []);
 
     const addProductHandler = (newProduct) => {
         const productData = { ...newProduct, productId: Math.random() };
@@ -43,14 +43,14 @@ const Home = () => {
             .then((response) => {
                 if (response.ok) return response.json();
                 else {
-                    throw new Error("The response has some errors")
+                    throw new Error("The response has some errors");
                 }
             })
             .then(() => {
                 const newProductsArray = [productData, ...productsFiltered];
-                setProductsFiltered(newProductsArray)
+                setProductsFiltered(newProductsArray);
             })
-            .catch((error) => console.log(error))
+            .catch((error) => console.log(error));
     };
 
     const deleteProductHandler = (id) => {
@@ -99,7 +99,7 @@ const Home = () => {
                             <Card.Body>
                                 <Card.Title>{product.name}</Card.Title>
                                 <Card.Text>Precio: {product.price}</Card.Text>
-                                <Button variant="primary" className="button-product-card" onClick={() => addProductHandler(product)}>
+                                <Button variant="primary" className="button-product-card" onClick={() => { addProductHandler(product); addProductToCart(product); }}>
                                     <BsCart4 />
                                 </Button>
                                 <Button variant="danger" className="button-product-card" onClick={() => deleteProductHandler(product.id)}>
