@@ -2,11 +2,10 @@ import "./Header.css";
 import { Navbar, Nav } from "react-bootstrap";
 import { FaShoppingCart, FaHistory, FaUser, FaSignOutAlt } from 'react-icons/fa';
 import { AuthenticationContext } from "../../services/authentication/authentication";
-import { useContext} from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-
     const { handleLogout } = useContext(AuthenticationContext);
     const navigate = useNavigate();
 
@@ -14,6 +13,15 @@ const Header = () => {
         handleLogout();
         navigate("/login");
     };
+
+    const goToCart = () => {
+        navigate("/cart");
+    };
+
+    const backToHome = () => {
+        navigate("/home")
+    }
+
     return (
         <div className="header-container">
             <Navbar expand="lg">
@@ -21,15 +29,17 @@ const Header = () => {
                     <img
                         src="/src/assets/img/logo.png"
                         width="150"
-                        height="80"
+                        height="auto"
                         className="d-inline-block align-top"
                         alt="Farmacare Logo"
+                        onClick={backToHome}
+                        
                     />
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="nav-links-container">
-                        <Nav.Link href="/cart">
+                        <Nav.Link onClick={goToCart}>
                             <FaShoppingCart className="icon" />
                         </Nav.Link>
                         <Nav.Link href="#history">
@@ -41,9 +51,6 @@ const Header = () => {
                         <Nav.Link onClick={handleLogOut}>
                             <FaSignOutAlt className="icon" />
                         </Nav.Link>
-                        {/* <Button onClick={handleLogOut}></Button> */}
-                        
-                        
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
