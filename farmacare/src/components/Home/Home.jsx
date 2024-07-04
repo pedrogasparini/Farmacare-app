@@ -1,9 +1,11 @@
+
 import { useState, useEffect } from 'react';
 import { Navbar, Nav, Form, Button, Card } from 'react-bootstrap';
 import { BsCart4, BsTrash } from 'react-icons/bs';
 import ProductsService from '../../services/products/products';
 import CategoriesService from '../../services/products/categories';
 import Header from '../Header/Header';
+import Cart from '../Cart/Cart'; 
 import "./Home.css";
 
 const productsList = new ProductsService();
@@ -11,16 +13,17 @@ const categoriesService = new CategoriesService();
 const productsData = productsList.getProducts();
 const categoriesData = categoriesService.getCategories();
 
-const Home = ({ addProductToCart }) => {
+const Home = () => {
     const [productsFiltered, setProductsFiltered] = useState(productsData);
     const [selectedCategory, setSelectedCategory] = useState('all');
+    const [cartItems, setCartItems] = useState([]);
 
     useEffect(() => {
         setProductsFiltered(productsData);
     }, []);
 
     const filterProductsByCategory = (categoryId) => {
-        setSelectedCategory(categoryId);
+        setSelectedCategory(categoryId); 
 
         if (categoryId === 'all') {
             setProductsFiltered(productsData);
@@ -28,6 +31,16 @@ const Home = ({ addProductToCart }) => {
             const filteredProducts = productsData.filter(product => product.idCategory === categoryId);
             setProductsFiltered(filteredProducts);
         }
+    };
+
+    const addProductToCart = (product) => {
+        setCartItems([...cartItems, product]);
+    };
+
+    const removeFromCart = (index) => {
+        const newCartItems = [...cartItems];
+        newCartItems.splice(index, 1);
+        setCartItems(newCartItems);
     };
 
     const addProductHandler = (newProduct) => {
@@ -65,7 +78,7 @@ const Home = ({ addProductToCart }) => {
 
     return (
         <>
-            <Header />
+            <Header cartItemsCount={cartItems.length} /> {}
             <div className="home-container">
                 <div className="nav-container">
                     <Navbar expand="lg" className="custom-navbar flex-column">
@@ -109,6 +122,9 @@ const Home = ({ addProductToCart }) => {
                         </Card>
                     ))}
                 </div>
+                {cartItems.length > 0 && (
+                    <Cart cartItems={cartItems} removeFromCart={removeFromCart} />
+                )}
             </div>
         </>
     );
