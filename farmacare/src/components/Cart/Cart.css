@@ -1,5 +1,3 @@
-/* Cart.css */
-
 .cart-container {
     width: 80%;
     margin: auto;
@@ -14,6 +12,12 @@
     font-size: 1.8rem;
     margin-bottom: 20px;
     text-align: center;
+}
+
+.personal-info-section {
+    margin-top: 20px;
+    padding: 50px;
+
 }
 
 .cart-container p {
