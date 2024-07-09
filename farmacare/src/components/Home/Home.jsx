@@ -1,9 +1,11 @@
+
 import { useState, useEffect } from 'react';
 import { Navbar, Nav, Form, Button, Card } from 'react-bootstrap';
 import { BsCart4, BsTrash } from 'react-icons/bs';
 import ProductsService from '../../services/products/products';
 import CategoriesService from '../../services/products/categories';
 import Header from '../Header/Header';
+import PropTypes from 'prop-types';
 import "./Home.css";
 
 const productsList = new ProductsService();
@@ -112,6 +114,10 @@ const Home = ({ addProductToCart }) => {
             </div>
         </>
     );
+};
+
+Home.propTypes = {
+    addProductToCart: PropTypes.func.isRequired,
 };
 
 export default Home;

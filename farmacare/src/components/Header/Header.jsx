@@ -39,9 +39,11 @@ const Header = () => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="nav-links-container">
+                    {location.pathname !== '/cart' && (
                         <Nav.Link onClick={goToCart}>
                             <FaShoppingCart className="icon" />
                         </Nav.Link>
+                    )}
                         <Nav.Link href="#history">
                             <FaHistory className="icon" />
                         </Nav.Link>
