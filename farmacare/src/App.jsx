@@ -4,6 +4,7 @@ import Home from "./components/Home/Home";
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
 import Cart from "./components/Cart/Cart";
+import PurchaseHistory from './components/PurchaseHistory/PurchaseHistory';
 
 const App = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -23,7 +24,8 @@ const App = () => {
     { path: "/login", element: <Login /> },
     { path: "/home", element: <Home addProductToCart={addProductToCart} /> },
     { path: "/register", element: <Register /> },
-    { path: "/cart", element: <Cart cartItems={cartItems} removeFromCart={removeFromCart} /> }
+    { path: "/cart", element: <Cart cartItems={cartItems} removeFromCart={removeFromCart} /> },
+    { path: "/history", element: <PurchaseHistory />}
   ]);
 
   return (
