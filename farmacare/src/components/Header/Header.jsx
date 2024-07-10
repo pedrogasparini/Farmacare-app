@@ -18,6 +18,10 @@ const Header = () => {
         navigate("/cart");
     };
 
+    const goToHistory = () => {
+        navigate("/history");
+    };
+
     const backToHome = () => {
         navigate("/home")
     }
@@ -44,9 +48,11 @@ const Header = () => {
                             <FaShoppingCart className="icon" />
                         </Nav.Link>
                     )}
-                        <Nav.Link href="#history">
+                    {location.pathname !== '/history' && (
+                        <Nav.Link href="/history" onClick={goToHistory}>
                             <FaHistory className="icon" />
                         </Nav.Link>
+                    )}
                         <Nav.Link href="#profile">
                             <FaUser className="icon" />
                         </Nav.Link>

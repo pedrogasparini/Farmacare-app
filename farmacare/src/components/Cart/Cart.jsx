@@ -6,7 +6,8 @@ import Header from '../Header/Header';
 import Swal from 'sweetalert2';
 import "./Cart.css";
 
-const Cart = ({ cartItems = [], removeFromCart }) => {
+const Cart = ({ cartItems = [], removeFromCart, userId }) => {
+
     const [userName, setUserName] = useState('');
     const [userEmail, setUserEmail] = useState('');
     const [userAddress, setUserAddress] = useState('');
@@ -30,6 +31,7 @@ const Cart = ({ cartItems = [], removeFromCart }) => {
 
         //dp mandar los datos a la API
         const purchaseData = {
+            userId,
             userName,
             userEmail,
             userAddress,
@@ -38,7 +40,9 @@ const Cart = ({ cartItems = [], removeFromCart }) => {
             purchaseDate: new Date().toISOString(),
         };
 
-        localStorage.setItem('purchaseData', JSON.stringify(purchaseData)); //dp reemplazarlo x la API
+        // tambien reemplazar x la api
+        const purchaseHistory = JSON.parse(localStorage.getItem(`purchaseHistory_${userId}`)) || [];
+        localStorage.setItem(`purchaseHistory_${userId}`, JSON.stringify([...purchaseHistory, purchaseData])); 
 
         setPurchaseCompleted(true);
         removeFromCart(-1); 
@@ -122,7 +126,9 @@ const Cart = ({ cartItems = [], removeFromCart }) => {
                             <Alert variant="success">
                                 ¡Compra completada! Gracias por su compra.
                             </Alert>
+                            
                         )}
+                        
                     </>
                 )}
             </div>
@@ -133,6 +139,7 @@ const Cart = ({ cartItems = [], removeFromCart }) => {
 Cart.propTypes = {
     cartItems: PropTypes.array.isRequired,
     removeFromCart: PropTypes.func.isRequired,
+    userId: PropTypes.number.isRequired,
 };
 
 export default Cart;
