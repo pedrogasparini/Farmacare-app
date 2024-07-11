@@ -59,6 +59,7 @@ const Header = () => {
                         <Nav.Link onClick={handleLogOut}>
                             <FaSignOutAlt className="icon" />
                         </Nav.Link>
+
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
