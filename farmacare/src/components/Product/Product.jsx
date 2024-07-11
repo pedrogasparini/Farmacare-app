@@ -2,6 +2,7 @@ import ProductItem from "../ProductItem/ProductItem";
 import { useState } from "react";
 import ProductSearch from "../filters/ProductSearch/ProductSearch";
 import DeleteModal from "../ui/DeleteModal/DeleteModal";
+import PropTypes from 'prop-types';
 
 const Products = ({ products, onSearch, onDelete }) => {
 
@@ -51,6 +52,20 @@ const Products = ({ products, onSearch, onDelete }) => {
         </div>
         </>
     );
+};
+
+Products.propTypes = {
+    products: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        productName: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        description: PropTypes.string.isRequired,
+        category: PropTypes.string.isRequired,
+        stock: PropTypes.number.isRequired,
+        image: PropTypes.string.isRequired,
+    })).isRequired,
+    onSearch: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
 };
 
 export default Products;
