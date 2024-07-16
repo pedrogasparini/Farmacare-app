@@ -29,7 +29,7 @@ const Cart = ({ cartItems = [], removeFromCart, userId }) => {
         const purchaseWithUserId = { ...purchase, userId: userId };
 
         try {
-            const response = await fetch("http://localhost:5173/purchase", {
+            const response = await fetch("http://localhost:8000/purchase", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -65,7 +65,7 @@ const Cart = ({ cartItems = [], removeFromCart, userId }) => {
         };
 
         try {
-            const response = await fetch("http://localhost:5173/order", {
+            const response = await fetch("http://localhost:8000/order", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

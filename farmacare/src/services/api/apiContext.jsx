@@ -20,13 +20,13 @@ export const ApiContextProvider = ({ children }) => {
 
     // Funciones para manejar la API
     const fetchUsers = async () => {
-        const response = await fetch("http://localhost:5173/users");
+        const response = await fetch("http://localhost:8000/users");
         const data = await response.json();
         setUsers(data);
     };
 
     const fetchProducts = async () => {
-        const response = await fetch("http://localhost:5173/products");
+        const response = await fetch("http://localhost:8000/products");
         const data = await response.json();
         setProducts(data);
     };
@@ -38,7 +38,7 @@ export const ApiContextProvider = ({ children }) => {
     // Simulación de llamada a la API
     const fetchOrders = async () => {
         try {
-            const response = await fetch("http://localhost:5173/order");
+            const response = await fetch("http://localhost:8000/order");
             const data = await response.json();
             setOrderHistory(data);
         } catch (error) {
@@ -48,7 +48,7 @@ export const ApiContextProvider = ({ children }) => {
 
     const fetchPurchase = async () => {
         try {
-            const response = await fetch("http://localhost:5173/purchase");
+            const response = await fetch("http://localhost:8000/purchase");
             const data = await response.json();
             setPurchaseHistory(data);
         } catch (error) {
@@ -60,7 +60,7 @@ export const ApiContextProvider = ({ children }) => {
     const updateProduct = async (updatedProduct) => {
         try {
             const response = await fetch(
-                `http://localhost:5173/products/${updatedProduct.id}`,
+                `http://localhost:8000/products/${updatedProduct.id}`,
                 {
                     method: "PUT",
                     headers: {
@@ -88,7 +88,7 @@ export const ApiContextProvider = ({ children }) => {
     const deleteProduct = async (productId) => {
         try {
             const response = await fetch(
-                `http://localhost:5173/products/${productId}`,
+                `http://localhost:8000/products/${productId}`,
                 {
                     method: "DELETE",
                 }
@@ -108,7 +108,7 @@ export const ApiContextProvider = ({ children }) => {
 
     const addUser = async (newUser) => {
         try {
-            const response = await fetch("http://localhost:5173/register", {
+            const response = await fetch("http://localhost:8000/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -129,7 +129,7 @@ export const ApiContextProvider = ({ children }) => {
     const updateUser = async (updatedUser) => {
         try {
             const response = await fetch(
-                `http://localhost:5173/users/${updatedUser.id}`,
+                `http://localhost:8000/users/${updatedUser.id}`,
                 {
                     method: "PUT",
                     headers: {
@@ -155,7 +155,7 @@ export const ApiContextProvider = ({ children }) => {
 
     const deleteUser = async (userId) => {
         try {
-            const response = await fetch(`http://localhost:5173/users/${userId}`, {
+            const response = await fetch(`http://localhost:8000/users/${userId}`, {
                 method: "DELETE",
             });
             if (response.ok) {
