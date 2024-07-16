@@ -35,7 +35,7 @@ const Home = ({ addProductToCart }) => {
     const addProductHandler = (newProduct) => {
         const productData = { ...newProduct, productId: Math.random() };
 
-        fetch("http://localhost:5173/products", {
+        fetch("http://localhost:8000/products", {
             method: "POST",
             headers: {
                 "content-type": "application/json",
@@ -56,7 +56,7 @@ const Home = ({ addProductToCart }) => {
     };
 
     const deleteProductHandler = (id) => {
-        fetch(`http://localhost:5173/products/${id}`, {
+        fetch(`http://localhost:8000/products/${id}`, {
             method: "DELETE",
         })
             .then(() => {
@@ -114,10 +114,6 @@ const Home = ({ addProductToCart }) => {
             </div>
         </>
     );
-};
-
-Home.propTypes = {
-    addProductToCart: PropTypes.func.isRequired,
 };
 
 export default Home;

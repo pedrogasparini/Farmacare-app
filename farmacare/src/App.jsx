@@ -26,8 +26,8 @@ const App = () => {
     { path: "/home", element: <Home addProductToCart={addProductToCart} /> },
     { path: "/register", element: <Register /> },
     { path: "/cart", element: <Cart cartItems={cartItems} removeFromCart={removeFromCart} /> },
-    { path: "/history", element: <PurchaseHistory />},
-    { path: "/newProduct", element: <NewProduct />}
+    { path: "/history", element: <PurchaseHistory /> },
+    { path: "/newProduct", element: <NewProduct /> }
   ]);
 
   return (

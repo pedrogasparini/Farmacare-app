@@ -1,7 +1,7 @@
 :root {
-  --header-color: #40ABA8; /* Color del header */
-  --nav-bar-color: #AFF4C6; /* Color de la barra de navegación */
-  --background: #BDE3FF; /* Color de fondo */
+  --header-color: #40ABA8;
+  --nav-bar-color: #AFF4C6;
+  --background: #BDE3FF; 
 }
 
 
@@ -21,15 +21,14 @@
   width: 15%;
 }
 
-/* Estilo para los enlaces de navegación */
 .custom-nav .nav-link {
-  color: rgb(59, 59, 59); /* Color de texto */
-  margin-bottom: 15px; /* Espaciado entre los enlaces */
-  transition: color 0.3s ease; /* Transición suave para el color */
+  color: rgb(59, 59, 59);
+  margin-bottom: 15px; 
+  transition: color 0.3s ease;
 }
 
 .custom-nav .nav-link:hover {
-  color: #0000003b; /* Color más claro al pasar el mouse */
+  color: #0000003b; 
 }
 
 .search-form {
@@ -41,14 +40,14 @@
 
 .search-input {
   margin-bottom: 15px;
-  background-color: #e9ecef; /* Fondo claro */
-  color: #495057; /* Texto oscuro */
-  transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave para el fondo y el color */
+  background-color: #e9ecef; 
+  color: #495057; 
+  transition: background-color 0.3s ease, color 0.3s ease; 
 }
 
 .search-input:focus {
-  background-color: #ffffff; /* Fondo blanco al enfocar */
-  color: #495057; /* Texto oscuro */
+  background-color: #ffffff; 
+  color: #495057;
 }
 
 .search-button {
@@ -59,8 +58,8 @@
 }
 
 .search-button:hover {
-  background-color: #495057; /* Fondo más claro al pasar el mouse */
-  color: #ffffff; /* Color del texto */
+  background-color: #495057; 
+  color: #ffffff; 
 }
 @media (max-width: 1200px) {
   .nav-container {
@@ -93,7 +92,7 @@
   width: 100%;
   grid-template-columns: repeat(6, 1fr);
   grid-gap: 10px;
-  height: max-content; /* Altura fija o use overflow-y: auto */
+  height: max-content; 
   
 }
 
@@ -114,14 +113,13 @@
   display: flex;
   flex-direction: column;
   text-align: center;
-  /* Ajuste de tamaño máximo para la tarjeta */
-  max-width: 200px; /* Por ejemplo, ajusta según tus necesidades */
-  margin-bottom: 20px; /* Espacio inferior reducido */
+  max-width: 200px; 
+  margin-bottom: 20px; 
 }
 
 .products-card img {
-  width: 100%; /* La imagen ocupa todo el ancho disponible */
-  height: auto; /* Altura automática para mantener la proporción */
+  width: 100%; 
+  height: auto; 
 }
 
 

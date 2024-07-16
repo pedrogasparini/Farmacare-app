@@ -1,57 +1,113 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useState, useContext, useEffect } from 'react';
 import { Button, Card, Form, Alert } from 'react-bootstrap';
 import { BsTrash } from 'react-icons/bs';
 import Header from '../Header/Header';
 import Swal from 'sweetalert2';
 import "./Cart.css";
+import { ApiContext } from '../../services/api/apiContext';
 
 const Cart = ({ cartItems = [], removeFromCart, userId }) => {
-
-    const [userName, setUserName] = useState('');
-    const [userEmail, setUserEmail] = useState('');
-    const [userAddress, setUserAddress] = useState('');
+    const { cart, setCart, setPurchaseHistory, setOrderHistory } = useContext(ApiContext);
     const [formError, setFormError] = useState('');
     const [purchaseCompleted, setPurchaseCompleted] = useState(false);
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [formData, setFormData] = useState({
+        name: '',
+        address: '',
+        email: ''
+    });
 
-    const calculateTotalPrice = () => {
-        return cartItems.reduce((total, item) => total + item.price, 0);
+    useEffect(() => {
+        let total = 0;
+        cart.forEach(item => {
+            total += item.price * item.quantity;
+        });
+        setTotalPrice(total);
+    }, [cart]);
+
+    const addPurchase = async (purchase) => {
+        const purchaseWithUserId = { ...purchase, userId: userId };
+
+        try {
+            const response = await fetch("http://localhost:8000/purchase", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(purchaseWithUserId),
+            });
+            if (response.ok) {
+                const newPurchase = await response.json();
+                setPurchaseHistory((prev) => [...prev, newPurchase]);
+            } else {
+                console.error("Error al agregar compra:", response.statusText);
+            }
+        } catch (error) {
+            console.error("Error al agregar compra:", error);
+        }
     };
 
-    const handleFinishPurchase = () => {
-        if (!userName || !userEmail || !userAddress) {
-            setFormError('Todos los campos son obligatorios.');
+    const handleConfirmPurchase = async (event) => {
+        event.preventDefault();
+
+        if (!formData.name || !formData.address || !formData.email) {
+            setFormError('Por favor, complete todos los campos.');
             return;
         }
 
-        if (!/\S+@\S+\.\S+/.test(userEmail)) {
-            setFormError('Ingrese un correo electrónico válido.');
-            return;
-        }
-
-        //dp mandar los datos a la API
-        const purchaseData = {
-            userId,
-            userName,
-            userEmail,
-            userAddress,
-            cartItems,
-            totalPrice: calculateTotalPrice(),
-            purchaseDate: new Date().toISOString(),
+        const order = {
+            items: cart,
+            date: new Date().toISOString(),
+            buyerId: userId,
+            buyerName: formData.name,
+            buyerAddress: formData.address,
+            buyerEmail: formData.email
         };
 
-        // tambien reemplazar x la api
-        const purchaseHistory = JSON.parse(localStorage.getItem(`purchaseHistory_${userId}`)) || [];
-        localStorage.setItem(`purchaseHistory_${userId}`, JSON.stringify([...purchaseHistory, purchaseData])); 
+        try {
+            const response = await fetch("http://localhost:8000/order", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(order),
+            });
 
-        setPurchaseCompleted(true);
-        removeFromCart(-1); 
+            if (response.ok) {
+                const newOrder = await response.json();
+                setOrderHistory((prevHistory) => [...prevHistory, newOrder]);
 
-        Swal.fire({
-            icon: 'success',
-            title: '¡Compra completada!',
-            text: 'Gracias por su compra.',
-        });
+                for (const item of cart) {
+                    const purchase = {
+                        name: item.name,
+                        description: item.description,
+                        quantity: item.quantity,
+                        price: item.price,
+                    };
+                    await addPurchase(purchase);
+                }
+
+                setCart([]);
+                setPurchaseCompleted(true);
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Compra completada!',
+                    text: 'Gracias por su compra.',
+                });
+            } else {
+                console.error("Error placing order:", response.statusText);
+            }
+        } catch (error) {
+            console.error("Error al iniciar sesión:", error.message);
+        }
+    };
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value
+        }));
     };
 
     return (
@@ -59,88 +115,55 @@ const Cart = ({ cartItems = [], removeFromCart, userId }) => {
             <Header />
             <div className="cart-container">
                 <h2>Carrito de Compras</h2>
-                {cartItems.length === 0 ? (
-                    <p>El carrito está vacío.</p>
-                ) : (
-                    <>
-                        {cartItems.map((item, index) => (
-                            <Card key={index} className="cart-item">
-                                <Card.Body>
-                                    <Card.Title>{item.name}</Card.Title>
-                                    <Card.Text>Precio: ${item.price}</Card.Text>
-                                    <Button variant="danger" onClick={() => removeFromCart(index)}>
-                                        <BsTrash /> Eliminar
-                                    </Button>
-                                </Card.Body>
-                            </Card>
-                        ))}
-                        <h3>Total: ${calculateTotalPrice()}</h3>
-                        <div style={{ marginBottom: '20px' }}></div>
-                        {!purchaseCompleted && (
-                            <Form> 
-                                <div className="personal-info-section"> 
-                                <h3>Datos personales:</h3>
-                                <Form.Group controlId="userName">
-                                    <Form.Label>Nombre Completo</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Ingrese su nombre completo"
-                                        value={userName}
-                                        onChange={(e) => setUserName(e.target.value)}
-                                        required
-                                    />
-                                </Form.Group>
+                <Form onSubmit={handleConfirmPurchase}>
+                    <Form.Group controlId="formName">
+                        <Form.Label>Nombre</Form.Label>
+                        <Form.Control
+                            type="text"
+                            placeholder="Ingrese su nombre"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                        />
+                    </Form.Group>
+                    <Form.Group controlId="formAddress">
+                        <Form.Label>Dirección</Form.Label>
+                        <Form.Control
+                            type="text"
+                            placeholder="Ingrese su dirección"
+                            name="address"
+                            value={formData.address}
+                            onChange={handleChange}
+                        />
+                    </Form.Group>
+                    <Form.Group controlId="formEmail">
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control
+                            type="email"
+                            placeholder="Ingrese su email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                        />
+                    </Form.Group>
+                    {formError && (
+                        <Alert variant="danger" className="mt-3">
+                            {formError}
+                        </Alert>
+                    )}
+                    <Button variant="primary" type="submit" className="mt-3">
+                        Confirmar Compra
+                    </Button>
+                </Form>
 
-                                <Form.Group controlId="userEmail">
-                                    <Form.Label>Correo Electrónico</Form.Label>
-                                    <Form.Control
-                                        type="email"
-                                        placeholder="Ingrese su correo electrónico"
-                                        value={userEmail}
-                                        onChange={(e) => setUserEmail(e.target.value)}
-                                        required
-                                    />
-                                </Form.Group>
-
-                                <Form.Group controlId="userAddress">
-                                    <Form.Label>Dirección de Envío</Form.Label>
-                                    <Form.Control
-                                        as="textarea"
-                                        rows={3}
-                                        placeholder="Ingrese su dirección de envío"
-                                        value={userAddress}
-                                        onChange={(e) => setUserAddress(e.target.value)}
-                                        required
-                                    />
-                                </Form.Group>
-                                </div>
-
-                                {formError && <Alert variant="danger">{formError}</Alert>}
-
-                                <Button variant="primary" onClick={handleFinishPurchase}>
-                                    Finalizar Compra
-                                </Button>
-                            </Form>
-                        )}
-                        {purchaseCompleted && (
-                            <Alert variant="success">
-                                ¡Compra completada! Gracias por su compra.
-                            </Alert>
-                            
-                        )}
-                        
-                    </>
+                {purchaseCompleted && (
+                    <Alert variant="success" className="mt-3">
+                        ¡Compra completada! Gracias por su compra.
+                    </Alert>
                 )}
             </div>
         </>
     );
 };
 
-Cart.propTypes = {
-    cartItems: PropTypes.array.isRequired,
-    removeFromCart: PropTypes.func.isRequired,
-    userId: PropTypes.number.isRequired,
-};
-
 export default Cart;
-
