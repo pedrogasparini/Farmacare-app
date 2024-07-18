@@ -4,7 +4,7 @@ const HomeSysAdmin = () => {
     return (
         <div>
             <Header />
-            <h1>Home</h1>
+            <h1>Home Sysadmin</h1>
         </div>
     );
 }

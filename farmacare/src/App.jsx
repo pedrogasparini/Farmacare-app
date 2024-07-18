@@ -1,6 +1,6 @@
 import HomeAdmin from "./components/HomeAdmin/HomeAdmin";
 import HomeClient from "./components/HomeClient/HomeClient";
-import HomeSysAdmin from "./components/HomeSysAdmin/HomeSysAdmin";
+import HomeSysAdmin from "./components/HomeSysadmin/HomeSysadmin";
 import Login from "./components/Login/Login";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Register from "./components/Register/Register";
@@ -56,7 +56,7 @@ function App() {
       element: <Protected allowedRoles={["sysAdmin"]} />,
       children: [
         {
-          path: "/homeSysAdmin",
+          path: "/homeSysadmin",
           element: <HomeSysAdmin />,
         }
       ],
