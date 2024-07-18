@@ -1,13 +1,12 @@
-import { useState, useRef, useContext } from "react";
-import { Form, Card, Row, Col, Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useRef, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthenticationContext } from '../../services/authentication/authentication';
 import Swal from 'sweetalert2';
-import "./Login.css";
-import { AuthenticationContext } from "../../services/authentication/authentication";
+import { Card, Form, Button, Row, Col } from 'react-bootstrap';
 
 const Login = () => {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({
         username: false,
         password: false,
@@ -25,7 +24,7 @@ const Login = () => {
         setPassword(event.target.value);
     };
 
-    const submitHandler = (event) => {
+    const submitHandler = async (event) => {
         event.preventDefault();
 
         if (usernameRef.current.value.length === 0) {
@@ -56,29 +55,30 @@ const Login = () => {
             return;
         }
 
-        const registeredUsers = JSON.parse(localStorage.getItem('users')) || [];
-        const userEntered = registeredUsers.find(user => user.username === username);
+        try {
+            const response = await fetch('http://localhost:8000/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+            });
 
-        if (!userEntered) {
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Error al iniciar sesión');
+            }
+
+            const data = await response.json();
+            handleLogin(data.username); // Assuming the response contains the username
+            navigate('/home');
+        } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: 'Usuario no encontrado',
+                text: error.message,
             });
-            return;
         }
-
-        if (userEntered.password !== password) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Contraseña incorrecta',
-            });
-            return;
-        }
-
-        handleLogin(username);
-        navigate("/home");
     };
 
     return (
@@ -92,7 +92,8 @@ const Login = () => {
                             height="80px"
                             viewBox="0 -960 960 960"
                             width="90px"
-                            fill="#000000">
+                            fill="#000000"
+                        >
                             <path d="M480-481q-66 0-108-42t-42-108q0-66 42-108t108-42q66 0 108 42t42 108q0 66-42 108t-108 42ZM160-160v-94q0-38 19-65t49-41q67-30 128.5-45T480-420q62 0 123 15.5t127.92 44.69q31.3 14.13 50.19 40.97Q800-292 800-254v94H160Zm60-60h520v-34q0-16-9.5-30.5T707-306q-64-31-117-42.5T480-360q-57 0-111 11.5T252-306q-14 7-23 21.5t-9 30.5v34Zm260-321q39 0 64.5-25.5T570-631q0-39-25.5-64.5T480-721q-39 0-64.5 25.5T390-631q0 39 25.5 64.5T480-541Zm0-90Zm0 411Z" />
                         </svg>
                     </div>
@@ -101,7 +102,8 @@ const Login = () => {
                             <Form.Control
                                 placeholder="Ingrese su nombre de usuario..."
                                 type="text"
-                                className={`custom-input ${errors.username ? "border border-danger" : ""}`}
+                                className={`custom-input ${errors.username ? 'border border-danger' : ''
+                                    }`}
                                 ref={usernameRef}
                                 onChange={usernameHandler}
                             />
@@ -111,7 +113,8 @@ const Login = () => {
                                 placeholder="Ingrese su contraseña..."
                                 type="password"
                                 value={password}
-                                className={`custom-input ${errors.password ? "border border-danger" : ""}`}
+                                className={`custom-input ${errors.password ? 'border border-danger' : ''
+                                    }`}
                                 ref={passwordRef}
                                 onChange={passwordHandler}
                             />
@@ -125,7 +128,10 @@ const Login = () => {
                         </Row>
                     </Form>
                     <Row>
-                        <p className="p-reg">¿Es tu primera vez por aquí? Haz click <a href="/register">aquí</a> para crear un usuario.</p>
+                        <p className="p-reg">
+                            ¿Es tu primera vez por aquí? Haz click{' '}
+                            <a href="/register">aquí</a> para crear un usuario.
+                        </p>
                     </Row>
                 </Card.Body>
             </Card>
