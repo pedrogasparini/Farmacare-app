@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./components/Home/Home";
 import Login from "./components/Login/Login";
-// import Register from "./components/Register/Register";
+import Register from "./components/Register/Register";
 // import Cart from "./components/Cart/Cart";
 // import PurchaseHistory from './components/PurchaseHistory/PurchaseHistory';
 // import NewProduct from './components/NewProduct/NewProduct';
@@ -23,10 +23,10 @@ const App = () => {
       path: "/home",
       element: <Home />
     },
-    // {
-    //   path: "/register",
-    //   element: <Register />
-    // },
+    {
+      path: "/register",
+      element: <Register />
+    },
     // {
     //   path: "/cart",
     //   element: <Cart/>

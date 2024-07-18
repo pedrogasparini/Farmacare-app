@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthenticationContext } from '../../services/authentication/authentication';
 import Swal from 'sweetalert2';
 import { Card, Form, Button, Row, Col } from 'react-bootstrap';
+import "./Login.css"
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -70,7 +71,11 @@ const Login = () => {
             }
 
             const data = await response.json();
-            handleLogin(data.username); // Assuming the response contains the username
+            if (data.username !== username) {
+                throw new Error('Nombre de usuario incorrecto');
+            }
+
+            handleLogin(data.username);
             navigate('/home');
         } catch (error) {
             Swal.fire({
