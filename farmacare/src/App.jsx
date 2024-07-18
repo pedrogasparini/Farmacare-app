@@ -3,6 +3,10 @@ import HomeClient from "./components/HomeClient/HomeClient";
 import HomeSysadmin from "./components/HomeSysadmin/HomeSysadmin";
 import Login from "./components/Login/Login";
 
+import Register from "./components/Register/Register";
+
+
+
 
 
 
@@ -54,6 +58,13 @@ function App() {
         }
       ],
     },
+
+    {
+      path: "/register",
+      element: <Register />
+    },
+  
+
   ]);
 
   return (
