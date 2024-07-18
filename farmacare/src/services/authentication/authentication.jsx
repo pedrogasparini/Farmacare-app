@@ -1,39 +1,73 @@
-// authentication.jsx
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect } from "react";
 
 export const AuthenticationContext = createContext();
 
-const userValue = JSON.parse(localStorage.getItem("user"));
-
 export const AuthenticationContextProvider = ({ children }) => {
-    const [user, setUser] = useState(userValue);
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const storedUser = JSON.parse(localStorage.getItem("user"));
+        if (storedUser) {
+            setUser(storedUser);
+        }
+    }, []);
+
+    const handleLogin = async (username, password) => {
+        try {
+            const response = await fetch('http://localhost:8000/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Error al iniciar sesión');
+            }
+
+            const data = await response.json();
+            localStorage.setItem("user", JSON.stringify(data));
+            setUser(data);
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    const handleRegister = async (newUser) => {
+        try {
+            const response = await fetch('http://localhost:8000/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newUser),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Error al registrar');
+            }
+
+            const data = await response.json();
+            localStorage.setItem("user", JSON.stringify(data));
+            setUser(data);
+        } catch (error) {
+            throw error;
+        }
+    };
 
     const handleLogout = () => {
         localStorage.removeItem("user");
         setUser(null);
     };
 
-    const handleLogin = (username) => {
-        localStorage.setItem("user", JSON.stringify({ username }));
-        setUser({ username });
-    };
-
-
-    const handleRegister = (newUser) => {
-        const registeredUsers = JSON.parse(localStorage.getItem('users')) || [];
-        
-        if (registeredUsers.some(user => user.username === newUser.username)) {
-            throw new Error('El nombre de usuario ya existe.');
-        }
-
-        registeredUsers.push(newUser);
-        localStorage.setItem('users', JSON.stringify(registeredUsers));
-    };
-
     return (
-        <AuthenticationContext.Provider value={{ user, handleLogin, handleLogout,handleRegister }}>
+        <AuthenticationContext.Provider
+            value={{ user, handleLogin, handleRegister, handleLogout }}
+        >
             {children}
         </AuthenticationContext.Provider>
     );
 };
-
