@@ -1,9 +1,12 @@
 import HomeAdmin from "./components/HomeAdmin/HomeAdmin";
 import HomeClient from "./components/HomeClient/HomeClient";
-import HomeSysadmin from "./components/HomeSysadmin/HomeSysadmin";
+import HomeSysAdmin from "./components/HomeSysAdmin/HomeSysAdmin";
 import Login from "./components/Login/Login";
-
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Register from "./components/Register/Register";
+import Protected from "./routes/Protected";
+import NotFound from "./routes/NotFound";
+import purchaseHistory from "./components/PurchaseHistory/PurchaseHistory";
 
 
 
@@ -26,7 +29,7 @@ function App() {
     },
     {
       path: "/",
-      element: <Protected allowedRoles={["homeclient"]} />,
+      element: <Protected allowedRoles={["client"]} />,
       children: [
         {
           path: "/HomeClient",
@@ -36,7 +39,7 @@ function App() {
     },
     {
       path: "/",
-      element: <Protected allowedRoles={["homeAdmin"]} />,
+      element: <Protected allowedRoles={["admin"]} />,
       children: [
         {
           path: "/homeAdmin",
@@ -46,15 +49,15 @@ function App() {
     },
     {
       path: "*",
-      element: <Landing />,
+      element: <NotFound />,
     },
     {
       path: "/",
-      element: <Protected allowedRoles={["HomeSysadmin"]} />,
+      element: <Protected allowedRoles={["sysAdmin"]} />,
       children: [
         {
-          path: "/homeSysadmin",
-          element: <HomeSysadmin />,
+          path: "/homeSysAdmin",
+          element: <HomeSysAdmin />,
         }
       ],
     },
@@ -63,14 +66,19 @@ function App() {
       path: "/register",
       element: <Register />
     },
+
+    {
+      path: "/history",
+      element: <purchaseHistory />
+    }
   
 
   ]);
 
   return (
-    <TraductionDictionaryProvider>
+    
       <RouterProvider router={router} />
-    </TraductionDictionaryProvider>
+    
   );
 }
 

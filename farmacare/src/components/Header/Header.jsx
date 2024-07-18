@@ -1,12 +1,12 @@
 import "./Header.css";
 import { Navbar, Nav } from "react-bootstrap";
-import { FaShoppingCart, FaHistory, FaUser, FaSignOutAlt } from 'react-icons/fa';
+import { FaShoppingCart, FaHistory, FaUser, FaSignOutAlt, FaPlus, FaUsers } from 'react-icons/fa';
 import { AuthenticationContext } from "../../services/authentication/authentication";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-    const { handleLogout } = useContext(AuthenticationContext);
+    const { handleLogout, userType } = useContext(AuthenticationContext);
     const navigate = useNavigate();
 
     const handleLogOut = () => {
@@ -23,8 +23,16 @@ const Header = () => {
     };
 
     const backToHome = () => {
-        navigate("/home")
-    }
+        navigate("/home");
+    };
+
+    const goToAddProduct = () => {
+        navigate("/add-product");
+    };
+
+    const goToUsersList = () => {
+        navigate("/users");
+    };
 
     return (
         <div className="header-container">
@@ -37,29 +45,47 @@ const Header = () => {
                         className="d-inline-block align-top"
                         alt="Farmacare Logo"
                         onClick={backToHome}
-                        
                     />
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="nav-links-container">
-                    {location.pathname !== '/cart' && (
-                        <Nav.Link onClick={goToCart}>
-                            <FaShoppingCart className="icon" />
-                        </Nav.Link>
-                    )}
-                    {location.pathname !== '/history' && (
-                        <Nav.Link href="/history" onClick={goToHistory}>
-                            <FaHistory className="icon" />
-                        </Nav.Link>
-                    )}
-                        <Nav.Link href="#profile">
-                            <FaUser className="icon" />
-                        </Nav.Link>
+                        {userType === 'client' && (
+                            <>
+                                <Nav.Link onClick={goToCart}>
+                                    <FaShoppingCart className="icon" />
+                                </Nav.Link>
+                                <Nav.Link onClick={goToHistory}>
+                                    <FaHistory className="icon" />
+                                </Nav.Link>
+                            </>
+                        )}
+                        {userType === 'admin' && (
+                            <>
+                                <Nav.Link onClick={goToHistory}>
+                                    <FaHistory className="icon" />
+                                </Nav.Link>
+                                <Nav.Link onClick={goToAddProduct}>
+                                    <FaPlus className="icon" />
+                                </Nav.Link>
+                            </>
+                        )}
+                        {userType === 'sysAdmin' && (
+                            <>
+                                <Nav.Link onClick={goToHistory}>
+                                    <FaHistory className="icon" />
+                                </Nav.Link>
+                                <Nav.Link onClick={goToAddProduct}>
+                                    <FaPlus className="icon" />
+                                </Nav.Link>
+                                <Nav.Link onClick={goToUsersList}>
+                                    <FaUsers className="icon" />
+                                </Nav.Link>
+                            </>
+                        )}
                         <Nav.Link onClick={handleLogOut}>
                             <FaSignOutAlt className="icon" />
                         </Nav.Link>
-
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
