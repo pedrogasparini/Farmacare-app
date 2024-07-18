@@ -1,7 +1,7 @@
-const Home = () => {
+const HomeSysadmin = () => {
     return (
         <div>
-            <h1>Home</h1>
+            <h1>Home Sysadmin</h1>
         </div>
     );
 }
