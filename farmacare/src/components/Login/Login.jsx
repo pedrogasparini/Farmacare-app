@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthenticationContext } from '../../services/authentication/authentication';
 import Swal from 'sweetalert2';
 import { Card, Form, Button, Row, Col } from 'react-bootstrap';
-import "./Login.css"
+import "./Login.css";
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -71,18 +71,31 @@ const Login = () => {
             }
 
             const data = await response.json();
-            if (data.username !== username) {
-                throw new Error('Nombre de usuario incorrecto');
-            }
-
-            handleLogin(data.username);
-            navigate('/home');
+            handleLogin(data.userType); // Manejamos el tipo de usuario retornado
+            redirectToHome(data.userType); // Redireccionamos según el tipo de usuario
         } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
                 text: error.message,
             });
+        }
+    };
+
+    const redirectToHome = (userType) => {
+        switch (userType) {
+            case 'client':
+                navigate('/homeClient');
+                break;
+            case 'admin':
+                navigate('/homeAdmin');
+                break;
+            case 'sysAdmin':
+                navigate('/homeSysAdmin');
+                break;
+            default:
+                navigate('/protected'); 
+                break;
         }
     };
 

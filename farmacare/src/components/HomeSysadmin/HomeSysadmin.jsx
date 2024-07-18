@@ -1,12 +1,15 @@
-const HomeSysadmin = () => {
+import Header from "../Header/Header";
+
+const HomeSysAdmin = () => {
     return (
         <div>
-            <h1>Home Sysadmin</h1>
+            <Header />
+            <h1>Home</h1>
         </div>
     );
 }
 
-export default Home;
+export default HomeSysAdmin;
 
 
 // import { useState, useEffect } from 'react';
