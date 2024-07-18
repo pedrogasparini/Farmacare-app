@@ -1,62 +1,66 @@
-import { useState } from 'react';
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Home from "./components/Home/Home";
+import HomeAdmin from "./components/HomeAdmin/HomeAdmin";
+import HomeClient from "./components/HomeClient/HomeClient";
+import HomeSysadmin from "./components/HomeSysadmin/HomeSysadmin";
 import Login from "./components/Login/Login";
-// import Register from "./components/Register/Register";
-// import Cart from "./components/Cart/Cart";
-// import PurchaseHistory from './components/PurchaseHistory/PurchaseHistory';
-// import NewProduct from './components/NewProduct/NewProduct';
-
-const App = () => {
 
 
+
+
+function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Login />
+      element: <Login />,
     },
     {
       path: "/login",
-      element: <Login />
+      element: <Login />,
     },
     {
-      path: "/home",
-      element: <Home />
+      path: "/register",
+      element: <Register />,
     },
-    // {
-    //   path: "/register",
-    //   element: <Register />
-    // },
-    // {
-    //   path: "/cart",
-    //   element: <Cart/>
-    // },
-    // {
-    //   path: "/history",
-    //   element: <PurchaseHistory />
-    // },
+    {
+      path: "/",
+      element: <Protected allowedRoles={["homeclient"]} />,
+      children: [
+        {
+          path: "/HomeClient",
+          element: <HomeClient />,
+        }
+      ],
+    },
+    {
+      path: "/",
+      element: <Protected allowedRoles={["homeAdmin"]} />,
+      children: [
+        {
+          path: "/homeAdmin",
+          element: <HomeAdmin />,
+        }
+      ],
+    },
+    {
+      path: "*",
+      element: <Landing />,
+    },
+    {
+      path: "/",
+      element: <Protected allowedRoles={["HomeSysadmin"]} />,
+      children: [
+        {
+          path: "/homeSysadmin",
+          element: <HomeSysadmin />,
+        }
+      ],
+    },
   ]);
 
   return (
-    <div className="d-flex flex-column align-items-center">
+    <TraductionDictionaryProvider>
       <RouterProvider router={router} />
-    </div>
+    </TraductionDictionaryProvider>
   );
 }
 
 export default App;
-
-
-//COMENTARIOS
-
-// const [cartItems, setCartItems] = useState([]);
-
-// const addProductToCart = (product) => {
-//   setCartItems([...cartItems, product]);
-// };
-
-// const removeFromCart = (index) => {
-//   const newCartItems = [...cartItems];
-//   newCartItems.splice(index, 1);
-//   setCartItems(newCartItems);
-// };
