@@ -39,57 +39,79 @@ const Register = () => {
         setPassword(event.target.value);
     };
 
+    const validateForm = () => {
+        let valid = true;
+        const newErrors = {
+            name: false,
+            lastName: false,
+            username: false,
+            password: false,
+        };
+
+        if (name.trim() === "") {
+            nameRef.current.focus();
+            newErrors.name = true;
+            valid = false;
+        }
+
+        if (lastName.trim() === "") {
+            lastNameRef.current.focus();
+            newErrors.lastName = true;
+            valid = false;
+        }
+
+        if (username.trim() === "") {
+            usernameRef.current.focus();
+            newErrors.username = true;
+            valid = false;
+        }
+
+        if (password.trim() === "") {
+            passwordRef.current.focus();
+            newErrors.password = true;
+            valid = false;
+        }
+
+        setErrors(newErrors);
+        return valid;
+    };
+
     const submitHandler = async (event) => {
         event.preventDefault();
 
-        if (nameRef.current.value.length === 0) {
-            nameRef.current.focus();
-            setErrors((prevErrors) => ({ ...prevErrors, name: true }));
-            Swal.fire({ icon: 'error', title: 'Oops...', text: 'Por favor, ingrese su nombre.' });
-            return;
-        }
-
-        if (lastNameRef.current.value.length === 0) {
-            lastNameRef.current.focus();
-            setErrors((prevErrors) => ({ ...prevErrors, lastName: true }));
-            Swal.fire({ icon: 'error', title: 'Oops...', text: 'Por favor, ingrese su apellido.' });
-            return;
-        }
-
-        if (usernameRef.current.value.length === 0) {
-            usernameRef.current.focus();
-            setErrors((prevErrors) => ({ ...prevErrors, username: true }));
-            Swal.fire({ icon: 'error', title: 'Oops...', text: 'Por favor, ingrese su nombre de usuario.' });
-            return;
-        }
-
-        if (passwordRef.current.value.length === 0) {
-            passwordRef.current.focus();
-            setErrors((prevErrors) => ({ ...prevErrors, password: true }));
-            Swal.fire({ icon: 'error', title: 'Oops...', text: 'Por favor, ingrese su contraseña.' });
+        if (!validateForm()) {
             return;
         }
 
         const newUser = {
-            name: name,
-            lastName: lastName,
-            username: username,
-            password: password
+            name: name.trim(),
+            lastName: lastName.trim(),
+            username: username.trim(),
+            password: password.trim(),
+            userType: 'client' // Asignamos el userType 'client' por defecto
         };
 
         try {
             await handleRegister(newUser);
-            Swal.fire({ icon: 'success', title: 'Registro exitoso', text: 'Usuario registrado correctamente.' });
+            Swal.fire({
+                icon: 'success',
+                title: 'Registro exitoso',
+                text: 'Usuario registrado correctamente.'
+            });
             navigate("/login");
         } catch (error) {
-            Swal.fire({ icon: 'error', title: 'Oops...', text: error.message });
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error.message
+            });
         }
     };
 
     return (
         <div className="sign-up-container">
-            <h1>Sign Up</h1>
-            <h6>Complete el siguiente formulario para la creación de su cuenta.</h6>
+            <h1>Registro</h1>
+            <h6>Complete el siguiente formulario para crear su cuenta.</h6>
             <Card className="sign-up-card">
                 <Card.Body>
                     <Form className="sign-up-form" onSubmit={submitHandler}>
