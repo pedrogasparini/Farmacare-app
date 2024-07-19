@@ -1,3 +1,15 @@
+import Header from "../Header/Header";
+
+const Cart = () => {
+    return (
+        <div>
+            <Header />
+            <h1>Carrito de Compras</h1>
+        </div>
+    );
+};
+
+export default Cart;
 // import { useState, useContext, useEffect } from 'react';
 // import { Button, Card, Form, Alert } from 'react-bootstrap';
 // import { BsTrash } from 'react-icons/bs';

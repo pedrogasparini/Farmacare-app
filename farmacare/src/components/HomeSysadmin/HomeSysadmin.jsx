@@ -1,15 +1,77 @@
+import  { useState, useEffect } from 'react';
+import { Card, Button, Row, Col } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import Header from "../Header/Header";
 
-const HomeSysAdmin = () => {
+const HomeSysadmin = () => {
+    const [products, setProducts] = useState([]);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        fetchProducts()
+            .then(data => setProducts(data))
+            .catch(error => console.error('Error fetching products:', error));
+    }, []);
+
+    const fetchProducts = async () => {
+        const response = await fetch('http://localhost:8000/products');
+        if (!response.ok) {
+            throw new Error('Failed to fetch products');
+        }
+        return await response.json();
+    };
+
+    const addToCart = (productId) => {
+        
+        console.log(`Producto agregado al carrito: ${productId}`);
+        navigate('/cart');
+    };
+
+
     return (
-        <div>
+        <div className="home-container">
             <Header />
-            <h1>Home Sysadmin</h1>
+            <Card className="home-card">
+                <Card.Body>
+                    {products.length > 0 ? (
+                        <Row xs={1} md={2} lg={3} className="g-4">
+                            {products.map(product => (
+                                <Col key={product.id}>
+                                    <Card>
+                                        <Card.Img variant="top" src={product.image} alt={product.name} />
+                                        <Card.Body>
+                                            <Card.Title>{product.name}</Card.Title>
+                                            <Card.Text>Precio: ${product.price}</Card.Text>
+                                            <Button variant="primary"  onClick={() => addToCart(product.id)}>Agregar al carrito</Button>
+                                        </Card.Body>
+                                    </Card>
+                                </Col>
+                            ))}
+                        </Row>
+                    ) : (
+                        <p>No hay productos disponibles.</p>
+                    )}
+                </Card.Body>
+            </Card>
         </div>
     );
-}
+};
 
-export default HomeSysAdmin;
+
+export default HomeSysadmin;
+
+// import Header from "../Header/Header";
+
+// const HomeSysAdmin = () => {
+//     return (
+//         <div>
+//             <Header />
+//             <h1>Home Sysadmin</h1>
+//         </div>
+//     );
+// }
+
+// export default HomeSysAdmin;
 
 
 // import { useState, useEffect } from 'react';
