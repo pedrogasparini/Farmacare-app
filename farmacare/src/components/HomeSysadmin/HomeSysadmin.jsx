@@ -1,10 +1,15 @@
-import  { useState, useEffect } from 'react';
-import { Card, Button, Row, Col } from 'react-bootstrap';
+import { useState, useEffect } from 'react';
+import { Card, Button, Row, Col, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import Header from "../Header/Header";
-
+import Navbar from '../Navbar/Navbar';
+import DeleteModal from '../ui/DeleteModal/DeleteModal';
 const HomeSysadmin = () => {
     const [products, setProducts] = useState([]);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [productToDelete, setProductToDelete] = useState(null);
+    const [newProduct, setNewProduct] = useState({ name: '', price: '', image: '' });
+    const [editingProduct, setEditingProduct] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -21,20 +26,115 @@ const HomeSysadmin = () => {
         return await response.json();
     };
 
-    const addToCart = (productId) => {
-        
-        console.log(`Producto agregado al carrito: ${productId}`);
-        navigate('/cart');
+    const addProduct = async () => {
+        const response = await fetch('http://localhost:8000/products', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newProduct),
+        });
+        if (!response.ok) {
+            throw new Error('Failed to add product');
+        }
+        const addedProduct = await response.json();
+        setProducts([...products, addedProduct]);
+        setNewProduct({ name: '', price: '', image: '' });
     };
 
+    const editProduct = (product) => {
+        setEditingProduct(product);
+    };
+
+    const updateProduct = async () => {
+        const response = await fetch(`http://localhost:8000/products/${editingProduct.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(editingProduct),
+        });
+        if (!response.ok) {
+            throw new Error('Failed to update product');
+        }
+        const updatedProduct = await response.json();
+        setProducts(products.map(p => (p.id === updatedProduct.id ? updatedProduct : p)));
+        setEditingProduct(null);
+    };
+
+    const confirmDeleteProduct = (product) => {
+        setProductToDelete(product);
+        setShowDeleteModal(true);
+    };
+
+    const deleteProduct = async () => {
+        const response = await fetch(`http://localhost:8000/products/${productToDelete.id}`, {
+            method: 'DELETE',
+        });
+        if (!response.ok) {
+            throw new Error('Failed to delete product');
+        }
+        setProducts(products.filter(p => p.id !== productToDelete.id));
+        setShowDeleteModal(false);
+        setProductToDelete(null);
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        if (editingProduct) {
+            setEditingProduct({ ...editingProduct, [name]: value });
+        } else {
+            setNewProduct({ ...newProduct, [name]: value });
+        }
+    };
+
+    const handleAddOrUpdate = () => {
+        if (editingProduct) {
+            updateProduct();
+        } else {
+            addProduct();
+        }
+    };
 
     return (
         <div className="home-container">
             <Header />
+            <Navbar />
             <Card className="home-card">
                 <Card.Body>
+                    <Form>
+                        <Form.Group controlId="formProductName">
+                            <Form.Label>Nombre del Producto</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="name"
+                                value={editingProduct ? editingProduct.name : newProduct.name}
+                                onChange={handleInputChange}
+                                placeholder="Ingresa el nombre del producto"
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="formProductPrice">
+                            <Form.Label>Precio del Producto</Form.Label>
+                            <Form.Control
+                                type="number"
+                                name="price"
+                                value={editingProduct ? editingProduct.price : newProduct.price}
+                                onChange={handleInputChange}
+                                placeholder="Ingresa el precio del producto"
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="formProductImage">
+                            <Form.Label>Imagen del Producto</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="image"
+                                value={editingProduct ? editingProduct.image : newProduct.image}
+                                onChange={handleInputChange}
+                                placeholder="Ingresa la URL de la imagen del producto"
+                            />
+                        </Form.Group>
+                        <Button variant="primary" onClick={handleAddOrUpdate}>
+                            {editingProduct ? 'Actualizar Producto' : 'Agregar Producto'}
+                        </Button>
+                    </Form>
                     {products.length > 0 ? (
-                        <Row xs={1} md={2} lg={3} className="g-4">
+                        <Row xs={1} md={2} lg={3} className="g-4 mt-4">
                             {products.map(product => (
                                 <Col key={product.id}>
                                     <Card>
@@ -42,7 +142,9 @@ const HomeSysadmin = () => {
                                         <Card.Body>
                                             <Card.Title>{product.name}</Card.Title>
                                             <Card.Text>Precio: ${product.price}</Card.Text>
-                                            <Button variant="primary"  onClick={() => addToCart(product.id)}>Agregar al carrito</Button>
+                                            <Button variant="primary" onClick={() => addToCart(product.id)}>Agregar al carrito</Button>
+                                            <Button variant="secondary" onClick={() => editProduct(product)} className="mx-2">Editar</Button>
+                                            <Button variant="danger" onClick={() => confirmDeleteProduct(product)}>Eliminar</Button>
                                         </Card.Body>
                                     </Card>
                                 </Col>
@@ -53,142 +155,13 @@ const HomeSysadmin = () => {
                     )}
                 </Card.Body>
             </Card>
+            <DeleteModal
+                showDeleteModal={showDeleteModal}
+                onHide={() => setShowDeleteModal(false)}
+                onDelete={deleteProduct}
+            />
         </div>
     );
 };
 
-
 export default HomeSysadmin;
-
-// import Header from "../Header/Header";
-
-// const HomeSysAdmin = () => {
-//     return (
-//         <div>
-//             <Header />
-//             <h1>Home Sysadmin</h1>
-//         </div>
-//     );
-// }
-
-// export default HomeSysAdmin;
-
-
-// import { useState, useEffect } from 'react';
-// import { Navbar, Nav, Form, Button, Card } from 'react-bootstrap';
-// import { BsCart4, BsTrash } from 'react-icons/bs';
-// import ProductsService from '../../services/products/products';
-// import CategoriesService from '../../services/products/categories';
-// import Header from '../Header/Header';
-// import PropTypes from 'prop-types';
-// import "./Home.css";
-
-// const productsList = new ProductsService();
-// const categoriesService = new CategoriesService();
-// const productsData = productsList.getProducts();
-// const categoriesData = categoriesService.getCategories();
-
-// const Home = ({ addProductToCart }) => {
-//     const [productsFiltered, setProductsFiltered] = useState(productsData);
-//     const [selectedCategory, setSelectedCategory] = useState('all');
-
-//     useEffect(() => {
-//         setProductsFiltered(productsData);
-//     }, []);
-
-//     const filterProductsByCategory = (categoryId) => {
-//         setSelectedCategory(categoryId);
-
-//         if (categoryId === 'all') {
-//             setProductsFiltered(productsData);
-//         } else {
-//             const filteredProducts = productsData.filter(product => product.idCategory === categoryId);
-//             setProductsFiltered(filteredProducts);
-//         }
-//     };
-
-//     const addProductHandler = (newProduct) => {
-//         const productData = { ...newProduct, productId: Math.random() };
-
-//         fetch("http://localhost:8000/products", {
-//             method: "POST",
-//             headers: {
-//                 "content-type": "application/json",
-//             },
-//             body: JSON.stringify(productData),
-//         })
-//             .then((response) => {
-//                 if (response.ok) return response.json();
-//                 else {
-//                     throw new Error("The response has some errors");
-//                 }
-//             })
-//             .then(() => {
-//                 const newProductsArray = [productData, ...productsFiltered];
-//                 setProductsFiltered(newProductsArray);
-//             })
-//             .catch((error) => console.log(error));
-//     };
-
-//     const deleteProductHandler = (id) => {
-//         fetch(`http://localhost:8000/products/${id}`, {
-//             method: "DELETE",
-//         })
-//             .then(() => {
-//                 setProductsFiltered((prevProducts) => prevProducts.filter((product) => product.id !== id));
-//             })
-//             .catch((error) => console.log(error));
-//     };
-
-//     return (
-//         <>
-//             <Header />
-//             <div className="home-container">
-//                 <div className="nav-container">
-//                     <Navbar expand="lg" className="custom-navbar flex-column">
-//                         <Nav className="flex-column custom-nav">
-//                             <Nav.Link href="#all" onClick={() => filterProductsByCategory('all')} className="nav-link">
-//                                 Todos los productos
-//                             </Nav.Link>
-//                             {categoriesData.map(category => (
-//                                 <Nav.Link
-//                                     key={category.id}
-//                                     href={`#${category.name}`}
-//                                     onClick={() => filterProductsByCategory(category.id)}
-//                                     className={`nav-link ${selectedCategory === category.id ? 'active' : ''}`}
-//                                 >
-//                                     {category.name}
-//                                 </Nav.Link>
-//                             ))}
-//                             <Form className="button-navbar-form">
-//                                 <Form.Control placeholder="Buscar producto..." />
-//                                 <Button variant="secondary" type="submit" className="button-navbar">
-//                                     Buscar
-//                                 </Button>
-//                             </Form>
-//                         </Nav>
-//                     </Navbar>
-//                 </div>
-//                 <div className="products">
-//                     {productsFiltered.map(product => (
-//                         <Card className="products-card" key={product.id} style={{ width: '15rem' }}>
-//                             <Card.Img variant="top" src={product.pathImg} alt={product.name} />
-//                             <Card.Body>
-//                                 <Card.Title>{product.name}</Card.Title>
-//                                 <Card.Text>Precio: {product.price}</Card.Text>
-//                                 <Button variant="primary" className="button-product-card" onClick={() => { addProductHandler(product); addProductToCart(product); }}>
-//                                     <BsCart4 />
-//                                 </Button>
-//                                 <Button variant="danger" className="button-product-card" onClick={() => deleteProductHandler(product.id)}>
-//                                     <BsTrash />
-//                                 </Button>
-//                             </Card.Body>
-//                         </Card>
-//                     ))}
-//                 </div>
-//             </div>
-//         </>
-//     );
-// };
-
-// export default Home;
