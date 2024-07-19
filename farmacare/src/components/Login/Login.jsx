@@ -57,21 +57,7 @@ const Login = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:8000/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, password }),
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Error al iniciar sesión');
-            }
-
-            const data = await response.json();
-            handleLogin(data.userType); // Manejamos el tipo de usuario retornado
+            const data = await handleLogin(username, password); // Pasamos las credenciales y obtenemos la data en caso de éxito
             redirectToHome(data.userType); // Redireccionamos según el tipo de usuario
         } catch (error) {
             Swal.fire({
@@ -94,7 +80,7 @@ const Login = () => {
                 navigate('/homeSysAdmin');
                 break;
             default:
-                navigate('/protected'); 
+                navigate('/protected');
                 break;
         }
     };
@@ -120,8 +106,7 @@ const Login = () => {
                             <Form.Control
                                 placeholder="Ingrese su nombre de usuario..."
                                 type="text"
-                                className={`custom-input ${errors.username ? 'border border-danger' : ''
-                                    }`}
+                                className={`custom-input ${errors.username ? 'border border-danger' : ''}`}
                                 ref={usernameRef}
                                 onChange={usernameHandler}
                             />
@@ -131,8 +116,7 @@ const Login = () => {
                                 placeholder="Ingrese su contraseña..."
                                 type="password"
                                 value={password}
-                                className={`custom-input ${errors.password ? 'border border-danger' : ''
-                                    }`}
+                                className={`custom-input ${errors.password ? 'border border-danger' : ''}`}
                                 ref={passwordRef}
                                 onChange={passwordHandler}
                             />

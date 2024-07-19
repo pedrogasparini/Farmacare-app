@@ -30,6 +30,7 @@ export const AuthenticationContextProvider = ({ children }) => {
             const data = await response.json();
             localStorage.setItem("user", JSON.stringify(data));
             setUser(data);
+            return data; // Aseguramos que se retorne la data en caso de éxito
         } catch (error) {
             throw error;
         }
