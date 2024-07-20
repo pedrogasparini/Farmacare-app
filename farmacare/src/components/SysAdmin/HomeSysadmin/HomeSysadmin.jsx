@@ -3,7 +3,7 @@ import { Card, Button, Row, Col } from 'react-bootstrap';
 import Header from '../../Client/HeaderClient/HeaderClient';
 import Navbar from '../../Navbar/Navbar';
 import DeleteModal from '../../ui/DeleteModal/DeleteModal';
-import AddProductForm from '../AddProduct';
+import AddProduct from '../AddProduct';
 import "./HomeSysadmin.css"
 
 const HomeSysadmin = () => {
