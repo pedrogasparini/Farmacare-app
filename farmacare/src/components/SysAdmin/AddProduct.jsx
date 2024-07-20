@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 
-const AddProductForm = ({ productToEdit, onAddOrUpdate, onCancel }) => {
+const AddProduct = ({ productToEdit, onAddOrUpdate, onCancel }) => {
     const [product, setProduct] = useState({ name: '', price: '', image: '' });
 
     useEffect(() => {
@@ -68,4 +68,4 @@ const AddProductForm = ({ productToEdit, onAddOrUpdate, onCancel }) => {
     );
 };
 
-export default AddProductForm;
+export default AddProduct;
