@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Card, Button, Row, Col } from 'react-bootstrap';
-
-import Header from "../Header/Header";
-import Navbar from '../Navbar/Navbar';
-import DeleteModal from '../ui/DeleteModal/DeleteModal';
-import AddProductForm from '../SysAdmin/AddProduct/AddProduct';
+import Header from '../../Header/Header';
+import Navbar from '../../Navbar/Navbar';
+import DeleteModal from '../../ui/DeleteModal/DeleteModal';
+import AddProductForm from '../AddProduct/AddProduct';
 import "./HomeSysadmin.css"
 
 const HomeSysadmin = () => {
