@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Card, Button, Row, Col } from 'react-bootstrap';
-import Header from '../../Client/HeaderClient/HeaderClient';
+import HeaderAdmin from '../HeaderAdmin/HeaderAdmin';
 import Navbar from '../../Navbar/Navbar';
 import DeleteModal from '../../ui/DeleteModal/DeleteModal';
-import AddProduct from '../AddProduct';
-import "./HomeSysadmin.css"
+import AddProduct from '../../SysAdmin/AddProduct';
+import "./HomeAdmin.css"
 import Footer from '../../Footer/footer';
 
-const HomeSysadmin = () => {
+const HomeAdmin = () => {
     const [products, setProducts] = useState([]);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [productToDelete, setProductToDelete] = useState(null);
@@ -97,7 +97,7 @@ const HomeSysadmin = () => {
 
     return (
         <>
-            <Header />
+            <HeaderAdmin />
             <div className="home-container">
                 <div className="nav-container">
                     <Navbar onSelectCategory={handleCategorySelect} />
@@ -156,4 +156,4 @@ const HomeSysadmin = () => {
     );
 };
 
-export default HomeSysadmin;
+export default HomeAdmin;
