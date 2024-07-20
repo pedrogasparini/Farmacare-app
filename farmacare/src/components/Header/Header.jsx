@@ -1,12 +1,12 @@
 import "./Header.css";
 import { Navbar, Nav } from "react-bootstrap";
-import { FaShoppingCart, FaHistory, FaUser, FaSignOutAlt, FaPlus, FaUsers } from 'react-icons/fa';
+import { FaShoppingCart, FaHistory, FaSignOutAlt, FaPlus, FaUsers } from 'react-icons/fa';
 import { AuthenticationContext } from "../../services/authentication/authentication";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-    const { handleLogout, userType } = useContext(AuthenticationContext);
+    const { handleLogout, user } = useContext(AuthenticationContext);
     const navigate = useNavigate();
 
     const handleLogOut = () => {
@@ -33,6 +33,8 @@ const Header = () => {
     const goToUsersList = () => {
         navigate("/users");
     };
+
+    const userType = user ? user.userType : null; // Obtener el tipo de usuario del objeto user
 
     return (
         <div className="header-container">

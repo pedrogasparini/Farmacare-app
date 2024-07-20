@@ -3,7 +3,7 @@ import { Card, Button, Row, Col } from 'react-bootstrap';
 import Header from '../../Header/Header';
 import Navbar from '../../Navbar/Navbar';
 import DeleteModal from '../../ui/DeleteModal/DeleteModal';
-import AddProductForm from '../AddProduct/AddProduct';
+import AddProductForm from '../AddProduct';
 import "./HomeSysadmin.css"
 
 const HomeSysadmin = () => {
@@ -124,7 +124,7 @@ const HomeSysadmin = () => {
                                             {filteredProducts.map(product => (
                                                 <Col key={product.id}>
                                                     <Card className='card'>
-                                                        <Card.Img className='card-img' src={product.image} alt={product.name}/>
+                                                        <Card.Img className='card-img' src={product.image} alt={product.name} />
                                                         <Card.Body className='card-body'>
                                                             <Card.Title>{product.name}</Card.Title>
                                                             <Card.Text>Precio: ${product.price}</Card.Text>
