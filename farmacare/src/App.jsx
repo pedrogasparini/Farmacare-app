@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomeClient from './components/Client/HomeClient/HomeClient';
-import HomeAdmin from "./components/HomeAdmin/HomeAdmin";
+import HomeAdmin from './components/Admin/HomeAdmin/HomeAdmin';
 import HomeSysadmin from './components/SysAdmin/HomeSysadmin/HomeSysadmin';
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";

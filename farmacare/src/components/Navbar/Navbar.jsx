@@ -7,7 +7,7 @@ const Navbar = ({ onSelectCategory, showNewCategoryButton = true }) => {
     };
 
     return (
-        <div className="sidebar-container">
+        
             <nav className="sidebar">
                 <ul className="navbar-list">
                     <li className="navbar-item">
@@ -33,7 +33,7 @@ const Navbar = ({ onSelectCategory, showNewCategoryButton = true }) => {
                     )}
                 </ul>
             </nav>
-        </div>
+ 
     );
 };
 

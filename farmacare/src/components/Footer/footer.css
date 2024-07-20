@@ -4,13 +4,10 @@
     padding: 20px;
     border-top: 1px solid #e9ecef;
     color: #333;
-    /* height: 10px; */
     justify-content: center;
-    height: 200px;
-    /* width: 100%; */
+    height: 100%;
 }
-.footer {
-}
+
 
 .footer h5 {
     margin-bottom: 15px;
@@ -40,9 +37,6 @@
     text-decoration: underline;
 }
 
-.footer-bottom {
+.derechos {
     text-align: center;
-    margin-top: 20px;
-    font-size: 14px;
-    color: #6c757d;
 }

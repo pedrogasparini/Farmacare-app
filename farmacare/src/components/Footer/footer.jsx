@@ -12,12 +12,12 @@ const Footer = () => {
                         <p>En Farmacare, nos dedicamos a proporcionar medicamentos y productos de salud de alta calidad para mejorar tu bienestar. Contamos con un equipo de profesionales listos para asistirte en todas tus necesidades farmacéuticas.</p>
                     </Col>
                     <Col md={4}>
-                        <h5>Servicios</h5>
+                        <h5>Nuestros Valores</h5>
                         <ul>
-                            <li><a href="#prescription">Recetas Médicas</a></li>
-                            <li><a href="#consultation">Consultas Farmacéuticas</a></li>
-                            <li><a href="#delivery">Entrega a Domicilio</a></li>
-                            <li><a href="#health-check">Chequeos de Salud</a></li>
+                            <li>Compromiso con la Salud</li>
+                            <li>Calidad y Seguridad</li>
+                            <li>Atención Personalizada</li>
+                            <li>Innovación Constante</li>
                         </ul>
                     </Col>
                     <Col md={4}>
@@ -26,11 +26,11 @@ const Footer = () => {
                         <p>Teléfono: +123 456 789</p>
                         <p>Ig: @farmacare</p>
                     </Col>
+                <p className='derechos'>&copy; 2024 Farmacare. Todos los derechos reservados.</p>
                 </Row>
             </Container>
-            <div className="footer-bottom">
-                <p>&copy; 2024 Farmacare. Todos los derechos reservados.</p>
-            </div>
+            
+        
         </div>
     );
 };
