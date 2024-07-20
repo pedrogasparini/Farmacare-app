@@ -1,5 +1,5 @@
-// CartContext.js
-import React, { createContext, useState, useEffect } from 'react';
+// src/services/CartContext.jsx
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
 export const CartContext = createContext();
 
@@ -8,7 +8,6 @@ export const CartProvider = ({ children }) => {
     const [total, setTotal] = useState(0);
 
     useEffect(() => {
-        // Calcular el total del carrito cada vez que cambia
         const newTotal = cart.reduce((acc, product) => acc + product.price, 0);
         setTotal(newTotal);
     }, [cart]);
@@ -30,4 +29,9 @@ export const CartProvider = ({ children }) => {
             {children}
         </CartContext.Provider>
     );
+};
+
+// Custom hook for using cart context
+export const useCart = () => {
+    return useContext(CartContext);
 };

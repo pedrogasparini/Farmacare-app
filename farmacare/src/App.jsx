@@ -9,7 +9,7 @@ import Protected from "./routes/Protected";
 import NotFound from "./routes/NotFound";
 import Cart from './components/Client/Cart/Cart';
 import purchaseHistory from './components/SysAdmin/PurchaseHistory/PurchaseHistory';
-import { TranslateContextProvider } from './custom/TranslateContext';
+import CartPage from './components/Client/Cart/CartPage';
 
 function App() {
   const router = createBrowserRouter([
@@ -61,7 +61,7 @@ function App() {
     },
     {
       path: "/cart",
-      element: <Cart />,
+      element: <CartPage />,
     },
     {
       path: "/history",
@@ -70,9 +70,9 @@ function App() {
   ]);
 
   return (
-    <TranslateContextProvider>
+      
       <RouterProvider router={router} />
-    </TranslateContextProvider>
+      
   );
 }
 
