@@ -1,15 +1,50 @@
-import Header from "../Header/Header";
+import { useState, useEffect } from 'react';
+import Header from '../Header/Header';
+import { Card } from 'react-bootstrap';
 
 const Cart = () => {
+    const [cartProducts, setCartProducts] = useState([]);
+
+    useEffect(() => {
+        fetchCartProducts()
+            .then(data => setCartProducts(data))
+            .catch(error => console.error('Error fetching cart products:', error));
+    }, []);
+
+    const fetchCartProducts = async () => {
+        const response = await fetch('http://localhost:8000/cart');
+        if (!response.ok) {
+            throw new Error('Failed to fetch cart products');
+        }
+        return await response.json();
+    };
+
     return (
         <div>
             <Header />
             <h1>Carrito de Compras</h1>
+            <div>
+                {cartProducts.length > 0 ? (
+                    cartProducts.map(product => (
+                        <Card key={product.id}>
+                            <Card.Img variant="top" src={product.image} alt={product.name} />
+                            <Card.Body>
+                                <Card.Title>{product.name}</Card.Title>
+                                <Card.Text>Precio: ${product.price}</Card.Text>
+                                <Card.Text>Cantidad: {product.quantity}</Card.Text>
+                            </Card.Body>
+                        </Card>
+                    ))
+                ) : (
+                    <p>No hay productos en el carrito.</p>
+                )}
+            </div>
         </div>
     );
 };
 
 export default Cart;
+
 // import { useState, useContext, useEffect } from 'react';
 // import { Button, Card, Form, Alert } from 'react-bootstrap';
 // import { BsTrash } from 'react-icons/bs';
