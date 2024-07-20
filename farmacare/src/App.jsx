@@ -1,18 +1,15 @@
+import React from 'react';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomeAdmin from "./components/HomeAdmin/HomeAdmin";
 import HomeClient from "./components/HomeClient/HomeClient";
 import HomeSysAdmin from "./components/HomeSysadmin/HomeSysadmin";
 import Login from "./components/Login/Login";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Register from "./components/Register/Register";
 import Protected from "./routes/Protected";
 import NotFound from "./routes/NotFound";
 import Cart from "./components/Cart/Cart";
-//import purchaseHistory from "./components/PurchaseHistory/PurchaseHistory";
-
-
-
-
-
+import PurchaseHistory from "./components/PurchaseHistory/PurchaseHistory";
+import { TranslateContextProvider } from './custom/TranslateContext';
 
 function App() {
   const router = createBrowserRouter([
@@ -62,29 +59,20 @@ function App() {
         }
       ],
     },
-
     {
-      path: "/register",
-      element: <Register />
-    },
-
-    {  
       path: "/cart",
-      element: <Cart />
+      element: <Cart />,
     },
-
     {
       path: "/history",
-      element: <purchaseHistory />
+      element: <PurchaseHistory />,
     }
-  
-
   ]);
 
   return (
-    
+    <TranslateContextProvider>
       <RouterProvider router={router} />
-    
+    </TranslateContextProvider>
   );
 }
 
