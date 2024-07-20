@@ -1,6 +1,9 @@
+// src/components/Login/Login.jsx
 import React, { useState, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthenticationContext } from '../../services/authentication/authentication';
+import { TranslateContext, TranslateContextProvider } from '../../custom/TranslateContext';
+import useTranslation from '../../custom/UseTranslation';
 import Swal from 'sweetalert2';
 import { Card, Form, Button, Row, Col } from 'react-bootstrap';
 import "./Login.css";
@@ -16,6 +19,8 @@ const Login = () => {
     const usernameRef = useRef(null);
     const passwordRef = useRef(null);
     const { handleLogin } = useContext(AuthenticationContext);
+    const { language, changeLanguageHandler } = useContext(TranslateContext);
+    const translate = useTranslation();
 
     const usernameHandler = (event) => {
         setUsername(event.target.value);
@@ -39,7 +44,7 @@ const Login = () => {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: 'Por favor, ingrese su nombre de usuario.',
+                text: translate('username_error'),
             });
             return;
         }
@@ -53,7 +58,7 @@ const Login = () => {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: 'Por favor, ingrese su contraseña.',
+                text: translate('password_error'),
             });
             return;
         }
