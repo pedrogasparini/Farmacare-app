@@ -1,11 +1,12 @@
-// Cart.jsx
+// src/components/Client/Cart/Cart.jsx
 import React from 'react';
+import Swal from 'sweetalert2';
 
-const Cart = ({ cart, removeFromCart, clearCart, finalizePurchase, userId }) => {
+const Cart = ({ cart, removeFromCart, clearCart, finalizePurchase }) => {
     const total = cart.reduce((acc, product) => acc + product.price, 0);
 
     const handleFinalizePurchase = () => {
-        finalizePurchase(userId, cart, total, clearCart);
+        finalizePurchase(); // Usa la función pasada como prop
     };
 
     return (

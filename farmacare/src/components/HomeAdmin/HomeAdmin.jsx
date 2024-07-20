@@ -1,9 +1,9 @@
-import Header from "../Header/Header";
+// import Header from "../Header/Header";
 
 const HomeAdmin = () => {
     return (
         <div>
-            <Header />
+            {/* <Header /> */}
             <h1>Home Admin</h1>
         </div>
     );
