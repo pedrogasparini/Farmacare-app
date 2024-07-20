@@ -5,6 +5,7 @@ import Navbar from '../../Navbar/Navbar';
 import DeleteModal from '../../ui/DeleteModal/DeleteModal';
 import AddProductForm from '../AddProduct';
 import "./HomeSysadmin.css"
+import Footer from '../../Footer/footer';
 
 const HomeSysadmin = () => {
     const [products, setProducts] = useState([]);
@@ -143,6 +144,7 @@ const HomeSysadmin = () => {
                             )}
                         </Card.Body>
                     </Card>
+                    <Footer/>
                     <DeleteModal
                         showDeleteModal={showDeleteModal}
                         onHide={() => setShowDeleteModal(false)}
