@@ -1,0 +1,35 @@
+/* HeaderAdmin.css */
+:root {
+    --header-color: #40ABA8;
+    --nav-bar-color: #AFF4C6;
+    --background: #BDE3FF;
+}
+
+.header-container {
+    background-color: var(--header-color);
+    width: 100%;
+}
+
+.logo-nav {
+    padding-left: 10px;
+}
+
+.nav-links-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: end;
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 60px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    margin-left: 10px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 13px;
+}
