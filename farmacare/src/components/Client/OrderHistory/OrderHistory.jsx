@@ -1,3 +1,39 @@
+
+
+import { Card, ListGroup, ListGroupItem } from 'react-bootstrap';
+
+const OrderHistory = ({ purchases }) => {
+
+    return (
+        <div>
+            <h2>Historial de Compras</h2>
+            {purchases && purchases.length > 0 ? (
+                purchases.map((purchase) => (
+                    <Card key={purchase.id} className="mb-3">
+                        <Card.Header>Compra realizada el {new Date(purchase.createdAt).toLocaleDateString()}</Card.Header>
+                        <Card.Body>
+                            <ListGroup variant="flush">
+                                {purchase.items.map((item) => (
+                                    <ListGroupItem key={item.id}>
+                                        <img src={item.image} alt={item.name} style={{ width: '50px', marginRight: '10px' }} />
+                                        {item.name} - Precio: ${item.price}
+                                    </ListGroupItem>
+                                ))}
+                            </ListGroup>
+                            <Card.Text className="mt-2">Total de la compra: ${purchase.total}</Card.Text>
+                        </Card.Body>
+                    </Card>
+                ))
+            ) : (
+                <p>No hay historial de compras disponible.</p>
+            )}
+        </div>
+    );
+};
+
+export default OrderHistory;
+
+
 // import React, { useState, useEffect } from 'react';
 
 // const OrderHistory = ({ userId }) => {

@@ -1,18 +1,23 @@
+
 import { useState, useEffect } from 'react';
 import { Card, Button, Row, Col } from 'react-bootstrap';
 import Header from '../../Header/Header';
 import Navbar from '../../Navbar/Navbar';
 import Cart from '../Cart/Cart';
+import OrderHistory from '../OrderHistory/OrderHistory';
 
 const HomeClient = () => {
     const [products, setProducts] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [cart, setCart] = useState([]);
+    const [purchases, setPurchases] = useState([]);
 
     useEffect(() => {
         fetchProducts()
             .then(data => setProducts(data))
             .catch(error => console.error('Error fetching products:', error));
+
+        fetchPurchases();
     }, []);
 
     const fetchProducts = async () => {
@@ -23,30 +28,18 @@ const HomeClient = () => {
         return await response.json();
     };
 
-    const addProduct = async (product) => {
+    const fetchPurchases = async () => {
         try {
-            const response = await fetch('http://localhost:8000/products', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(product),
-            });
+            const response = await fetch('http://localhost:8000/purchases');
             if (!response.ok) {
-                throw new Error('Failed to add product');
+                throw new Error('Failed to fetch purchases');
             }
-            const addedProduct = await response.json();
-            setProducts([...products, addedProduct]);
+            const data = await response.json();
+            setPurchases(data);
         } catch (error) {
-            console.error('Error adding product:', error);
+            console.error('Error fetching purchases:', error);
         }
     };
-
-    const handleCategorySelect = (category) => {
-        setSelectedCategory(category);
-    };
-
-    const filteredProducts = selectedCategory
-        ? products.filter(product => product.category === selectedCategory)
-        : products;
 
     const addToCart = (product) => {
         setCart([...cart, { ...product }]);
@@ -72,10 +65,19 @@ const HomeClient = () => {
             }
             clearCart();
             alert('Compra finalizada con éxito');
+            fetchPurchases();
         } catch (error) {
             console.error('Error finalizing purchase:', error);
         }
     };
+
+    const handleCategorySelect = (category) => {
+        setSelectedCategory(category);
+    };
+
+    const filteredProducts = selectedCategory
+        ? products.filter(product => product.category === selectedCategory)
+        : products;
 
     return (
         <>
@@ -92,7 +94,7 @@ const HomeClient = () => {
                                     {filteredProducts.map(product => (
                                         <Col key={product.id}>
                                             <Card className='card'>
-                                                <Card.Img className='card-img' src={product.image} alt={product.name}/>
+                                                <Card.Img className='card-img' src={product.image} alt={product.name} />
                                                 <Card.Body className='card-body'>
                                                     <Card.Title>{product.name}</Card.Title>
                                                     <Card.Text>Precio: ${product.price}</Card.Text>
@@ -118,9 +120,15 @@ const HomeClient = () => {
                         />
                     </div>
                 )}
+                <div className="order-history-container">
+                    {purchases && (
+                        <OrderHistory purchases={purchases} />
+                    )}
+                </div>
             </div>
         </>
     );
 };
 
 export default HomeClient;
+
