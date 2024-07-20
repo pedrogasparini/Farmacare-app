@@ -40,10 +40,10 @@
 // };
 
 // export default Navbar;
-
+import PropTypes from 'prop-types';
 import "./Navbar.css";
 
-const Navbar = ({ onSelectCategory }) => {
+const Navbar = ({ onSelectCategory, showNewCategoryButton }) => {
     const handleCategoryClick = (category) => {
         onSelectCategory(category);
     };
@@ -68,14 +68,23 @@ const Navbar = ({ onSelectCategory }) => {
                         <a href="#" className="navbar-link" onClick={() => handleCategoryClick('cuidado de la piel')}>Productos para el cuidado de la piel
                         </a>
                     </li>
-                    <li className="navbar-item">
-                        <button className="navbar-btn">Nueva categoría...</button>
-                    </li>
+                    {showNewCategoryButton && (
+                        <li className="navbar-item">
+                            <button className="navbar-btn">Nueva categoría...</button>
+                        </li>
+                    )}
                     
                 </ul>
             </nav>
         </div>
     );
 };
+Navbar.propTypes = {
+    onSelectCategory: PropTypes.func.isRequired,
+    showNewCategoryButton: PropTypes.bool,
+};
 
+Navbar.defaultProps = {
+    showNewCategoryButton: true, // Por defecto, el botón se mostrará
+};
 export default Navbar;

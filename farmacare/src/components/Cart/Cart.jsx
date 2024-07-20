@@ -1,49 +1,46 @@
-import { useState, useEffect } from 'react';
-import Header from '../Header/Header';
-import { Card } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import { Card, Button } from 'react-bootstrap';
 
-const Cart = () => {
-    const [cartProducts, setCartProducts] = useState([]);
-
-    useEffect(() => {
-        fetchCartProducts()
-            .then(data => setCartProducts(data))
-            .catch(error => console.error('Error fetching cart products:', error));
-    }, []);
-
-    const fetchCartProducts = async () => {
-        const response = await fetch('http://localhost:8000/cart');
-        if (!response.ok) {
-            throw new Error('Failed to fetch cart products');
-        }
-        return await response.json();
-    };
-
+const Cart = ({ cart, removeFromCart,  clearCart }) => {
     return (
-        <div>
-            <Header />
-            <h1>Carrito de Compras</h1>
-            <div>
-                {cartProducts.length > 0 ? (
-                    cartProducts.map(product => (
-                        <Card key={product.id}>
-                            <Card.Img variant="top" src={product.image} alt={product.name} />
+        <div className="shopping-cart">
+            <h2>Carrito de Compras</h2>
+            {cart.length === 0 ? (
+                <p>El carrito está vacío.</p>
+            ) : (
+                <div>
+                    {cart.map(item => (
+                        <Card key={item.id} className='cart-item'>
                             <Card.Body>
-                                <Card.Title>{product.name}</Card.Title>
-                                <Card.Text>Precio: ${product.price}</Card.Text>
-                                <Card.Text>Cantidad: {product.quantity}</Card.Text>
+                                <Card.Title>{item.name}</Card.Title>
+                                <Card.Text>Precio: ${item.price}</Card.Text>
+                                <Button variant="danger" onClick={() => removeFromCart(item.id)}>Eliminar</Button>
+                               
                             </Card.Body>
                         </Card>
-                    ))
-                ) : (
-                    <p>No hay productos en el carrito.</p>
-                )}
-            </div>
+                    ))}
+                    <Button variant="danger" onClick={clearCart}>Vaciar Carrito</Button>
+                </div>
+            )}
         </div>
     );
 };
 
+Cart.propTypes = {
+    cart: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.number.isRequired,
+            name: PropTypes.string.isRequired,
+            price: PropTypes.number.isRequired,
+            quantity: PropTypes.number.isRequired,
+        })
+    ).isRequired,
+    removeFromCart: PropTypes.func.isRequired,
+    updateCartQuantity: PropTypes.func.isRequired,
+    clearCart: PropTypes.func.isRequired,
+};
 export default Cart;
+
 
 // import { useState, useContext, useEffect } from 'react';
 // import { Button, Card, Form, Alert } from 'react-bootstrap';

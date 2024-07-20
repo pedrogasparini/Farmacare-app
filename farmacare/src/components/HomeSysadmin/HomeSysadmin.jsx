@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Card, Button, Row, Col } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+
 import Header from "../Header/Header";
 import Navbar from '../Navbar/Navbar';
 import DeleteModal from '../ui/DeleteModal/DeleteModal';
@@ -15,7 +15,7 @@ const HomeSysadmin = () => {
     const [showAddProductForm, setShowAddProductForm] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState(null);
 
-    const navigate = useNavigate();
+
 
     useEffect(() => {
         fetchProducts()
@@ -30,6 +30,8 @@ const HomeSysadmin = () => {
         }
         return await response.json();
     };
+
+
 
     const addProduct = async (product) => {
         const response = await fetch('http://localhost:8000/products', {
@@ -129,6 +131,7 @@ const HomeSysadmin = () => {
                                                             <Card.Text>Precio: ${product.price}</Card.Text>
                                                             <Button className="card-btn" variant="secondary" onClick={() => setEditingProduct(product)}>Editar</Button>
                                                             <Button className="card-btn" variant="danger" onClick={() => confirmDeleteProduct(product)}>Eliminar</Button>
+
                                                         </Card.Body>
                                                     </Card>
                                                 </Col>

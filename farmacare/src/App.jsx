@@ -7,7 +7,7 @@ import Register from "./components/Register/Register";
 import Protected from "./routes/Protected";
 import NotFound from "./routes/NotFound";
 import Cart from "./components/Cart/Cart";
-import purchaseHistory from "./components/PurchaseHistory/PurchaseHistory";
+//import purchaseHistory from "./components/PurchaseHistory/PurchaseHistory";
 
 
 
