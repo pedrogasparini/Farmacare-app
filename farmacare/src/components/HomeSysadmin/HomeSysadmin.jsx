@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, Button, Row, Col } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+
 import Header from "../Header/Header";
 import Navbar from '../Navbar/Navbar';
 import DeleteModal from '../ui/DeleteModal/DeleteModal';
@@ -12,8 +12,10 @@ const HomeSysadmin = () => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [productToDelete, setProductToDelete] = useState(null);
     const [editingProduct, setEditingProduct] = useState(null);
-    const [showAddProductForm, setShowAddProductForm] = useState(false); // Estado para mostrar el formulario
-    const navigate = useNavigate();
+    const [showAddProductForm, setShowAddProductForm] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+
+
 
     useEffect(() => {
         fetchProducts()
@@ -29,6 +31,8 @@ const HomeSysadmin = () => {
         return await response.json();
     };
 
+
+
     const addProduct = async (product) => {
         const response = await fetch('http://localhost:8000/products', {
             method: 'POST',
@@ -40,7 +44,7 @@ const HomeSysadmin = () => {
         }
         const addedProduct = await response.json();
         setProducts([...products, addedProduct]);
-        setShowAddProductForm(false); // Cierra el formulario después de agregar
+        setShowAddProductForm(false);
     };
 
     const updateProduct = async (product) => {
@@ -55,7 +59,7 @@ const HomeSysadmin = () => {
         const updatedProduct = await response.json();
         setProducts(products.map(p => (p.id === updatedProduct.id ? updatedProduct : p)));
         setEditingProduct(null);
-        setShowAddProductForm(false); // Cierra el formulario después de actualizar
+        setShowAddProductForm(false);
     };
 
     const handleAddOrUpdate = (product) => {
@@ -83,12 +87,20 @@ const HomeSysadmin = () => {
         setProductToDelete(null);
     };
 
+    const handleCategorySelect = (category) => {
+        setSelectedCategory(category);
+    };
+
+    const filteredProducts = selectedCategory
+        ? products.filter(product => product.category === selectedCategory)
+        : products;
+
     return (
         <>
             <Header />
             <div className="home-container">
                 <div className="nav-container">
-                    <Navbar />
+                    <Navbar onSelectCategory={handleCategorySelect} />
                 </div>
                 <div className="products-container">
                     <Card>
@@ -108,18 +120,18 @@ const HomeSysadmin = () => {
                                     >
                                         Agregar Producto
                                     </Button>
-                                    {products.length > 0 ? (
+                                    {filteredProducts.length > 0 ? (
                                         <Row xs={1} md={2} lg={3} className="g-4 mt-4">
-                                            {products.map(product => (
+                                            {filteredProducts.map(product => (
                                                 <Col key={product.id}>
                                                     <Card className='card'>
                                                         <Card.Img className='card-img' src={product.image} alt={product.name}/>
                                                         <Card.Body className='card-body'>
                                                             <Card.Title>{product.name}</Card.Title>
                                                             <Card.Text>Precio: ${product.price}</Card.Text>
-                                                            {/* <Button className="card-btn" variant="primary" onClick={() => addToCart(product.id)}>Agregar al carrito</Button> */}
                                                             <Button className="card-btn" variant="secondary" onClick={() => setEditingProduct(product)}>Editar</Button>
                                                             <Button className="card-btn" variant="danger" onClick={() => confirmDeleteProduct(product)}>Eliminar</Button>
+
                                                         </Card.Body>
                                                     </Card>
                                                 </Col>
