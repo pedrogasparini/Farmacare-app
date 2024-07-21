@@ -11,6 +11,7 @@ import Cart from './components/Client/Cart/Cart';
 import CartPage from './components/Client/Cart/CartPage';
 import OrderHistory from './components/Client/OrderHistory/OrderHistory';
 import UserList from './components/SysAdmin/UserList/UserList';
+import UsersHistory from './components/SysAdmin/UsersHistory/UsersHistory';
 
 function App() {
   const router = createBrowserRouter([
@@ -71,6 +72,10 @@ function App() {
     {
       path:"/userList",
       element: <UserList />
+    },
+    {
+      path: "/users-history",
+      element: <UsersHistory/>
     }
   ]);
 

@@ -5,11 +5,7 @@ import './Cart.css';
 
 const Cart = ({ cart, removeFromCart, clearCart, finalizePurchase }) => {
     // Asegúrate de que el precio es un número en el cálculo del total
-    const total = cart.reduce((acc, item) => acc + parseFloat(item.price), 0);
-
-    const handleFinalizePurchase = () => {
-        finalizePurchase(); // Usa la función pasada como prop
-    };
+    const total = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
     return (
         <>
@@ -30,6 +26,8 @@ const Cart = ({ cart, removeFromCart, clearCart, finalizePurchase }) => {
                                                     <div>
                                                         <h5>{item.name}</h5>
                                                         <p>Precio: ${item.price}</p>
+                                                        <p>Cantidad: {item.quantity}</p>
+                                                        <p>Total: ${item.price * item.quantity}</p>
                                                     </div>
                                                     <Button variant="danger" onClick={() => removeFromCart(item.id)}>
                                                         Eliminar
@@ -42,7 +40,7 @@ const Cart = ({ cart, removeFromCart, clearCart, finalizePurchase }) => {
                                             <Button variant="secondary" onClick={clearCart}>
                                                 Vaciar Carrito
                                             </Button>
-                                            <Button variant="success" onClick={handleFinalizePurchase}>
+                                            <Button variant="success" onClick={finalizePurchase}>
                                                 Finalizar Compra
                                             </Button>
                                         </div>
