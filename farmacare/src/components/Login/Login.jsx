@@ -28,16 +28,19 @@ const Login = () => {
     };
 
     const redirectToHome = (userType) => {
-        // Define redirection logic based on user type
-        if (userType === 'sysAdmin') {
-            navigate('/HomeSysadmin'); // Redirige al home del administrador
-        } else if (userType === 'admin') {
-            navigate('/HomeAdmin'); // Redirige al home del usuario
-        }else if(userType ==='client'){   
-                navigate('/HomeClient')
-        }
-        else {
-            navigate('/'); // Redirige a una página por defecto
+        switch (userType) {
+            case 'client':
+                navigate('/homeClient');
+                break;
+            case 'admin':
+                navigate('/homeAdmin');
+                break;
+            case 'sysAdmin':
+                navigate('/homeSysadmin');
+                break;
+            default:
+                navigate('/protected');
+                break;
         }
     };
 
@@ -90,23 +93,6 @@ const Login = () => {
                 title: 'Oops...',
                 text: error.message,
             });
-        }
-    };
-
-    const redirectToHome = (userType) => {
-        switch (userType) {
-            case 'client':
-                navigate('/homeClient');
-                break;
-            case 'admin':
-                navigate('/homeAdmin');
-                break;
-            case 'sysAdmin':
-                navigate('/homeSysadmin');
-                break;
-            default:
-                navigate('/protected');
-                break;
         }
     };
 
