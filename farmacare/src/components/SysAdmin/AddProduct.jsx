@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 
 const AddProduct = ({ productToEdit, onAddOrUpdate, onCancel }) => {
-    const [product, setProduct] = useState({ name: '', price: '', image: '', category: '' });
+    const [product, setProduct] = useState({ name: '', price: '', image: '', category: '', stock: '' });
 
     useEffect(() => {
         if (productToEdit) {
             setProduct(productToEdit);
         } else {
-            setProduct({ name: '', price: '', image: '', category: '' });
+            setProduct({ name: '', price: '', image: '', category: '', stock: '' });
         }
     }, [productToEdit]);
 
@@ -54,6 +54,17 @@ const AddProduct = ({ productToEdit, onAddOrUpdate, onCancel }) => {
                     value={product.image}
                     onChange={handleInputChange}
                     placeholder="Ingresa la URL de la imagen del producto"
+                />
+            </Form.Group>
+
+            <Form.Group controlId="formProductStock">
+                <Form.Label>Stock Del Producto</Form.Label>
+                <Form.Control
+                    type="number"
+                    name="stock"
+                    value={product.stock}
+                    onChange={handleInputChange}
+                    placeholder="Ingresa el nuevo stock del producto"
                 />
             </Form.Group>
 

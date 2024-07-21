@@ -1,4 +1,3 @@
-// HeaderSysAdmin.jsx
 import "./HeaderSysAdmin.css";
 import { Navbar, Nav } from "react-bootstrap";
 import { FaUsers, FaPlus, FaSignOutAlt, FaHistory } from 'react-icons/fa';

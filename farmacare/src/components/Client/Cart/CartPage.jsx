@@ -1,4 +1,3 @@
-// src/components/Client/Cart/CartPage.jsx
 import React from 'react';
 import { useCart } from '../../../services/CartContext';
 import Cart from '../Cart/Cart';
@@ -7,11 +6,9 @@ import Swal from 'sweetalert2';
 const CartPage = () => {
     const { cart, removeFromCart, clearCart, total } = useCart();
 
-    // Aquí obtén el userId del usuario autenticado (por ejemplo, desde localStorage)
     const getUserId = () => {
-        // Suponiendo que tienes el ID del usuario en el localStorage, ajusta según tu implementación
-        const user = JSON.parse(localStorage.getItem('user')); // Ajusta esta línea según cómo almacenas la información del usuario
-        return user ? user.id : null; // Asegúrate de manejar casos en los que el usuario no esté autenticado
+        const user = JSON.parse(localStorage.getItem('user'));
+        return user ? user.id : null;
     };
 
     const finalizePurchase = async () => {
@@ -24,19 +21,40 @@ const CartPage = () => {
 
         try {
             const token = localStorage.getItem('authToken');
+            
+            // Verificar stock antes de finalizar la compra
+            const outOfStockItems = [];
+            await Promise.all(cart.map(async (item) => {
+                const response = await fetch(`http://localhost:8000/products/${item.id}`);
+                const product = await response.json();
+                if (item.quantity > product.stock) {
+                    outOfStockItems.push(item.name);
+                }
+            }));
+
+            if (outOfStockItems.length > 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Stock insuficiente',
+                    text: `Los siguientes productos no tienen suficiente stock: ${outOfStockItems.join(', ')}.`,
+                    confirmButtonText: 'Aceptar'
+                });
+                return;
+            }
+
             const response = await fetch('http://localhost:8000/purchases', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` // Incluye el token en el encabezado
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    userId: userId, // Aquí pasamos el ID del usuario correcto
+                    userId: userId,
                     items: cart.map(item => ({
                         productId: item.id,
                         name: item.name,
                         price: item.price,
-                        quantity: 1 // Puedes cambiar esto si necesitas cantidades variables
+                        quantity: item.quantity
                     })),
                     total: total,
                     date: new Date().toISOString()
@@ -46,6 +64,20 @@ const CartPage = () => {
             if (!response.ok) {
                 throw new Error('Error al finalizar la compra');
             }
+
+            // Actualizar stock en el backend
+            await Promise.all(cart.map(async (item) => {
+                await fetch(`http://localhost:8000/products/${item.id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        stock: item.stock - item.quantity
+                    })
+                });
+            }));
 
             clearCart(); // Limpia el carrito después de la compra exitosa
             Swal.fire('Compra finalizada con éxito', '', 'success');

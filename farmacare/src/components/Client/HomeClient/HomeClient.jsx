@@ -1,26 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Row, Col } from 'react-bootstrap';
+import { Card, Button, Row, Col, Form } from 'react-bootstrap';
 import HeaderClient from '../HeaderClient/HeaderClient';
 import Navbar from '../../Navbar/Navbar';
-import Cart from '../Cart/Cart';
+import Footer from '../../Footer/footer';
 import Swal from 'sweetalert2'; 
 import { useCart } from '../../../services/CartContext';
-import Footer from '../../Footer/footer';
+import "./HomeClient.css"
 
 const HomeClient = () => {
     const [products, setProducts] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
-    const [cart, setCart] = useState([]);
-    const [purchases, setPurchases] = useState([]);
-
+    const [selectedQuantity, setSelectedQuantity] = useState({});
     const { addToCart: addToCartContext } = useCart(); // Usa el hook del carrito
 
     useEffect(() => {
         fetchProducts()
             .then(data => setProducts(data))
             .catch(error => console.error('Error fetching products:', error));
-
-        fetchPurchases();
     }, []);
 
     const fetchProducts = async () => {
@@ -31,85 +27,46 @@ const HomeClient = () => {
         return await response.json();
     };
 
-    const fetchPurchases = async () => {
-        try {
-            const response = await fetch('http://localhost:8000/purchases');
-            if (!response.ok) {
-                throw new Error('Failed to fetch purchases');
-            }
-            const data = await response.json();
-            setPurchases(data);
-        } catch (error) {
-            console.error('Error fetching purchases:', error);
-        }
-    };
-
-    const addToCart = (product) => {
-        setCart([...cart, { ...product }]);
-        addToCartContext(product); // Si usas un contexto para añadir al carrito
-    };
-
-    const removeFromCart = (productId) => {
-        setCart(cart.filter(item => item.id !== productId));
-    };
-
-    const clearCart = () => {
-        setCart([]);
-    };
-
-    const finalizePurchase = async () => {
-        try {
-            const response = await fetch('http://localhost:8000/purchases', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    items: cart,
-                    total: cart.reduce((acc, product) => acc + product.price, 0),
-                }),
-            });
-            if (!response.ok) {
-                throw new Error('Failed to finalize purchase');
-            }
-            clearCart();
-            Swal.fire({
-                icon: 'success',
-                title: 'Compra finalizada con éxito',
-                confirmButtonText: 'Aceptar',
-            });
-            fetchPurchases();
-        } catch (error) {
-            console.error('Error finalizing purchase:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'No se pudo finalizar la compra',
-            });
-        }
-    };
-
     const handleCategorySelect = (category) => {
         setSelectedCategory(category);
+    };
+
+    const handleQuantityChange = (productId, quantity) => {
+        setSelectedQuantity({
+            ...selectedQuantity,
+            [productId]: quantity
+        });
+    };
+
+    const handleAddToCart = async (product) => {
+        const quantity = selectedQuantity[product.id] || 1;
+        if (quantity > product.stock) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Stock insuficiente',
+                text: `No hay suficiente stock de ${product.name}.`,
+                confirmButtonText: 'Aceptar'
+            });
+            return;
+        }
+        addToCartContext({ ...product, quantity });
+        Swal.fire({
+            icon: 'success',
+            title: 'Producto Añadido',
+            text: `${product.name} (Cantidad: ${quantity}) ha sido añadido al carrito.`,
+            confirmButtonText: 'Aceptar'
+        });
     };
 
     const filteredProducts = selectedCategory
         ? products.filter(product => product.category === selectedCategory)
         : products;
 
-    const handleAddToCart = (product) => {
-        addToCart(product);
-        Swal.fire({
-            icon: 'success',
-            title: 'Producto Añadido',
-            text: `${product.name} ha sido añadido al carrito.`,
-            confirmButtonText: 'Aceptar'
-        });
-    };
-
     return (
         <>
             <HeaderClient />
             <div className="home-container">
-                    <Navbar onSelectCategory={handleCategorySelect} showNewCategoryButton={false} />
+                <Navbar onSelectCategory={handleCategorySelect} showNewCategoryButton={false} />
                 
                 <div className="products-container">
                     <Card>
@@ -123,6 +80,17 @@ const HomeClient = () => {
                                                 <Card.Body className='card-body'>
                                                     <Card.Title>{product.name}</Card.Title>
                                                     <Card.Text>Precio: ${product.price}</Card.Text>
+                                                    <Card.Text>Stock: {product.stock}</Card.Text>
+                                                    <Form.Group 
+                                                        className='select-cant-prod' controlId={`quantity-${product.id}`} >
+                                                        <Form.Label>Cantidad</Form.Label>
+                                                        <Form.Control
+                                                            type="number"
+                                                            min="1"
+                                                            value={selectedQuantity[product.id] || 1}
+                                                            onChange={(e) => handleQuantityChange(product.id, parseInt(e.target.value))}
+                                                        />
+                                                    </Form.Group>
                                                     <Button className="add-product-cart-btn" variant="success" onClick={() => handleAddToCart(product)}>
                                                         Agregar al Carrito
                                                     </Button>
@@ -136,11 +104,9 @@ const HomeClient = () => {
                             )}
                         </Card.Body>
                     </Card>
-                    
                 </div>
-               
             </div>
-                <Footer />
+            <Footer />
         </>
     );
 };
