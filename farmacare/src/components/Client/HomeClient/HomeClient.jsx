@@ -11,7 +11,7 @@ const HomeClient = () => {
     const [products, setProducts] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [selectedQuantity, setSelectedQuantity] = useState({});
-    const { addToCart: addToCartContext } = useCart(); // Usa el hook del carrito
+    const { addToCart } = useCart();
 
     useEffect(() => {
         fetchProducts()
@@ -49,7 +49,7 @@ const HomeClient = () => {
             });
             return;
         }
-        addToCartContext({ ...product, quantity });
+        addToCart({ ...product, quantity });
         Swal.fire({
             icon: 'success',
             title: 'Producto Añadido',

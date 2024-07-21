@@ -4,7 +4,7 @@ import { AuthenticationContext } from '../../services/authentication/authenticat
 import Swal from 'sweetalert2';
 import { Card, Form, Button, Row, Col } from 'react-bootstrap';
 import "./Login.css";
-import useWindowSize from '../../custom/useWindowSize';
+
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -18,7 +18,7 @@ const Login = () => {
     const passwordRef = useRef(null);
     const { handleLogin } = useContext(AuthenticationContext);
 
-    const { width, height } = useWindowSize();
+
 
 
     const usernameHandler = (event) => {
@@ -141,8 +141,6 @@ const Login = () => {
                                 <Button variant="secondary" type="submit">
                                     Iniciar Sesión
                                 </Button>
-                                <p style={{ marginTop: "40px" }}>Alto de pantalla: {height}px 🖥️</p>
-                                <p style={{ marginTop: "40px" }}>Ancho de pantalla: {width}px 🖥️</p>
                             </Col>
                         </Row>
                     </Form>

@@ -95,9 +95,7 @@ const HomeAdmin = () => {
         <>
             <HeaderAdmin />
             <div className="home-container">
-                <div className="nav-container">
                     <Navbar onSelectCategory={handleCategorySelect} />
-                </div>
                 <div className="products-container">
                     <Card>
                         <Card.Body>
@@ -145,7 +143,6 @@ const HomeAdmin = () => {
                             )}
                         </Card.Body>
                     </Card>
-                    <Footer />
                     <DeleteModal
                         showDeleteModal={showDeleteModal}
                         onHide={() => setShowDeleteModal(false)}
@@ -153,6 +150,7 @@ const HomeAdmin = () => {
                     />
                 </div>
             </div>
+                    <Footer />
         </>
     );
 };

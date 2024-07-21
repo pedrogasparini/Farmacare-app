@@ -1,37 +1,48 @@
-// src/services/CartContext.jsx
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
-export const CartContext = createContext();
+const CartContext = createContext();
+
+export const useCart = () => {
+    return useContext(CartContext);
+};
 
 export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState([]);
-    const [total, setTotal] = useState(0);
-
-    useEffect(() => {
-        const newTotal = cart.reduce((acc, product) => acc + product.price, 0);
-        setTotal(newTotal);
-    }, [cart]);
 
     const addToCart = (product) => {
-        setCart([...cart, product]);
+        setCart((prevCart) => {
+            const existingProductIndex = prevCart.findIndex(item => item.id === product.id);
+            if (existingProductIndex >= 0) {
+                const updatedCart = [...prevCart];
+                updatedCart[existingProductIndex].quantity += product.quantity;
+                return updatedCart;
+            } else {
+                return [...prevCart, product];
+            }
+        });
     };
 
-    const removeFromCart = (productId) => {
-        setCart(cart.filter(product => product.id !== productId));
+    const removeFromCart = (id) => {
+        setCart((prevCart) => prevCart.filter(item => item.id !== id));
     };
 
     const clearCart = () => {
         setCart([]);
     };
 
+    const total = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+
+    const value = {
+        cart,
+        addToCart,
+        removeFromCart,
+        clearCart,
+        total,
+    };
+
     return (
-        <CartContext.Provider value={{ cart, total, addToCart, removeFromCart, clearCart }}>
+        <CartContext.Provider value={value}>
             {children}
         </CartContext.Provider>
     );
-};
-
-// Custom hook for using cart context
-export const useCart = () => {
-    return useContext(CartContext);
 };
