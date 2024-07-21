@@ -27,15 +27,21 @@ export const AuthenticationContextProvider = ({ children }) => {
             console.log('Respuesta del servidor:', responseData);
 
             if (!response.ok) {
+                // Maneja errores en la respuesta
                 throw new Error(responseData.message || 'Error al iniciar sesión');
             }
 
-            localStorage.setItem("user", JSON.stringify(responseData));
-            setUser(responseData);
-            return responseData; 
+            // Valida la respuesta antes de actualizar el estado
+            if (responseData && responseData.userType) {
+                localStorage.setItem("user", JSON.stringify(responseData));
+                setUser(responseData);
+                return responseData; 
+            } else {
+                throw new Error('Datos de usuario inválidos');
+            }
         } catch (error) {
             console.error('Error en handleLogin:', error);
-            throw error;
+            throw error; // Propaga el error para que pueda ser manejado en el componente
         }
     };
 
@@ -54,6 +60,7 @@ export const AuthenticationContextProvider = ({ children }) => {
             console.log('Respuesta del servidor:', responseData);
 
             if (!response.ok) {
+                // Maneja errores en la respuesta
                 throw new Error(responseData.message || 'Error al registrar');
             }
 
@@ -61,7 +68,7 @@ export const AuthenticationContextProvider = ({ children }) => {
             setUser(responseData);
         } catch (error) {
             console.error('Error en handleRegister:', error);
-            throw error;
+            throw error; // Propaga el error para que pueda ser manejado en el componente
         }
     };
 
