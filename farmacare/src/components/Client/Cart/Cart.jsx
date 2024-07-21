@@ -1,11 +1,11 @@
 import React from 'react';
 import { Button, Card, ListGroup, Container, Row, Col } from 'react-bootstrap';
-import Swal from 'sweetalert2';
 import HeaderClient from '../HeaderClient/HeaderClient';
 import './Cart.css';
 
 const Cart = ({ cart, removeFromCart, clearCart, finalizePurchase }) => {
-    const total = cart.reduce((acc, product) => acc + product.price, 0);
+    // Asegúrate de que el precio es un número en el cálculo del total
+    const total = cart.reduce((acc, item) => acc + parseFloat(item.price), 0);
 
     const handleFinalizePurchase = () => {
         finalizePurchase(); // Usa la función pasada como prop
@@ -37,7 +37,7 @@ const Cart = ({ cart, removeFromCart, clearCart, finalizePurchase }) => {
                                                 </ListGroup.Item>
                                             ))}
                                         </ListGroup>
-                                        <h3 className="mt-3">Total: ${total}</h3>
+                                        <h3 className="mt-3">Total: ${total.toFixed(2)}</h3>
                                         <div className="d-flex justify-content-between mt-3">
                                             <Button variant="secondary" onClick={clearCart}>
                                                 Vaciar Carrito

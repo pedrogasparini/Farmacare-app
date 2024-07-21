@@ -1,30 +1,19 @@
-
-
-
-// HomeClient.jsx
 import React, { useState, useEffect } from 'react';
-
 import { Card, Button, Row, Col } from 'react-bootstrap';
 import HeaderClient from '../HeaderClient/HeaderClient';
 import Navbar from '../../Navbar/Navbar';
-
 import Cart from '../Cart/Cart';
-import OrderHistory from '../OrderHistory/OrderHistory';
-
-import Swal from 'sweetalert2'; // Importa SweetAlert2
+import Swal from 'sweetalert2'; 
 import { useCart } from '../../../services/CartContext';
 import Footer from '../../Footer/footer';
-
 
 const HomeClient = () => {
     const [products, setProducts] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
-
     const [cart, setCart] = useState([]);
     const [purchases, setPurchases] = useState([]);
 
-    const { addToCart } = useCart(); // Usa el hook del carrito
-
+    const { addToCart: addToCartContext } = useCart(); // Usa el hook del carrito
 
     useEffect(() => {
         fetchProducts()
@@ -42,7 +31,6 @@ const HomeClient = () => {
         return await response.json();
     };
 
-
     const fetchPurchases = async () => {
         try {
             const response = await fetch('http://localhost:8000/purchases');
@@ -58,6 +46,7 @@ const HomeClient = () => {
 
     const addToCart = (product) => {
         setCart([...cart, { ...product }]);
+        addToCartContext(product); // Si usas un contexto para añadir al carrito
     };
 
     const removeFromCart = (productId) => {
@@ -73,17 +62,30 @@ const HomeClient = () => {
             const response = await fetch('http://localhost:8000/purchases', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ items: cart, total: cart.reduce((acc, product) => acc + product.price, 0) }),
+                body: JSON.stringify({
+                    items: cart,
+                    total: cart.reduce((acc, product) => acc + product.price, 0),
+                }),
             });
             if (!response.ok) {
                 throw new Error('Failed to finalize purchase');
             }
             clearCart();
-            alert('Compra finalizada con éxito');
+            Swal.fire({
+                icon: 'success',
+                title: 'Compra finalizada con éxito',
+                confirmButtonText: 'Aceptar',
+            });
             fetchPurchases();
         } catch (error) {
             console.error('Error finalizing purchase:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No se pudo finalizar la compra',
+            });
         }
+    };
 
     const handleCategorySelect = (category) => {
         setSelectedCategory(category);
@@ -101,24 +103,14 @@ const HomeClient = () => {
             text: `${product.name} ha sido añadido al carrito.`,
             confirmButtonText: 'Aceptar'
         });
-
     };
-
-    const handleCategorySelect = (category) => {
-        setSelectedCategory(category);
-    };
-
-    const filteredProducts = selectedCategory
-        ? products.filter(product => product.category === selectedCategory)
-        : products;
 
     return (
         <>
             <HeaderClient />
             <div className="home-container">
-                <div className="nav-container">
                     <Navbar onSelectCategory={handleCategorySelect} showNewCategoryButton={false} />
-                </div>
+                
                 <div className="products-container">
                     <Card>
                         <Card.Body>
@@ -131,7 +123,9 @@ const HomeClient = () => {
                                                 <Card.Body className='card-body'>
                                                     <Card.Title>{product.name}</Card.Title>
                                                     <Card.Text>Precio: ${product.price}</Card.Text>
-                                                    <Button className="card-btn" variant="success" onClick={() => handleAddToCart(product)}>Agregar al Carrito</Button>
+                                                    <Button className="add-product-cart-btn" variant="success" onClick={() => handleAddToCart(product)}>
+                                                        Agregar al Carrito
+                                                    </Button>
                                                 </Card.Body>
                                             </Card>
                                         </Col>
@@ -142,29 +136,13 @@ const HomeClient = () => {
                             )}
                         </Card.Body>
                     </Card>
-                    <Footer/>
+                    
                 </div>
-
-                {cart.length > 0 && (
-                    <div className="cart-container">
-                        <Cart
-                            cart={cart}
-                            removeFromCart={removeFromCart}
-                            clearCart={clearCart}
-                            finalizePurchase={finalizePurchase}
-                        />
-                    </div>
-                )}
-                <div className="order-history-container">
-                    {purchases && (
-                        <OrderHistory purchases={purchases} />
-                    )}
-                </div>
-
+               
             </div>
+                <Footer />
         </>
     );
 };
 
 export default HomeClient;
-

@@ -1,15 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Card, Button, Row, Col } from 'react-bootstrap';
+import HeaderSysAdmin from '../HeaderSysAdmin/HeaderSysAdmin';
 import Navbar from '../../Navbar/Navbar';
 import DeleteModal from '../../ui/DeleteModal/DeleteModal';
 import AddProduct from '../AddProduct';
 import AddUser from '../AddUser';
-import HeaderSysAdmin from '../HeaderSysAdmin/HeaderSysAdmin';
-import Navbar from '../../Navbar/Navbar';
-import DeleteModal from '../../ui/DeleteModal/DeleteModal';
-import AddProduct from '../../SysAdmin/AddProduct';
-import "./HomeSysadmin.css"
 import Footer from '../../Footer/footer';
+import "./HomeSysadmin.css";
 
 const HomeSysadmin = () => {
     const [products, setProducts] = useState([]);
@@ -97,9 +94,7 @@ const HomeSysadmin = () => {
         : products;
 
     const handleAddUser = async (user) => {
-
         console.log('Nuevo usuario:', user);
-
         const response = await fetch('http://localhost:8000/users', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -108,27 +103,20 @@ const HomeSysadmin = () => {
         if (!response.ok) {
             throw new Error('Failed to add user');
         }
-
         setShowAddUserForm(false);
     };
 
     return (
         <>
-
             <HeaderSysAdmin />
-
             <div className="home-container">
-                <div className="nav-container">
+                
                     <Navbar onSelectCategory={handleCategorySelect} />
-                </div>
+                
                 <div className="products-container">
                     <Card>
                         <Card.Body>
-
-                            {showAddProductForm ? (
-
                             {showAddProductForm || editingProduct ? (
-
                                 <AddProduct
                                     productToEdit={editingProduct}
                                     onAddOrUpdate={handleAddOrUpdate}
@@ -185,7 +173,7 @@ const HomeSysadmin = () => {
                             )}
                         </Card.Body>
                     </Card>
-                    <Footer />
+                    
                     <DeleteModal
                         showDeleteModal={showDeleteModal}
                         onHide={() => setShowDeleteModal(false)}
@@ -193,6 +181,7 @@ const HomeSysadmin = () => {
                     />
                 </div>
             </div>
+            <Footer />
         </>
     );
 };
