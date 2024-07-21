@@ -1,3 +1,12 @@
+.nav-container {
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 250px;
+    background-color: #AFF4C6;
+    padding: 20px;
+    box-sizing: border-box;
+}
 .sidebar-container {
     height: 100%;
     width: 200px;
