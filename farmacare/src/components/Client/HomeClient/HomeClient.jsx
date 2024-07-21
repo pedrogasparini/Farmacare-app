@@ -5,6 +5,7 @@ import HeaderClient from '../HeaderClient/HeaderClient';
 import Navbar from '../../Navbar/Navbar';
 import Swal from 'sweetalert2'; // Importa SweetAlert2
 import { useCart } from '../../../services/CartContext';
+import Footer from '../../Footer/footer';
 
 const HomeClient = () => {
     const [products, setProducts] = useState([]);
@@ -73,6 +74,7 @@ const HomeClient = () => {
                             )}
                         </Card.Body>
                     </Card>
+                    <Footer/>
                 </div>
             </div>
         </>
