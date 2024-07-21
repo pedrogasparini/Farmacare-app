@@ -15,8 +15,6 @@ const HomeAdmin = () => {
     const [showAddProductForm, setShowAddProductForm] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState(null);
 
-
-
     useEffect(() => {
         fetchProducts()
             .then(data => setProducts(data))
@@ -30,8 +28,6 @@ const HomeAdmin = () => {
         }
         return await response.json();
     };
-
-
 
     const addProduct = async (product) => {
         const response = await fetch('http://localhost:8000/products', {
@@ -105,11 +101,14 @@ const HomeAdmin = () => {
                 <div className="products-container">
                     <Card>
                         <Card.Body>
-                            {showAddProductForm ? (
+                            {showAddProductForm || editingProduct ? (
                                 <AddProduct
                                     productToEdit={editingProduct}
                                     onAddOrUpdate={handleAddOrUpdate}
-                                    onCancel={() => setShowAddProductForm(false)}
+                                    onCancel={() => {
+                                        setShowAddProductForm(false);
+                                        setEditingProduct(null);
+                                    }}
                                 />
                             ) : (
                                 <>
@@ -129,9 +128,11 @@ const HomeAdmin = () => {
                                                         <Card.Body className='card-body'>
                                                             <Card.Title>{product.name}</Card.Title>
                                                             <Card.Text>Precio: ${product.price}</Card.Text>
-                                                            <Button className="card-btn" variant="secondary" onClick={() => setEditingProduct(product)}>Editar</Button>
+                                                            <Button className="card-btn" variant="secondary" onClick={() => {
+                                                                setEditingProduct(product);
+                                                                setShowAddProductForm(true);
+                                                            }}>Editar</Button>
                                                             <Button className="card-btn" variant="danger" onClick={() => confirmDeleteProduct(product)}>Eliminar</Button>
-
                                                         </Card.Body>
                                                     </Card>
                                                 </Col>
@@ -144,7 +145,7 @@ const HomeAdmin = () => {
                             )}
                         </Card.Body>
                     </Card>
-                    <Footer/>
+                    <Footer />
                     <DeleteModal
                         showDeleteModal={showDeleteModal}
                         onHide={() => setShowDeleteModal(false)}
