@@ -20,14 +20,14 @@ const HeaderAdmin = () => {
     return (
         <div className="header-container">
             <Navbar expand="lg">
-                <Navbar.Brand href="#home" className="logo-nav">
+                <Navbar.Brand className="logo-nav">
                     <img
                         src="/src/assets/img/logo.png"
                         width="150"
                         height="auto"
                         className="d-inline-block align-top"
                         alt="Farmacare Logo"
-                        onClick={() => navigate("/home")}
+                        onClick={() => navigate("/HomeAdmin")}
                     />
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
