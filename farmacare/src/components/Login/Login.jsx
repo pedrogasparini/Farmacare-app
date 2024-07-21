@@ -27,10 +27,24 @@ const Login = () => {
         setErrors((prevErrors) => ({ ...prevErrors, password: false }));
     };
 
+    const redirectToHome = (userType) => {
+        // Define redirection logic based on user type
+        if (userType === 'sysAdmin') {
+            navigate('/HomeSysadmin'); // Redirige al home del administrador
+        } else if (userType === 'admin') {
+            navigate('/HomeAdmin'); // Redirige al home del usuario
+        }else if(userType ==='client'){   
+                navigate('/HomeClient')
+        }
+        else {
+            navigate('/'); // Redirige a una página por defecto
+        }
+    };
+
     const submitHandler = async (event) => {
         event.preventDefault();
-
-        if (usernameRef.current.value.length === 0) {
+    
+        if (username.trim().length === 0) {
             usernameRef.current.focus();
             setErrors((prevErrors) => ({
                 ...prevErrors,
@@ -43,8 +57,8 @@ const Login = () => {
             });
             return;
         }
-
-        if (passwordRef.current.value.length === 0) {
+    
+        if (password.trim().length === 0) {
             passwordRef.current.focus();
             setErrors((prevErrors) => ({
                 ...prevErrors,
@@ -57,7 +71,7 @@ const Login = () => {
             });
             return;
         }
-
+    
         try {
             const data = await handleLogin(username, password);
 

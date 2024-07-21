@@ -1,16 +1,14 @@
-// src/custom/UseTranslation.jsx
 import { useContext } from "react";
-import { dictionary_translations } from "./DictionayTranslations";
-import { TranslateContext } from "./TranslateContext";
+import { TraductionDictionaryContext } from "./TraductionDictionary";
 
-const useTranslation = () => {
-    const { language } = useContext(TranslateContext);
-
-    return (key) => {
-        const translation = dictionary_translations[language]?.find((t) => t.key === key)?.value
-            || dictionary_translations["en"].find((t) => t.key === key)?.value;
-        return translation || key;
-    };
+const useTraduction = () => {
+  const context = useContext(TraductionDictionaryContext);
+  if (!context) {
+    throw new Error(
+      "useTraduction must be used within a TraductionDictionaryProvider"
+    );
+  }
+  return context;
 };
 
-export default useTranslation;
+export default useTraduction;

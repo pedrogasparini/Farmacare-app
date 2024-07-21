@@ -1,8 +1,8 @@
-// src/components/Client/Cart/Cart.jsx
 import React from 'react';
+import { Button, Card, ListGroup, Container, Row, Col } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import HeaderClient from '../HeaderClient/HeaderClient';
-import "./Cart.css"
+import './Cart.css';
 
 const Cart = ({ cart, removeFromCart, clearCart, finalizePurchase }) => {
     const total = cart.reduce((acc, product) => acc + product.price, 0);
@@ -36,6 +36,47 @@ const Cart = ({ cart, removeFromCart, clearCart, finalizePurchase }) => {
                     <p>No hay productos en el carrito</p>
                 )}
             </div></>
+        <Container>
+            <Row className="justify-content-center">
+                <Col md={8}>
+                    <Card className="mt-4 cart-card">
+                        <Card.Header className="cart-header">
+                            <h2>Carrito de Compras</h2>
+                        </Card.Header>
+                        <Card.Body>
+                            {cart.length > 0 ? (
+                                <div>
+                                    <ListGroup variant="flush">
+                                        {cart.map((item, index) => (
+                                            <ListGroup.Item key={index} className="cart-item">
+                                                <div>
+                                                    <h5>{item.name}</h5>
+                                                    <p>Precio: ${item.price}</p>
+                                                </div>
+                                                <Button variant="danger" onClick={() => removeFromCart(item.id)}>
+                                                    Eliminar
+                                                </Button>
+                                            </ListGroup.Item>
+                                        ))}
+                                    </ListGroup>
+                                    <h3 className="mt-3">Total: ${total}</h3>
+                                    <div className="d-flex justify-content-between mt-3">
+                                        <Button variant="secondary" onClick={clearCart}>
+                                            Vaciar Carrito
+                                        </Button>
+                                        <Button variant="success" onClick={handleFinalizePurchase}>
+                                            Finalizar Compra
+                                        </Button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <p>No hay productos en el carrito</p>
+                            )}
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 
