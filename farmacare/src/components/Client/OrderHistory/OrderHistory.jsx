@@ -1,7 +1,10 @@
+// import React, { useState, useEffect } from 'react';
+
 // src/components/Client/OrderHistory/OrderHistory.jsx
 import React, { useEffect, useState } from 'react';
 import './OrderHistory.css'; // Asegúrate de la ruta correcta
 import HeaderClient from '../HeaderClient/HeaderClient';
+
 
 const OrderHistory = () => {
     const [purchases, setPurchases] = useState([]);
