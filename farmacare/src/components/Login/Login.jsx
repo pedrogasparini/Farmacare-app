@@ -74,8 +74,7 @@ const Login = () => {
     
         try {
             const data = await handleLogin(username, password);
-    
-            // Verifica que la respuesta contenga la propiedad userType
+
             if (data && data.userType) {
                 redirectToHome(data.userType);
             } else {
@@ -91,6 +90,23 @@ const Login = () => {
                 title: 'Oops...',
                 text: error.message,
             });
+        }
+    };
+
+    const redirectToHome = (userType) => {
+        switch (userType) {
+            case 'client':
+                navigate('/homeClient');
+                break;
+            case 'admin':
+                navigate('/homeAdmin');
+                break;
+            case 'sysAdmin':
+                navigate('/homeSysadmin');
+                break;
+            default:
+                navigate('/protected');
+                break;
         }
     };
 
@@ -115,8 +131,7 @@ const Login = () => {
                             <Form.Control
                                 placeholder="Ingrese su nombre de usuario..."
                                 type="text"
-                                className={`custom-input ${errors.username ? 'border border-danger' : ''
-                                    }`}
+                                className={`custom-input ${errors.username ? 'border border-danger' : ''}`}
                                 ref={usernameRef}
                                 onChange={usernameHandler}
                             />
@@ -126,8 +141,7 @@ const Login = () => {
                                 placeholder="Ingrese su contraseña..."
                                 type="password"
                                 value={password}
-                                className={`custom-input ${errors.password ? 'border border-danger' : ''
-                                    }`}
+                                className={`custom-input ${errors.password ? 'border border-danger' : ''}`}
                                 ref={passwordRef}
                                 onChange={passwordHandler}
                             />
