@@ -25,11 +25,7 @@ const Navbar = ({ onSelectCategory, showNewCategoryButton = true }) => {
                     <a href="#" className="navbar-link" onClick={() => handleCategoryClick('productos para el cuidado de la piel')}>Productos para el cuidado de la piel
                     </a>
                     </li>
-                    {showNewCategoryButton && (
-                        <li className="navbar-item">
-                            <button className="navbar-btn">Nueva categoría...</button>
-                        </li>
-                    )}
+                    
                 </ul>
             </nav>
     );
