@@ -30,10 +30,9 @@ const OrderHistory = () => {
     if (error) return <div className="error">Error fetching purchases.</div>;
 
     return (
-        <><>
+        <>
             <HeaderClient />
-        </>
-        <div className="order-history-container">
+            <div className="order-history-container">
                 <h1 className="order-history-header">Order History</h1>
                 {purchases.length === 0 ? (
                     <p className="loading">No purchases found.</p>
@@ -46,8 +45,8 @@ const OrderHistory = () => {
                                 <p className="order-date">Date: {purchase.createdAt ? new Date(purchase.createdAt).toLocaleDateString() : 'N/A'}</p>
                                 <div>
                                     {purchase.items && purchase.items.length > 0 ? (
-                                        purchase.items.map(item => (
-                                            <div key={item.id} className="order-item-details">
+                                        purchase.items.map((item, index) => (
+                                            <div key={`${item.id}-${index}`} className="order-item-details">
                                                 <div>
                                                     <h3 className="order-item-name">{item.name}</h3>
                                                     <p className="order-item-price">Price: ${typeof item.price === 'number' ? item.price.toFixed(2) : 'N/A'}</p>
@@ -63,7 +62,8 @@ const OrderHistory = () => {
                         ))}
                     </ul>
                 )}
-            </div></>
+            </div>
+        </>
     );
 };
 
