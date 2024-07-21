@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Card, Button, Row, Col } from 'react-bootstrap';
-import Header from '../../Client/HeaderClient/HeaderClient';
+import HeaderSysAdmin from '../HeaderSysAdmin/HeaderSysAdmin';
 import Navbar from '../../Navbar/Navbar';
 import DeleteModal from '../../ui/DeleteModal/DeleteModal';
 import AddProduct from '../AddProduct';
@@ -97,7 +97,7 @@ const HomeSysadmin = () => {
 
     return (
         <>
-            <Header />
+            <HeaderSysAdmin />
             <div className="home-container">
                 <div className="nav-container">
                     <Navbar onSelectCategory={handleCategorySelect} />

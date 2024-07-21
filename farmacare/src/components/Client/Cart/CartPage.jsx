@@ -7,9 +7,23 @@ import Swal from 'sweetalert2';
 const CartPage = () => {
     const { cart, removeFromCart, clearCart, total } = useCart();
 
+    // Aquí obtén el userId del usuario autenticado (por ejemplo, desde localStorage)
+    const getUserId = () => {
+        // Suponiendo que tienes el ID del usuario en el localStorage, ajusta según tu implementación
+        const user = JSON.parse(localStorage.getItem('user')); // Ajusta esta línea según cómo almacenas la información del usuario
+        return user ? user.id : null; // Asegúrate de manejar casos en los que el usuario no esté autenticado
+    };
+
     const finalizePurchase = async () => {
+        const userId = getUserId();
+
+        if (!userId) {
+            Swal.fire('Error', 'Usuario no autenticado', 'error');
+            return;
+        }
+
         try {
-            const token = localStorage.getItem('authToken'); // O el método que uses para almacenar el token
+            const token = localStorage.getItem('authToken');
             const response = await fetch('http://localhost:8000/purchases', {
                 method: 'POST',
                 headers: {
@@ -17,9 +31,9 @@ const CartPage = () => {
                     'Authorization': `Bearer ${token}` // Incluye el token en el encabezado
                 },
                 body: JSON.stringify({
-                    userId: 'userId', // Reemplaza con el ID del usuario autenticado si es necesario
+                    userId: userId, // Aquí pasamos el ID del usuario correcto
                     items: cart.map(item => ({
-                        productId: item.id, // ID del producto
+                        productId: item.id,
                         name: item.name,
                         price: item.price,
                         quantity: 1 // Puedes cambiar esto si necesitas cantidades variables
@@ -47,7 +61,7 @@ const CartPage = () => {
                 cart={cart}
                 removeFromCart={removeFromCart}
                 clearCart={clearCart}
-                finalizePurchase={finalizePurchase} // Asegúrate de pasar la función
+                finalizePurchase={finalizePurchase}
             />
         </div>
     );
