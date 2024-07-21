@@ -10,6 +10,7 @@ import NotFound from "./routes/NotFound";
 import Cart from './components/Client/Cart/Cart';
 import CartPage from './components/Client/Cart/CartPage';
 import OrderHistory from './components/Client/OrderHistory/OrderHistory';
+import UserList from './components/SysAdmin/UserList/UserList';
 
 function App() {
   const router = createBrowserRouter([
@@ -66,6 +67,10 @@ function App() {
     {
       path: "/history",
       element: <OrderHistory />,
+    },
+    {
+      path:"/userList",
+      element: <UserList />
     }
   ]);
 

@@ -1,7 +1,7 @@
 // HeaderSysAdmin.jsx
 import "./HeaderSysAdmin.css";
 import { Navbar, Nav } from "react-bootstrap";
-import { FaUsers, FaPlus, FaSignOutAlt } from 'react-icons/fa';
+import { FaUsers, FaPlus, FaSignOutAlt, FaHistory } from 'react-icons/fa';
 import { AuthenticationContext } from "../../../services/authentication/authentication";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
@@ -23,6 +23,10 @@ const HeaderSysAdmin = () => {
         navigate("/add-user"); 
     };
 
+    const goToUserList = () => {
+        navigate("/userList")
+    }
+
     return (
         <div className="header-container">
             <Navbar expand="lg">
@@ -39,8 +43,11 @@ const HeaderSysAdmin = () => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="nav-links-container">
-                        <Nav.Link onClick={goToUsersHistory}>
+                        <Nav.Link onClick={goToUserList}>
                             <FaUsers className="icon" /> 
+                        </Nav.Link>
+                        <Nav.Link onClick={goToUsersHistory}>
+                            <FaHistory className="icon" />
                         </Nav.Link>
                         <Nav.Link onClick={goToAddUser}>
                             <FaPlus className="icon" /> 
