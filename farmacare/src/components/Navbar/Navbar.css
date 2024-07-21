@@ -3,7 +3,7 @@
     flex-direction: column;
     width: 250px;
     background-color: #AFF4C6;
-    padding: 40px;
+    padding: 50px;
     box-sizing: border-box;
 }
 
@@ -34,7 +34,7 @@
     color: #666;
 }
 
-.navbar-btn {
+/* .navbar-btn {
     background-color: #4CAF50;
     color: #fff;
     border: none;
@@ -45,4 +45,4 @@
 
 .navbar-btn:hover {
     background-color: #3e8e41;
-}
+} */
