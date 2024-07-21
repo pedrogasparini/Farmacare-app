@@ -1,3 +1,4 @@
+// src/components/Client/OrderHistory/OrderHistory.jsx
 import React, { useEffect, useState } from 'react';
 import './OrderHistory.css'; // Asegúrate de la ruta correcta
 import HeaderClient from '../HeaderClient/HeaderClient';
@@ -7,27 +8,49 @@ const OrderHistory = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // Aquí obtén el userId del usuario autenticado
+    const getUserId = () => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        return user ? user.id : null;
+    };
+
     useEffect(() => {
-        fetch('http://localhost:8000/purchases')
-            .then(response => {
+        const fetchPurchases = async () => {
+            const userId = getUserId();
+
+            if (!userId) {
+                setError('Usuario no autenticado');
+                setLoading(false);
+                return;
+            }
+
+            try {
+                const token = localStorage.getItem('authToken');
+                const response = await fetch(`http://localhost:8000/purchases?userId=${userId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}` // Incluye el token en el encabezado
+                    }
+                });
+
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error('Error al obtener el historial de pedidos');
                 }
-                return response.json();
-            })
-            .then(data => {
+
+                const data = await response.json();
                 setPurchases(data);
                 setLoading(false);
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Error fetching data:', error);
-                setError(error);
+                setError(error.message);
                 setLoading(false);
-            });
+            }
+        };
+
+        fetchPurchases();
     }, []);
 
     if (loading) return <div className="loading">Loading...</div>;
-    if (error) return <div className="error">Error fetching purchases.</div>;
+    if (error) return <div className="error">Error fetching purchases: {error}</div>;
 
     return (
         <>
