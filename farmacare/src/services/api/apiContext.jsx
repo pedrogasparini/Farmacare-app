@@ -22,12 +22,19 @@ export const ApiContextProvider = ({ children }) => {
         localStorage.setItem("cart", JSON.stringify(cart));
     }, [cart]);
 
-    // Funciones para manejar la API
     const fetchUsers = async () => {
-        const response = await fetch("http://localhost:8000/users");
-        const data = await response.json();
-        setUsers(data);
+        try {
+            const response = await fetch("http://localhost:8000/users");
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const data = await response.json();
+            setUsers(data);
+        } catch (error) {
+            console.error("Error fetching users:", error);
+        }
     };
+    
 
     const fetchProducts = async () => {
         const response = await fetch("http://localhost:8000/products");

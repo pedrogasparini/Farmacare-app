@@ -1,16 +1,30 @@
 
-import { useState, useEffect } from 'react';
+
+
+// HomeClient.jsx
+import React, { useState, useEffect } from 'react';
+
 import { Card, Button, Row, Col } from 'react-bootstrap';
-import Header from '../../Header/Header';
+import HeaderClient from '../HeaderClient/HeaderClient';
 import Navbar from '../../Navbar/Navbar';
+
 import Cart from '../Cart/Cart';
 import OrderHistory from '../OrderHistory/OrderHistory';
+
+import Swal from 'sweetalert2'; // Importa SweetAlert2
+import { useCart } from '../../../services/CartContext';
+import Footer from '../../Footer/footer';
+
 
 const HomeClient = () => {
     const [products, setProducts] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
+
     const [cart, setCart] = useState([]);
     const [purchases, setPurchases] = useState([]);
+
+    const { addToCart } = useCart(); // Usa el hook del carrito
+
 
     useEffect(() => {
         fetchProducts()
@@ -27,6 +41,7 @@ const HomeClient = () => {
         }
         return await response.json();
     };
+
 
     const fetchPurchases = async () => {
         try {
@@ -69,6 +84,24 @@ const HomeClient = () => {
         } catch (error) {
             console.error('Error finalizing purchase:', error);
         }
+
+    const handleCategorySelect = (category) => {
+        setSelectedCategory(category);
+    };
+
+    const filteredProducts = selectedCategory
+        ? products.filter(product => product.category === selectedCategory)
+        : products;
+
+    const handleAddToCart = (product) => {
+        addToCart(product);
+        Swal.fire({
+            icon: 'success',
+            title: 'Producto Añadido',
+            text: `${product.name} ha sido añadido al carrito.`,
+            confirmButtonText: 'Aceptar'
+        });
+
     };
 
     const handleCategorySelect = (category) => {
@@ -81,7 +114,7 @@ const HomeClient = () => {
 
     return (
         <>
-            <Header />
+            <HeaderClient />
             <div className="home-container">
                 <div className="nav-container">
                     <Navbar onSelectCategory={handleCategorySelect} showNewCategoryButton={false} />
@@ -98,7 +131,7 @@ const HomeClient = () => {
                                                 <Card.Body className='card-body'>
                                                     <Card.Title>{product.name}</Card.Title>
                                                     <Card.Text>Precio: ${product.price}</Card.Text>
-                                                    <Button className="card-btn" variant="success" onClick={() => addToCart(product)}>Agregar al Carrito</Button>
+                                                    <Button className="card-btn" variant="success" onClick={() => handleAddToCart(product)}>Agregar al Carrito</Button>
                                                 </Card.Body>
                                             </Card>
                                         </Col>
@@ -109,7 +142,9 @@ const HomeClient = () => {
                             )}
                         </Card.Body>
                     </Card>
+                    <Footer/>
                 </div>
+
                 {cart.length > 0 && (
                     <div className="cart-container">
                         <Cart
@@ -125,6 +160,7 @@ const HomeClient = () => {
                         <OrderHistory purchases={purchases} />
                     )}
                 </div>
+
             </div>
         </>
     );

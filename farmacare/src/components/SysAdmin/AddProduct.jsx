@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 
-const AddProductForm = ({ productToEdit, onAddOrUpdate, onCancel }) => {
-    const [product, setProduct] = useState({ name: '', price: '', image: '' });
+const AddProduct = ({ productToEdit, onAddOrUpdate, onCancel }) => {
+    const [product, setProduct] = useState({ name: '', price: '', image: '', category: '' });
 
     useEffect(() => {
         if (productToEdit) {
             setProduct(productToEdit);
         } else {
-            setProduct({ name: '', price: '', image: '' });
+            setProduct({ name: '', price: '', image: '', category: '' });
         }
     }, [productToEdit]);
 
@@ -57,6 +57,22 @@ const AddProductForm = ({ productToEdit, onAddOrUpdate, onCancel }) => {
                 />
             </Form.Group>
 
+            <Form.Group controlId="formProductCategory">
+                <Form.Label>Tipo de Producto</Form.Label>
+                <Form.Control
+                    as="select"
+                    name="category"
+                    value={product.category}
+                    onChange={handleInputChange}
+                >
+                    <option value="">Selecciona el tipo de producto</option>
+                    <option value="primeros auxilios">Primeros Auxilios</option>
+                    <option value="medicamentos">Medicamentos</option>
+                    <option value="cuidado personal">Cuidado Personal</option>
+                    <option value="productos para el cuidado de la piel">Cuidado de la piel</option>
+                </Form.Control>
+            </Form.Group>
+
             <Button variant="primary" type="submit">
                 {productToEdit ? 'Actualizar Producto' : 'Agregar Producto'}
             </Button>
@@ -68,4 +84,4 @@ const AddProductForm = ({ productToEdit, onAddOrUpdate, onCancel }) => {
     );
 };
 
-export default AddProductForm;
+export default AddProduct;

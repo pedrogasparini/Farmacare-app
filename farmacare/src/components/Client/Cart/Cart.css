@@ -1,46 +1,41 @@
-.cart-container {
-    width: 80%;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #ccc;
+.cart-card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    background-color: #add2d1;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.cart-container h2 {
-    font-size: 1.8rem;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.personal-info-section {
-    margin-top: 20px;
-    padding: 50px;
-
-}
-
-.cart-container p {
-    text-align: center;
+.cart-header {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #e9ecef;
 }
 
 .cart-item {
-    margin-bottom: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.cart-item .card-body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #e9ecef;
 }
 
-.cart-item .card-title {
-    font-size: 1.2rem;
-    font-weight: bold;
+.cart-item h5 {
+    margin: 0;
 }
 
-.cart-item .card-text {
-    font-size: 1rem;
+.cart-item p {
+    margin: 0;
     color: #6c757d;
+}
+
+.cart-total {
+    font-weight: bold;
+    margin-top: 1rem;
+}
+
+.cart-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.cart-buttons button {
+    margin: 0 0.5rem;
 }

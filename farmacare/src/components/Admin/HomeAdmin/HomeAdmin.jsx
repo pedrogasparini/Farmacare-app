@@ -1,24 +1,19 @@
 import { useState, useEffect } from 'react';
 import { Card, Button, Row, Col } from 'react-bootstrap';
-import Navbar from '../../Navbar/Navbar';
-import DeleteModal from '../../ui/DeleteModal/DeleteModal';
-import AddProduct from '../AddProduct';
-import AddUser from '../AddUser';
-import HeaderSysAdmin from '../HeaderSysAdmin/HeaderSysAdmin';
+import HeaderAdmin from '../HeaderAdmin/HeaderAdmin';
 import Navbar from '../../Navbar/Navbar';
 import DeleteModal from '../../ui/DeleteModal/DeleteModal';
 import AddProduct from '../../SysAdmin/AddProduct';
-import "./HomeSysadmin.css"
+import "./HomeAdmin.css"
 import Footer from '../../Footer/footer';
 
-const HomeSysadmin = () => {
+const HomeAdmin = () => {
     const [products, setProducts] = useState([]);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [productToDelete, setProductToDelete] = useState(null);
     const [editingProduct, setEditingProduct] = useState(null);
     const [showAddProductForm, setShowAddProductForm] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState(null);
-    const [showAddUserForm, setShowAddUserForm] = useState(false);
 
     useEffect(() => {
         fetchProducts()
@@ -96,27 +91,9 @@ const HomeSysadmin = () => {
         ? products.filter(product => product.category === selectedCategory)
         : products;
 
-    const handleAddUser = async (user) => {
-
-        console.log('Nuevo usuario:', user);
-
-        const response = await fetch('http://localhost:8000/users', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(user),
-        });
-        if (!response.ok) {
-            throw new Error('Failed to add user');
-        }
-
-        setShowAddUserForm(false);
-    };
-
     return (
         <>
-
-            <HeaderSysAdmin />
-
+            <HeaderAdmin />
             <div className="home-container">
                 <div className="nav-container">
                     <Navbar onSelectCategory={handleCategorySelect} />
@@ -124,11 +101,7 @@ const HomeSysadmin = () => {
                 <div className="products-container">
                     <Card>
                         <Card.Body>
-
-                            {showAddProductForm ? (
-
                             {showAddProductForm || editingProduct ? (
-
                                 <AddProduct
                                     productToEdit={editingProduct}
                                     onAddOrUpdate={handleAddOrUpdate}
@@ -136,11 +109,6 @@ const HomeSysadmin = () => {
                                         setShowAddProductForm(false);
                                         setEditingProduct(null);
                                     }}
-                                />
-                            ) : showAddUserForm ? (
-                                <AddUser
-                                    onAddUser={handleAddUser}
-                                    onCancel={() => setShowAddUserForm(false)}
                                 />
                             ) : (
                                 <>
@@ -150,14 +118,6 @@ const HomeSysadmin = () => {
                                         onClick={() => setShowAddProductForm(true)}
                                     >
                                         Agregar Producto
-                                    </Button>
-                                    {' '}
-                                    <Button
-                                        className='add-user-btn'
-                                        variant="primary"
-                                        onClick={() => setShowAddUserForm(true)}
-                                    >
-                                        Agregar Usuario
                                     </Button>
                                     {filteredProducts.length > 0 ? (
                                         <Row xs={1} md={2} lg={3} className="g-4 mt-4">
@@ -197,4 +157,4 @@ const HomeSysadmin = () => {
     );
 };
 
-export default HomeSysadmin;
+export default HomeAdmin;

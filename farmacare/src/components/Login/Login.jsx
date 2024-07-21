@@ -27,10 +27,27 @@ const Login = () => {
         setErrors((prevErrors) => ({ ...prevErrors, password: false }));
     };
 
+    const redirectToHome = (userType) => {
+        switch (userType) {
+            case 'client':
+                navigate('/homeClient');
+                break;
+            case 'admin':
+                navigate('/homeAdmin');
+                break;
+            case 'sysAdmin':
+                navigate('/homeSysadmin');
+                break;
+            default:
+                navigate('/protected');
+                break;
+        }
+    };
+
     const submitHandler = async (event) => {
         event.preventDefault();
-
-        if (usernameRef.current.value.length === 0) {
+    
+        if (username.trim().length === 0) {
             usernameRef.current.focus();
             setErrors((prevErrors) => ({
                 ...prevErrors,
@@ -43,8 +60,8 @@ const Login = () => {
             });
             return;
         }
-
-        if (passwordRef.current.value.length === 0) {
+    
+        if (password.trim().length === 0) {
             passwordRef.current.focus();
             setErrors((prevErrors) => ({
                 ...prevErrors,
@@ -57,16 +74,13 @@ const Login = () => {
             });
             return;
         }
-
+    
         try {
-            // Intenta hacer login
             const data = await handleLogin(username, password);
 
-            // Solo redirige si la autenticación es exitosa
             if (data && data.userType) {
                 redirectToHome(data.userType);
             } else {
-                // Maneja el caso en que no hay `userType` (usuario no encontrado o error)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -74,29 +88,11 @@ const Login = () => {
                 });
             }
         } catch (error) {
-            // Maneja errores que ocurren durante el login
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
                 text: error.message,
             });
-        }
-    };
-
-    const redirectToHome = (userType) => {
-        switch (userType) {
-            case 'client':
-                navigate('/homeClient');
-                break;
-            case 'admin':
-                navigate('/homeAdmin');
-                break;
-            case 'sysAdmin':
-                navigate('/homeSysAdmin');
-                break;
-            default:
-                navigate('/protected'); 
-                break;
         }
     };
 
@@ -121,8 +117,7 @@ const Login = () => {
                             <Form.Control
                                 placeholder="Ingrese su nombre de usuario..."
                                 type="text"
-                                className={`custom-input ${errors.username ? 'border border-danger' : ''
-                                    }`}
+                                className={`custom-input ${errors.username ? 'border border-danger' : ''}`}
                                 ref={usernameRef}
                                 onChange={usernameHandler}
                             />
@@ -132,8 +127,7 @@ const Login = () => {
                                 placeholder="Ingrese su contraseña..."
                                 type="password"
                                 value={password}
-                                className={`custom-input ${errors.password ? 'border border-danger' : ''
-                                    }`}
+                                className={`custom-input ${errors.password ? 'border border-danger' : ''}`}
                                 ref={passwordRef}
                                 onChange={passwordHandler}
                             />

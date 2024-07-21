@@ -3,7 +3,10 @@
   background-color: #f8f9fa;  
 }
 
-.nav-container {
+<<<<<<< HEAD
+
+=======
+/* .nav-container {
   left: 0;
   top: 0;
   bottom: 0;
@@ -11,7 +14,8 @@
   background-color: #AFF4C6;
   padding: 20px;
   box-sizing: border-box;
-}
+} */
+>>>>>>> 9771426ccac31c1b2d33a4b57bcabb318913c915
 
 .products-container {
   text-align: center;

@@ -4,6 +4,7 @@ export const AuthenticationContext = createContext();
 
 export const AuthenticationContextProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const isAuthenticated = !!user;
 
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -15,21 +16,21 @@ export const AuthenticationContextProvider = ({ children }) => {
     const handleLogin = async (username, password) => {
         try {
             console.log('Enviando datos de login:', { username, password });
-            const response = await fetch('http://localhost:8000/login', {
+            const response = await fetch('http://localhost:8000/login', {  // Cambiado a '/login'
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ username, password }),
             });
-
+    
             const responseData = await response.json();
             console.log('Respuesta del servidor:', responseData);
-
+    
             if (!response.ok) {
                 throw new Error(responseData.message || 'Error al iniciar sesión');
             }
-
+    
             localStorage.setItem("user", JSON.stringify(responseData));
             setUser(responseData);
             return responseData; 
@@ -72,7 +73,7 @@ export const AuthenticationContextProvider = ({ children }) => {
 
     return (
         <AuthenticationContext.Provider
-            value={{ user, handleLogin, handleRegister, handleLogout }}
+            value={{ user, isAuthenticated,handleLogin, handleRegister, handleLogout }}
         >
             {children}
         </AuthenticationContext.Provider>
