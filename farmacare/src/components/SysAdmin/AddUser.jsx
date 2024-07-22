@@ -6,7 +6,7 @@ import { AuthenticationContext } from '../../services/authentication/authenticat
 const AddUser = ({ onCancel }) => {
     const { handleRegister } = useContext(AuthenticationContext);
     const [user, setUser] = useState({ username: '', password: '', name: '', lastName: '', userType: '' });
-    const userTypes = ['SysAdmin', 'Admin', 'Cliente'];
+    const userTypes = ['sysAdmin', 'admin', 'client'];
 
     const handleChange = (e) => {
         const { name, value } = e.target;
