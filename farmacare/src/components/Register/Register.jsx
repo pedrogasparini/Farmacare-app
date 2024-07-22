@@ -88,7 +88,7 @@ const Register = () => {
             lastName: lastName.trim(),
             username: username.trim(),
             password: password.trim(),
-            userType: 'client' // Asignamos el userType 'client' por defecto
+            userType: 'client' 
         };
 
         try {

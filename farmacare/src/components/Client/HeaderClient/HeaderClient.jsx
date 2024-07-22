@@ -16,7 +16,7 @@ const HeaderClient = () => {
     };
 
     const goToCart = () => {
-        navigate("/cart"); // Navega a la página del carrito
+        navigate("/cart"); 
     };
 
     const goToHistory = () => {

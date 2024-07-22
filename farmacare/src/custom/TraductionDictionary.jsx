@@ -1,5 +1,5 @@
 
-import { createContext, useContext, useState } from "react";
+import { createContext,  useState } from "react";
 
 export const TraductionDictionaryContext = createContext();
 
@@ -26,6 +26,7 @@ export const TraductionDictionaryProvider = ({ children }) => {
             stock: "Stock",
             cantidad: "Cantidad",
             agregarAlCarrito: "Añadir al carrito",
+            telefono:"Numero de celular: +3406 505050",
             noProducts: "No hay productos disponibles",
             stockInsufficient: "Stock insuficiente",
             insufficientStock: "no tiene suficiente stock",
@@ -52,6 +53,7 @@ export const TraductionDictionaryProvider = ({ children }) => {
             stock: "Stock",
             cantidad: "Quantity",
             agregarAlCarrito: "Add to Cart",
+            telefono:"Cel number: +3406 505050",
             noProducts: "No products available",
             stockInsufficient: "Insufficient stock",
             insufficientStock: "does not have enough stock",

@@ -50,8 +50,8 @@ const OrderHistory = () => {
         fetchPurchases();
     }, []);
 
-    if (loading) return <div className="loading">Loading...</div>;
-    if (error) return <div className="error">Error fetching purchases: {error}</div>;
+    if (loading) return <div className="loading">Cargando</div>;
+    if (error) return <div className="error">Error al recuperar compras: {error}</div>;
 
     return (
         <>
@@ -59,27 +59,27 @@ const OrderHistory = () => {
             <div className="order-history-container">
                 <h1 className="order-history-header">Order History</h1>
                 {purchases.length === 0 ? (
-                    <p className="loading">No purchases found.</p>
+                    <p className="loading">No hay ninguna compra</p>
                 ) : (
                     <ul className="order-list">
                         {purchases.map(purchase => (
                             <li key={purchase.id} className="order-item">
-                                <h2 className="order-id">Purchase ID: {purchase.id}</h2>
+                                <h2 className="order-id">Id de venta: {purchase.id}</h2>
                                 <p className="order-total">Total: ${typeof purchase.total === 'number' ? purchase.total.toFixed(2) : 'N/A'}</p>
-                                <p className="order-date">Date: {purchase.createdAt ? new Date(purchase.createdAt).toLocaleDateString() : 'N/A'}</p>
+                                <p className="order-date">Fecha: {purchase.createdAt ? new Date(purchase.createdAt).toLocaleDateString() : 'N/A'}</p>
                                 <div>
                                     {purchase.items && purchase.items.length > 0 ? (
                                         purchase.items.map((item, index) => (
                                             <div key={`${item.id}-${index}`} className="order-item-details">
                                                 <div>
                                                     <h3 className="order-item-name">{item.name}</h3>
-                                                    <p className="order-item-price">Price: ${typeof item.price === 'number' ? item.price.toFixed(2) : 'N/A'}</p>
-                                                    <p className="order-item-quantity">Quantity: {item.quantity || 1}</p>
+                                                    <p className="order-item-price">Precio: ${typeof item.price === 'number' ? item.price.toFixed(2) : 'N/A'}</p>
+                                                    <p className="order-item-quantity">Cantidad: {item.quantity || 1}</p>
                                                 </div>
                                             </div>
                                         ))
                                     ) : (
-                                        <p className="order-item-price">No items available.</p>
+                                        <p className="order-item-price">No hay artículos disponibles</p>
                                     )}
                                 </div>
                             </li>

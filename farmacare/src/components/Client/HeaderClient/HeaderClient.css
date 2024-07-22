@@ -28,11 +28,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 80px; /* Ancho del contenedor */
-    height: 60px; /* Altura del contenedor */
-    background-color: #ffffff; /* Fondo blanco */
-    border-radius: 50%; /* Borde redondeado para crear un círculo */
-    margin-left: 10px; /* Espacio entre los íconos */
+    width: 80px; 
+    height: 60px; 
+    background-color: #ffffff; 
+    border-radius: 50%; 
+    margin-left: 10px; 
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     padding: 13px;
     
