@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Card, Button, Row, Col, Form } from 'react-bootstrap';
 import HeaderClient from '../HeaderClient/HeaderClient';
 import Navbar from '../../Navbar/Navbar';
@@ -30,18 +30,18 @@ const HomeClient = () => {
         return await response.json();
     };
 
-    const handleCategorySelect = (category) => {
+    const handleCategorySelect = useCallback((category) => {
         setSelectedCategory(category);
-    };
+    }, []);
 
-    const handleQuantityChange = (productId, quantity) => {
-        setSelectedQuantity({
-            ...selectedQuantity,
+    const handleQuantityChange = useCallback((productId, quantity) => {
+        setSelectedQuantity(prevQuantity => ({
+            ...prevQuantity,
             [productId]: quantity
-        });
-    };
+        }));
+    }, []);
 
-    const handleAddToCart = async (product) => {
+    const handleAddToCart = useCallback(async (product) => {
         const quantity = selectedQuantity[product.id] || 1;
         if (quantity > product.stock) {
             Swal.fire({
@@ -59,11 +59,13 @@ const HomeClient = () => {
             text: `${product.name} (${translate('quantity')}: ${quantity}) ${translate('addedToCart')}.`,
             confirmButtonText: translate('accept')
         });
-    };
+    }, [selectedQuantity, addToCart, translate]);
 
-    const filteredProducts = selectedCategory
-        ? products.filter(product => product.category === selectedCategory)
-        : products;
+    const filteredProducts = useMemo(() => {
+        return selectedCategory
+            ? products.filter(product => product.category === selectedCategory)
+            : products;
+    }, [products, selectedCategory]);
 
     return (
         <>
@@ -74,7 +76,7 @@ const HomeClient = () => {
                 
                 <div className="products-container">
                     <Card>
-            <LanguageSelector /> 
+                        <LanguageSelector /> 
                         <Card.Body>
                             {filteredProducts.length > 0 ? (
                                 <Row xs={1} md={2} lg={3} className="g-4 mt-4">
