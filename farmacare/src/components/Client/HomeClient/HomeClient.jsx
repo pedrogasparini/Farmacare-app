@@ -19,13 +19,13 @@ const HomeClient = () => {
     useEffect(() => {
         fetchProducts()
             .then(data => setProducts(data))
-            .catch(error => console.error('Error fetching products:', error));
+            .catch(error => console.error('No se pudo fetchear a los productos:', error));
     }, []);
 
     const fetchProducts = async () => {
         const response = await fetch('http://localhost:8000/products');
         if (!response.ok) {
-            throw new Error('Failed to fetch products');
+            throw new Error('No se pudo fetchear a los productos');
         }
         return await response.json();
     };

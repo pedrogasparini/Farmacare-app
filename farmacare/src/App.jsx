@@ -1,4 +1,3 @@
-import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import HomeClient from './components/Client/HomeClient/HomeClient';
 import HomeAdmin from './components/Admin/HomeAdmin/HomeAdmin';

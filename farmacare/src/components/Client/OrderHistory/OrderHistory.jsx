@@ -41,7 +41,7 @@ const OrderHistory = () => {
                 setPurchases(data);
                 setLoading(false);
             } catch (error) {
-                console.error('Error fetching data:', error);
+                console.error('Error al fetchear:', error);
                 setError(error.message);
                 setLoading(false);
             }
@@ -57,7 +57,7 @@ const OrderHistory = () => {
         <>
             <HeaderClient />
             <div className="order-history-container">
-                <h1 className="order-history-header">Order History</h1>
+                <h1 className="order-history-header">Historial de compras</h1>
                 {purchases.length === 0 ? (
                     <p className="loading">No hay ninguna compra</p>
                 ) : (

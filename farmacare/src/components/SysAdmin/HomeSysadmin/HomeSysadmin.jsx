@@ -156,6 +156,7 @@ const HomeSysadmin = () => {
                                                         <Card.Body className='card-body'>
                                                             <Card.Title>{product.name}</Card.Title>
                                                             <Card.Text>Precio: ${product.price}</Card.Text>
+                                                            <Card.Text>Stock: {product.stock}</Card.Text>
                                                             <Button className="card-btn" variant="secondary" onClick={() => {
                                                                 setEditingProduct(product);
                                                                 setShowAddProductForm(true);

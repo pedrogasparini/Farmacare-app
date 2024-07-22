@@ -17,13 +17,13 @@ const HomeAdmin = () => {
     useEffect(() => {
         fetchProducts()
             .then(data => setProducts(data))
-            .catch(error => console.error('Error fetching products:', error));
+            .catch(error => console.error('Error fetch productos:', error));
     }, []);
 
     const fetchProducts = async () => {
         const response = await fetch('http://localhost:8000/products');
         if (!response.ok) {
-            throw new Error('Failed to fetch products');
+            throw new Error('error fetch');
         }
         return await response.json();
     };
@@ -35,7 +35,7 @@ const HomeAdmin = () => {
             body: JSON.stringify(product),
         });
         if (!response.ok) {
-            throw new Error('Failed to add product');
+            throw new Error('no se pudo agregar el producto');
         }
         const addedProduct = await response.json();
         setProducts([...products, addedProduct]);
@@ -49,7 +49,7 @@ const HomeAdmin = () => {
             body: JSON.stringify(product),
         });
         if (!response.ok) {
-            throw new Error('Failed to update product');
+            throw new Error('No se pudo actualizar el prducto');
         }
         const updatedProduct = await response.json();
         setProducts(products.map(p => (p.id === updatedProduct.id ? updatedProduct : p)));
@@ -75,7 +75,7 @@ const HomeAdmin = () => {
             method: 'DELETE',
         });
         if (!response.ok) {
-            throw new Error('Failed to delete product');
+            throw new Error('No se ha podido borrar el producto');
         }
         setProducts(products.filter(p => p.id !== productToDelete.id));
         setShowDeleteModal(false);
@@ -125,6 +125,7 @@ const HomeAdmin = () => {
                                                         <Card.Body className='card-body'>
                                                             <Card.Title>{product.name}</Card.Title>
                                                             <Card.Text>Precio: ${product.price}</Card.Text>
+                                                            <Card.Text>Stock: {product.stock}</Card.Text>
                                                             <Button className="card-btn" variant="secondary" onClick={() => {
                                                                 setEditingProduct(product);
                                                                 setShowAddProductForm(true);
