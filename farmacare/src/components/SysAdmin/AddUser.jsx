@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Form, Button } from 'react-bootstrap';
+import { AuthenticationContext } from '../../services/authentication/authentication';
 
-const AddUser = ({ onAddUser, onCancel }) => {
+const AddUser = ({ onCancel }) => {
+    const { handleRegister } = useContext(AuthenticationContext); // Accediendo a handleRegister desde el contexto
     const [user, setUser] = useState({ userName: '', password: '', userType: '' });
     const userTypes = ['SysAdmin', 'Admin', 'Cliente'];
 
@@ -10,9 +12,17 @@ const AddUser = ({ onAddUser, onCancel }) => {
         setUser({ ...user, [name]: value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        onAddUser(user);
+
+        try {
+            await handleRegister(user); // Llama a handleRegister desde el contexto
+            console.log('Usuario registrado exitosamente.');
+            onCancel(); // Llama a la función onCancel para cerrar el formulario
+        } catch (error) {
+            console.error('Error al registrar usuario:', error);
+            // Aquí podrías mostrar un mensaje de error al usuario
+        }
     };
 
     return (
