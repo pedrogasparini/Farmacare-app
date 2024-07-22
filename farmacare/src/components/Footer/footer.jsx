@@ -27,7 +27,7 @@ const Footer = () => {
                         <Col md={4}>
                             <h5>{translate('contacto')}</h5>
                             <p>Email: farmacare@gmail.com</p>
-                            <p>Teléfono: +123 456 789</p>
+                            <p>{translate('telefono')}</p>
                             <p>Ig: @farmacare</p>
                         </Col>
                     </Row>

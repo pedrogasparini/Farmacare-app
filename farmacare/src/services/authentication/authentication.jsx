@@ -16,7 +16,7 @@ export const AuthenticationContextProvider = ({ children }) => {
     const handleLogin = async (username, password) => {
         try {
             console.log('Enviando datos de login:', { username, password });
-            const response = await fetch('http://localhost:8000/login', {  // Cambiado a '/login'
+            const response = await fetch('http://localhost:8000/login', {  
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

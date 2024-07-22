@@ -42,7 +42,7 @@ export const ApiContextProvider = ({ children }) => {
         setCart((prevCart) => [...prevCart, product]);
     };
 
-   
+
     const fetchOrders = async () => {
         try {
             const response = await fetch("http://localhost:8000/order");

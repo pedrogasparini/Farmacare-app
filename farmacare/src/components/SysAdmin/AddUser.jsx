@@ -19,7 +19,6 @@ const AddUser = ({ onCancel }) => {
         try {
             await handleRegister(user);
             console.log('Usuario registrado exitosamente.');
-            // Muestra un SweetAlert de éxito
             Swal.fire({
                 icon: 'success',
                 title: 'Usuario registrado',

@@ -48,9 +48,6 @@ const HeaderSysAdmin = () => {
                         <Nav.Link onClick={goToUsersHistory}>
                             <FaHistory className="icon" />
                         </Nav.Link>
-                        <Nav.Link onClick={goToAddUser}>
-                            <FaPlus className="icon" /> 
-                        </Nav.Link>
                         <Nav.Link onClick={handleLogOut}>
                             <FaSignOutAlt className="icon" /> 
                         </Nav.Link>

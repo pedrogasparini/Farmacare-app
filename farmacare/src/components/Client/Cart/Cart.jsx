@@ -4,7 +4,6 @@ import HeaderClient from '../HeaderClient/HeaderClient';
 import './Cart.css';
 
 const Cart = ({ cart, removeFromCart, clearCart, finalizePurchase }) => {
-    // Asegúrate de que el precio es un número en el cálculo del total
     const total = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
     return (
