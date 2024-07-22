@@ -4,7 +4,6 @@ import HeaderAdmin from '../HeaderAdmin/HeaderAdmin';
 import Navbar from '../../Navbar/Navbar';
 import DeleteModal from '../../ui/DeleteModal/DeleteModal';
 import AddProduct from '../../SysAdmin/AddProduct';
-import "./HomeAdmin.css"
 import Footer from '../../Footer/footer';
 
 const HomeAdmin = () => {

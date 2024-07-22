@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Card, ListGroup, Container, Row, Col, Form } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import HeaderSysAdmin from '../HeaderSysAdmin/HeaderSysAdmin';
-import './UserList.css'; // Asegúrate de crear este archivo para tus estilos
+
 
 const UserList = () => {
     const [users, setUsers] = useState([]);
@@ -43,7 +43,6 @@ const UserList = () => {
             if (!response.ok) {
                 throw new Error('Error deleting user');
             }
-            // Remove the user from the state after successful deletion
             setUsers(users.filter(user => user.id !== userId));
             setFilteredUsers(filteredUsers.filter(user => user.id !== userId));
             Swal.fire('Usuario eliminado', '', 'success');

@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import { Form, Button } from 'react-bootstrap';
-import Swal from 'sweetalert2'; // Importa SweetAlert
+import Swal from 'sweetalert2'; 
 import { AuthenticationContext } from '../../services/authentication/authentication';
 
 const AddUser = ({ onCancel }) => {
@@ -26,10 +26,9 @@ const AddUser = ({ onCancel }) => {
                 text: 'El usuario se registró correctamente.',
                 confirmButtonText: 'Aceptar'
             });
-            onCancel(); // Cierra el formulario
+            onCancel();
         } catch (error) {
             console.error('Error al registrar usuario:', error);
-            // Muestra un SweetAlert de error
             Swal.fire({
                 icon: 'error',
                 title: 'Error',

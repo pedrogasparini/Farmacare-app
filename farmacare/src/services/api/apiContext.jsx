@@ -1,13 +1,9 @@
 
-
-
-
 import { createContext, useState, useEffect } from "react";
 
-// Crear el contexto
 export const ApiContext = createContext();
 
-// Proveedor del contexto
+
 export const ApiContextProvider = ({ children }) => {
     const [users, setUsers] = useState([]);
     const [products, setProducts] = useState([]);
@@ -46,7 +42,7 @@ export const ApiContextProvider = ({ children }) => {
         setCart((prevCart) => [...prevCart, product]);
     };
 
-    // Simulación de llamada a la API
+   
     const fetchOrders = async () => {
         try {
             const response = await fetch("http://localhost:8000/order");
@@ -67,7 +63,7 @@ export const ApiContextProvider = ({ children }) => {
         }
     };
 
-    // Actualizar el producto en la API
+    
     const updateProduct = async (updatedProduct) => {
         try {
             const response = await fetch(
@@ -81,7 +77,7 @@ export const ApiContextProvider = ({ children }) => {
                 }
             );
             if (response.ok) {
-                // Si la actualización fue exitosa, actualizar el estado local
+                
                 setProducts((prevProducts) =>
                     prevProducts.map((product) =>
                         product.id === updatedProduct.id ? updatedProduct : product
@@ -95,7 +91,7 @@ export const ApiContextProvider = ({ children }) => {
         }
     };
 
-    // Eliminar el producto en la API
+
     const deleteProduct = async (productId) => {
         try {
             const response = await fetch(
@@ -105,7 +101,6 @@ export const ApiContextProvider = ({ children }) => {
                 }
             );
             if (response.ok) {
-                // Si la eliminación fue exitosa, actualizar el estado local
                 setProducts((prevProducts) =>
                     prevProducts.filter((product) => product.id !== productId)
                 );
@@ -171,7 +166,6 @@ export const ApiContextProvider = ({ children }) => {
             });
             if (response.ok) {
                 console.log(`User with id ${userId} deleted successfully`);
-                // Si la eliminación fue exitosa, actualizar el estado local
                 setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
             } else {
                 console.error("Error al eliminar usuario:", response.statusText);

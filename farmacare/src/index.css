@@ -14,11 +14,11 @@ body {
 }
 
 :root {
-    /* donde esta el logo: */
+    
     --header-color: #40ABA8;
-    /* donde se encuentran las categorias */
+
     --nav-bar-color: #AFF4C6;
-    /* fondo */
+
     --background: #BDE3FF;
 
 }

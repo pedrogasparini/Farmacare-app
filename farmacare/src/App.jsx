@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import HomeClient from './components/Client/HomeClient/HomeClient';
 import HomeAdmin from './components/Admin/HomeAdmin/HomeAdmin';
 import HomeSysadmin from './components/SysAdmin/HomeSysadmin/HomeSysadmin';
@@ -7,11 +7,11 @@ import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
 import Protected from "./routes/Protected";
 import NotFound from "./routes/NotFound";
-import Cart from './components/Client/Cart/Cart';
 import CartPage from './components/Client/Cart/CartPage';
 import OrderHistory from './components/Client/OrderHistory/OrderHistory';
 import UserList from './components/SysAdmin/UserList/UserList';
 import UsersHistory from './components/SysAdmin/UsersHistory/UsersHistory';
+import { TraductionDictionaryProvider } from './custom/TraductionDictionary';
 
 function App() {
   const router = createBrowserRouter([
@@ -70,19 +70,19 @@ function App() {
       element: <OrderHistory />,
     },
     {
-      path:"/userList",
-      element: <UserList />
+      path: "/userList",
+      element: <UserList />,
     },
     {
       path: "/users-history",
-      element: <UsersHistory/>
+      element: <UsersHistory />,
     }
   ]);
 
   return (
-      
+    <TraductionDictionaryProvider>
       <RouterProvider router={router} />
-      
+    </TraductionDictionaryProvider>
   );
 }
 

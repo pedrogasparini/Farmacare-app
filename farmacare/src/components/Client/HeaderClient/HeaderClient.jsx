@@ -1,4 +1,4 @@
-// HeaderClient.jsx
+
 import "./HeaderClient.css";
 import { Navbar, Nav } from "react-bootstrap";
 import { FaShoppingCart, FaHistory, FaSignOutAlt } from 'react-icons/fa';

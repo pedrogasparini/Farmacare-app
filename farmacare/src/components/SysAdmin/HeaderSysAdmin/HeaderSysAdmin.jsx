@@ -1,4 +1,4 @@
-import "./HeaderSysAdmin.css";
+
 import { Navbar, Nav } from "react-bootstrap";
 import { FaUsers, FaPlus, FaSignOutAlt, FaHistory } from 'react-icons/fa';
 import { AuthenticationContext } from "../../../services/authentication/authentication";
