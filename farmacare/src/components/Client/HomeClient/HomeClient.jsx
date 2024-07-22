@@ -3,11 +3,14 @@ import { Card, Button, Row, Col, Form } from 'react-bootstrap';
 import HeaderClient from '../HeaderClient/HeaderClient';
 import Navbar from '../../Navbar/Navbar';
 import Footer from '../../Footer/footer';
+import useTraduction from '../../../custom/UseTraduction';
 import Swal from 'sweetalert2'; 
 import { useCart } from '../../../services/CartContext';
-import "./HomeClient.css"
+import "./HomeClient.css";
+import LanguageSelector from '../../../custom/LanguegeSelector';
 
 const HomeClient = () => {
+    const { translate } = useTraduction();
     const [products, setProducts] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [selectedQuantity, setSelectedQuantity] = useState({});
@@ -43,18 +46,18 @@ const HomeClient = () => {
         if (quantity > product.stock) {
             Swal.fire({
                 icon: 'error',
-                title: 'Stock insuficiente',
-                text: `No hay suficiente stock de ${product.name}.`,
-                confirmButtonText: 'Aceptar'
+                title: translate('stockInsufficient'),
+                text: `${product.name} (${translate('quantity')}: ${quantity}) ${translate('insufficientStock')}.`,
+                confirmButtonText: translate('accept')
             });
             return;
         }
         addToCart({ ...product, quantity });
         Swal.fire({
             icon: 'success',
-            title: 'Producto Añadido',
-            text: `${product.name} (Cantidad: ${quantity}) ha sido añadido al carrito.`,
-            confirmButtonText: 'Aceptar'
+            title: translate('productAdded'),
+            text: `${product.name} (${translate('quantity')}: ${quantity}) ${translate('addedToCart')}.`,
+            confirmButtonText: translate('accept')
         });
     };
 
@@ -65,11 +68,13 @@ const HomeClient = () => {
     return (
         <>
             <HeaderClient />
+
             <div className="home-container">
                 <Navbar onSelectCategory={handleCategorySelect} showNewCategoryButton={false} />
                 
                 <div className="products-container">
                     <Card>
+            <LanguageSelector /> 
                         <Card.Body>
                             {filteredProducts.length > 0 ? (
                                 <Row xs={1} md={2} lg={3} className="g-4 mt-4">
@@ -79,11 +84,11 @@ const HomeClient = () => {
                                                 <Card.Img className='card-img' src={product.image} alt={product.name} />
                                                 <Card.Body className='card-body'>
                                                     <Card.Title>{product.name}</Card.Title>
-                                                    <Card.Text>Precio: ${product.price}</Card.Text>
-                                                    <Card.Text>Stock: {product.stock}</Card.Text>
+                                                    <Card.Text>{translate('precio')}: ${product.price}</Card.Text>
+                                                    <Card.Text>{translate('stock')}: {product.stock}</Card.Text>
                                                     <Form.Group 
                                                         className='select-cant-prod' controlId={`quantity-${product.id}`} >
-                                                        <Form.Label>Cantidad</Form.Label>
+                                                        <Form.Label>{translate('cantidad')}</Form.Label>
                                                         <Form.Control
                                                             type="number"
                                                             min="1"
@@ -92,7 +97,7 @@ const HomeClient = () => {
                                                         />
                                                     </Form.Group>
                                                     <Button className="add-product-cart-btn" variant="success" onClick={() => handleAddToCart(product)}>
-                                                        Agregar al Carrito
+                                                        {translate('agregarAlCarrito')}
                                                     </Button>
                                                 </Card.Body>
                                             </Card>
@@ -100,7 +105,7 @@ const HomeClient = () => {
                                     ))}
                                 </Row>
                             ) : (
-                                <p>No hay productos disponibles.</p>
+                                <p>{translate('noProducts')}</p>
                             )}
                         </Card.Body>
                     </Card>

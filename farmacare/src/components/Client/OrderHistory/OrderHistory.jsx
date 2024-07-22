@@ -1,8 +1,6 @@
-// import React, { useState, useEffect } from 'react';
 
-// src/components/Client/OrderHistory/OrderHistory.jsx
 import React, { useEffect, useState } from 'react';
-import './OrderHistory.css'; // Asegúrate de la ruta correcta
+import './OrderHistory.css'; 
 import HeaderClient from '../HeaderClient/HeaderClient';
 
 
@@ -11,7 +9,7 @@ const OrderHistory = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Aquí obtén el userId del usuario autenticado
+    
     const getUserId = () => {
         const user = JSON.parse(localStorage.getItem('user'));
         return user ? user.id : null;
@@ -31,7 +29,7 @@ const OrderHistory = () => {
                 const token = localStorage.getItem('authToken');
                 const response = await fetch(`http://localhost:8000/purchases?userId=${userId}`, {
                     headers: {
-                        'Authorization': `Bearer ${token}` // Incluye el token en el encabezado
+                        'Authorization': `Bearer ${token}` 
                     }
                 });
 

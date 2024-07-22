@@ -7,11 +7,8 @@ html {
 }
 
 :root {
-    /* donde esta el logo: */
     --header-color: #40ABA8;
-    /* donde se encuentran las categorias */
     --nav-bar-color: #AFF4C6;
-    /* fondo */
     --background: #BDE3FF;
 
 }
@@ -41,8 +38,8 @@ svg {
     font-weight: 400;
     font-style: normal;
     margin-bottom: 50px;
-    color: #1d1e1df4; /* Usa un color que resalte, como naranja oscuro */
-    text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5); /* Añade más sombra al texto */
+    color: #1d1e1df4;
+    text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
 }
 
 .p-reg {

@@ -22,7 +22,7 @@ const CartPage = () => {
         try {
             const token = localStorage.getItem('authToken');
             
-            // Verificar stock antes de finalizar la compra
+            
             const outOfStockItems = [];
             await Promise.all(cart.map(async (item) => {
                 const response = await fetch(`http://localhost:8000/products/${item.id}`);
@@ -65,7 +65,7 @@ const CartPage = () => {
                 throw new Error('Error al finalizar la compra');
             }
 
-            // Actualizar stock en el backend
+            
             await Promise.all(cart.map(async (item) => {
                 await fetch(`http://localhost:8000/products/${item.id}`, {
                     method: 'PATCH',
@@ -79,7 +79,7 @@ const CartPage = () => {
                 });
             }));
 
-            clearCart(); // Limpia el carrito después de la compra exitosa
+            clearCart(); 
             Swal.fire('Compra finalizada con éxito', '', 'success');
         } catch (error) {
             console.error('Error al finalizar la compra:', error);

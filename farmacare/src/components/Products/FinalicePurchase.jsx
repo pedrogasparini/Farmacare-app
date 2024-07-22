@@ -1,19 +1,19 @@
 const finalizePurchase = async (userId, cart, total, clearCart) => {
     try {
-        const token = localStorage.getItem('authToken'); // O el método que uses para almacenar el token
+        const token = localStorage.getItem('authToken'); 
         const response = await fetch('http://localhost:8000/purchases', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` // Incluye el token en el encabezado
+                'Authorization': `Bearer ${token}` 
             },
             body: JSON.stringify({
-                userId: userId, // ID del usuario autenticado
+                userId: userId, 
                 items: cart.map(item => ({
-                    productId: item.id, // ID del producto
+                    productId: item.id, 
                     name: item.name,
                     price: item.price,
-                    quantity: 1 // Puedes cambiar esto si necesitas cantidades variables
+                    quantity: 1 
                 })),
                 total: total,
                 date: new Date().toISOString()
@@ -24,7 +24,7 @@ const finalizePurchase = async (userId, cart, total, clearCart) => {
             throw new Error('Error al finalizar la compra');
         }
 
-        clearCart(); // Limpia el carrito después de la compra exitosa
+        clearCart(); 
         alert('Compra finalizada con éxito');
     } catch (error) {
         console.error('Error al finalizar la compra:', error);

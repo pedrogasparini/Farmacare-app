@@ -1,8 +1,8 @@
-import useTraduction from "./UseTraduction";
+import useTranslation from "./UseTraduction";
 import "./Custom.css"; 
 
 const LanguageSelector = () => {
-  const { setLanguage } = useTraduction();
+  const { setLanguage } = useTranslation();
 
   const handleChangeLanguage = (event) => {
     setLanguage(event.target.value);
